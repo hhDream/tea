@@ -20,11 +20,11 @@
                 <div class="fl logo">
                     <a class="img" href="#"></a>
                 </div>
-                <ul class="fl nav">
+                <!-- <ul class="fl nav">
                     <li><a href="#">首页</a></li>
                     <li><a href="#">品牌商城</a></li>
                     <li><a href="#">新茶抢购</a></li>
-                </ul>
+                </ul> -->
                 <div class="fr phone-box">
                     <p>24小时全国服务热线</p>
                     <h4>4009286990</h4>
@@ -33,79 +33,81 @@
         </div>
   </el-col>
 </el-row>
-<el-row :gutter="20">
+<el-row>
 
   <el-col :span="24"><div class="grid-content  bg-purple clearfix top-side-box">
-    <div class="fl">
-    <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-      <el-menu-item index="0" >
-        <i class="el-icon-menu" @click="sw"></i>
-        <span slot="title">个人中心</span>
-      </el-menu-item>
-      <el-submenu index="1">
-        <template slot="title">
-          <i class="el-icon-tickets"></i>
-          <span slot="title" >我的账号</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="1-1"  @click="$router.openPage('/editPwd')">密码管理</el-menu-item>
-          <el-menu-item index="1-2" @click="$router.openPage('/message')" >我的消息</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      <el-submenu index="2">
-        <template slot="title">
-          <i class="el-icon-phone-outline"></i>
-          <span slot="title">新茶抢购</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="2-1" @click="$router.openPage('/rushby')">我的抢购</el-menu-item>
-          <el-menu-item index="2-2" @click="$router.openPage('/getRetailPrices')">零售指导价</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      <el-submenu index="3">
-        <template slot="title">
-          <i class="el-icon-goods"></i>
-          <span slot="title">提货管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="3-1" @click="$router.openPage('/myInventory')">我的库存</el-menu-item>
-          <el-menu-item index="3-2" @click="$router.openPage('/takegoodsDetail')">提货明细</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      <el-submenu index="4">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span slot="title">会员管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="4-1" @click="$router.openPage('/dealerManage')">经销商管理</el-menu-item>
-          <el-menu-item index="4-2" @click="$router.openPage('/dealerTransaction')">经销商交易</el-menu-item>
-          <el-menu-item index="4-3" @click="$router.openPage('/management')">客户管理</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      <el-submenu index="5">
-        <template slot="title">
-          <i class="el-icon-document"></i>
-          <span slot="title">财务管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="5-1" @click="$router.openPage('/myAccount')">我的账户</el-menu-item>
-          <el-menu-item index="5-2" @click="$router.openPage('/billQuery')">账单查询</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-    </el-menu>
+      <el-col :span="5">
+            <div class="fl">
+              <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+                <el-menu-item index="0">
+                  <i class="el-icon-menu"></i>
+                  <span slot="title" @click="$router.openPage('/')">个人中心</span>
+                </el-menu-item>
+                <el-submenu index="1">
+                  <template slot="title">
+                    <i class="el-icon-tickets"></i>
+                    <span slot="title" >我的账号</span>
+                  </template>
+                  <el-menu-item-group>
+                    <el-menu-item index="1-1"  @click="$router.openPage('/editPwd')">密码管理</el-menu-item>
+                    <el-menu-item index="1-2" @click="$router.openPage('/message')" >我的消息</el-menu-item>
+                  </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="2">
+                  <template slot="title">
+                    <i class="el-icon-phone-outline"></i>
+                    <span slot="title">新茶抢购</span>
+                  </template>
+                  <el-menu-item-group>
+                    <el-menu-item index="2-1" @click="$router.openPage('/rushby')">我的抢购</el-menu-item>
+                    <el-menu-item index="2-2" @click="$router.openPage('/getRetailPrices')">零售指导价</el-menu-item>
+                  </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="3">
+                  <template slot="title">
+                    <i class="el-icon-goods"></i>
+                    <span slot="title">提货管理</span>
+                  </template>
+                  <el-menu-item-group>
+                    <el-menu-item index="3-1" @click="$router.openPage('/myInventory')">我的库存</el-menu-item>
+                    <el-menu-item index="3-2" @click="$router.openPage('/takegoodsDetail')">提货明细</el-menu-item>
+                  </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="4">
+                  <template slot="title">
+                    <i class="el-icon-menu"></i>
+                    <span slot="title">会员管理</span>
+                  </template>
+                  <el-menu-item-group>
+                    <el-menu-item index="4-1" @click="$router.openPage('/dealerManage')">经销商管理</el-menu-item>
+                    <el-menu-item index="4-2" @click="$router.openPage('/dealerTransaction')">经销商交易</el-menu-item>
+                    <el-menu-item index="4-3" @click="$router.openPage('/management')">客户管理</el-menu-item>
+                  </el-menu-item-group>
+                </el-submenu>
+                <el-submenu index="5">
+                  <template slot="title">
+                    <i class="el-icon-document"></i>
+                    <span slot="title">财务管理</span>
+                  </template>
+                  <el-menu-item-group>
+                    <el-menu-item index="5-1" @click="$router.openPage('/myAccount')">我的账户</el-menu-item>
+                    <el-menu-item index="5-2" @click="$router.openPage('/billQuery')">账单查询</el-menu-item>
+                  </el-menu-item-group>
+                </el-submenu>
+              </el-menu>
 
-    </div>
+        </div>
+      </el-col>
+      <el-col :span="19" style="min-height: 811px;">
+          <transition 
+            name="bounce"
+            enter-active-class="fadeInDown"
+            leave-active-class=""
+          >
+            <router-view style=""></router-view>
+          </transition>
+      </el-col>
 
-            <div class="main-cont" style="min-height: 811px;">
-                    <transition 
-                      name="bounce"
-                      enter-active-class="bounceIn"
-                      leave-active-class="bounceOut"
-                    >
-                      <router-view style="display:inline-block"></router-view>
-                    </transition>
-            </div>
 
         </div></el-col>  
 </el-row>
@@ -157,7 +159,7 @@ export default {
    data(){
      return{
         transitionName : 'slide-fade',
-        isCollapse:true
+        isCollapse:false
      }
    },
    methods:{
@@ -181,17 +183,8 @@ export default {
     width: 200px;
     min-height: 400px;
   }
-/* 可以设置不同的进入和离开动画 */
-/* 设置持续时间和动画函数 */
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
+ a:hover {
+    text-decoration:none;
+  }
+
 </style>

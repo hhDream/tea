@@ -89,13 +89,6 @@ export default new Router({
             }
         },
         {
-            path: '/quoTe',
-            name: 'quoTe',
-            component(resolve) {
-                require(['@/views/quoTe/index.vue'], resolve)
-            }
-        },
-        {
             path: '/rushby',
             name: 'rushby',
             component(resolve) {
