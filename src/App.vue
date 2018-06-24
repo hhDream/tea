@@ -1,116 +1,44 @@
 <template>
   <div id="app">
-<el-row>
-  <el-col :span="24">
+    <el-row>
+      <el-col v-if="top_sw" :span="24">
         <div class="head">
-        <div class="clearfix box">
-            <div class="fl"><span>您好！</span><span id="showName"></span><a class="a3" href="javascript:;" onclick="getout()">退出</a></div>
+          <div class="clearfix box">
+            <div class="fl"><span>您好！</span><span>{{phone}}</span><a class="a3" href="javascript:;"  @click="delCookie('JSESSIONID')">退出</a></div>
             <div class="fr">
-                <a href="#">我的消息</a>
-                <!--<a>网站导航</a>-->
+              <a href="#">我的消息</a>
+              <!--<a>网站导航</a>-->
             </div>
+          </div>
         </div>
-    </div>
-  </el-col>
-</el-row>
-<el-row>
-  <el-col :span="24">
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="24">
         <div class="top-side">
-            <div class="clearfix top-side-box">
-                <div class="fl logo">
-                    <a class="img" href="#"></a>
-                </div>
-                <!-- <ul class="fl nav">
-                    <li><a href="#">首页</a></li>
-                    <li><a href="#">品牌商城</a></li>
-                    <li><a href="#">新茶抢购</a></li>
-                </ul> -->
-                <div class="fr phone-box">
-                    <p>24小时全国服务热线</p>
-                    <h4>4009286990</h4>
-                </div>
+          <div class="clearfix top-side-box">
+            <div class="fl logo">
+              <a class="img" href="#"></a>
             </div>
-        </div>
-  </el-col>
-</el-row>
-<el-row>
-
-  <el-col :span="24"><div class="grid-content  bg-purple clearfix top-side-box">
-      <el-col :span="5">
-            <div class="fl">
-              <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-                <el-menu-item index="0">
-                  <i class="el-icon-menu"></i>
-                  <span slot="title" @click="$router.openPage('/')">个人中心</span>
-                </el-menu-item>
-                <el-submenu index="1">
-                  <template slot="title">
-                    <i class="el-icon-tickets"></i>
-                    <span slot="title" >我的账号</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="1-1"  @click="$router.openPage('/editPwd')">密码管理</el-menu-item>
-                    <el-menu-item index="1-2" @click="$router.openPage('/message')" >我的消息</el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="2">
-                  <template slot="title">
-                    <i class="el-icon-phone-outline"></i>
-                    <span slot="title">新茶抢购</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="2-1" @click="$router.openPage('/rushby')">我的抢购</el-menu-item>
-                    <el-menu-item index="2-2" @click="$router.openPage('/getRetailPrices')">零售指导价</el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="3">
-                  <template slot="title">
-                    <i class="el-icon-goods"></i>
-                    <span slot="title">提货管理</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="3-1" @click="$router.openPage('/myInventory')">我的库存</el-menu-item>
-                    <el-menu-item index="3-2" @click="$router.openPage('/takegoodsDetail')">提货明细</el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="4">
-                  <template slot="title">
-                    <i class="el-icon-menu"></i>
-                    <span slot="title">会员管理</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="4-1" @click="$router.openPage('/dealerManage')">经销商管理</el-menu-item>
-                    <el-menu-item index="4-2" @click="$router.openPage('/dealerTransaction')">经销商交易</el-menu-item>
-                    <el-menu-item index="4-3" @click="$router.openPage('/management')">客户管理</el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="5">
-                  <template slot="title">
-                    <i class="el-icon-document"></i>
-                    <span slot="title">财务管理</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="5-1" @click="$router.openPage('/myAccount')">我的账户</el-menu-item>
-                    <el-menu-item index="5-2" @click="$router.openPage('/billQuery')">账单查询</el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
-              </el-menu>
-
+            <!-- <ul class="fl nav">
+                      <li><a href="#">首页</a></li>
+                      <li><a href="#">品牌商城</a></li>
+                      <li><a href="#">新茶抢购</a></li>
+                  </ul> -->
+            <div class="fr phone-box">
+              <p>24小时全国服务热线</p>
+              <h4>4009286990</h4>
+            </div>
+          </div>
         </div>
       </el-col>
-      <el-col :span="19" style="min-height: 811px;">
-          <transition 
-            name="bounce"
-            enter-active-class="fadeInDown"
-            leave-active-class=""
-          >
-            <router-view style=""></router-view>
-          </transition>
-      </el-col>
+    </el-row>
+    <el-row>
 
-
-        </div></el-col>  
-</el-row>
+      <!-- <transition name="bounce" enter-active-class="fadeInDown" leave-active-class=""> -->
+        <router-view v-if="isRouterAlive"></router-view>
+      <!-- </transition> -->
+      </el-row>
 <el-row>
   <el-col :span="24">
     <div class="grid-content bg-purple-dark">
@@ -153,38 +81,69 @@
 
 <script>
   // import axios from 'axios'
-export default {
-  name: 'App',
-  
-   data(){
-     return{
-        transitionName : 'slide-fade',
-        isCollapse:false
-     }
-   },
-   methods:{
+  export default {
+
+    name: 'App',
+    provide() {
+      return {
+        reload: this.reload
+      }
+    },
+    data() {
+      return {
+        transitionName: 'slide-fade',
+        isCollapse: false,
+        phone: this.$store.state.dialog.phone,
+        isRouterAlive: true,
+        top_sw:this.$store.state.dialog.cookie,
+      }
+    },
+    methods: {
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      sw(){
-        this.isCollapse=!this.isCollapse;
+      //删除cookie
+      delCookie(name) {
+          var exp = new Date();
+          exp.setTime(exp.getTime() - 1);
+          var cval = this.getCookie(name);
+          if (cval != null) document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+          this.$router.openPage('/login')
+          location.reload()
+      },
+      //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
+      getCookie(name) {
+          var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+          if (arr = document.cookie.match(reg)) {
+              return true;
+              // return (arr[2]);
+          } else {
+              return false
+          }
+      },
+      reload() {
+        this.isRouterAlive = false;
+        this.$nextTick(function() {
+          this.isRouterAlive = true
+        })
       }
-   }
-}
+    },
+    created(){
+    }
+  }
 </script>
 
 <style>
   @import "./assets/teamall.css";
   @import "./assets/bootstrap.css";
-    .el-menu-vertical-demo:not(.el-menu--collapse) {
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;
   }
- a:hover {
-    text-decoration:none;
+  a:hover {
+    text-decoration: none;
   }
-
 </style>

@@ -2,7 +2,7 @@
   <div class="box">
     <el-breadcrumb style='padding:24px' separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
-      <el-breadcrumb-item>密码管理</el-breadcrumb-item>
+      <el-breadcrumb-item>资金密码管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px">
       <el-form-item label="已验证手机" prop="phone">
@@ -30,9 +30,9 @@
         </el-col>
         <el-col :span='5'>
           <span class="img-validate-code">
-              <el-tooltip class="item" effect="dark"  content="点图片重新获取验证码" placement="right" >
-                <img id="codeimg" @click="changeCode()" :src="imgCodeUrl">
-              </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="点图片重新获取验证码" placement="right">
+              <img id="codeimg" @click="changeCode()" :src="imgCodeUrl">
+            </el-tooltip>
           </span>
         </el-col>
       </el-form-item>
@@ -78,8 +78,8 @@
       var validatePass3 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('不能为空'));
-        }else{
-           callback();
+        } else {
+          callback();
         }
       };
       var validatePass4 = (rule, value, callback) => {
@@ -88,19 +88,18 @@
           return false;
         };
         this.validateCode(
-          function (ok) { 
-          if (ok==false) {
-          callback(new Error('图形验证码或手机验证码错误'));
-          return false;
-        }else{
-           callback();
-        }
-        ;
-           }
+          function (ok) {
+            if (ok == false) {
+              callback(new Error('图形验证码或手机验证码错误'));
+              return false;
+            } else {
+              callback();
+            };
+          }
         )
       };
       return {
-        ok:'',
+        ok: '',
         http: this.$store.state.dialog.http,
         imgCodeUrl: '',
         phone: this.$store.state.dialog.phone,
@@ -136,7 +135,7 @@
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate(valid => {
-          if (!valid) { 
+          if (!valid) {
             console.log(valid)
             this.$message('请将字段填写完整');
             return false;
@@ -144,7 +143,7 @@
             this.editPassWord()
             this.$message('修改中');
           }
-          
+
         });
       },
       resetForm(formName) {
@@ -163,20 +162,20 @@
       editPassWord() {
         this.axios.post(this.http + '/interface/pc/personal/pcEnterprise/editPassword', qs.stringify({
           loginPhone: this.phone,
-          loginPassword: this.ruleForm2.pass
+          transactionPassword: this.ruleForm2.pass
         })).then(res => {
-          if(res.data.code==200){
-          this.$message({
-            type: 'success',
-            message: '即将跳回登陆页!'
-          });
+          if (res.data.code == 200) {
+            this.$message({
+              type: 'success',
+              message: '即将跳回登陆页!'
+            });
           }
 
           console.log(res);
         })
       },
       validateCode(callback) {
-        this.axios.post(this.http+'/interface/pc/personal/pcEnterprise/validateCode', qs.stringify({
+        this.axios.post(this.http + '/interface/pc/personal/pcEnterprise/validateCode', qs.stringify({
           phone: this.phone,
           pictureCode: this.ruleForm2.imageCode,
           code: this.ruleForm2.phoneCode
@@ -191,34 +190,11 @@
             callback(ok)
           }
         })
-      },
-      tips() {
-        this.$confirm('此操作将修改您的密码, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
-        }).then(() => {
-          this.validateCode()
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消修改'
-          });
-        });
       }
     }
   }
 </script>
 
 <style type="text/less">
-  #codeimg {
-    width: 100px;
-    height: 40px;
-    border-radius: 5px;
-    float: right;
-  }
-  .get_btn {
-    text-align: right;
-  }
+  #codeimg { width: 100px; height: 40px; border-radius: 5px; float: right; } .get_btn { text-align: right; }
 </style>

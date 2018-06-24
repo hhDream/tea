@@ -8,5 +8,6 @@ export default new vuex.Store({
     modules: {
         dialog: dialog_store
     },
+    mutations: {},
     plugins: debug ? [createLogger()] : [] // 开发环境下显示vuex的状态修改
 })

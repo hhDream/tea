@@ -14,7 +14,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <span class="demonstration">商品名称</span>
-          <el-input v-model="goodsCode" clearable></el-input>
+          <el-input v-model="goodsName" clearable></el-input>
         </div>
       </el-col>
       <el-col :span="6">
@@ -26,21 +26,27 @@
       </el-col>
     </el-row>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column fixed prop="id" label="商品代码" width="150">
+      <el-table-column fixed prop="goodsCode" label="商品代码"  width="120">
       </el-table-column>
-      <el-table-column prop="releaseCode" label="商品名称" width="120">
+      <el-table-column prop="goodsName" label="商品名称"  width="120">
       </el-table-column>
-      <el-table-column prop="releaseType" label="抢购价格" width="120">
+      <el-table-column prop="releasePrice" label="抢购价格" width="150">
+        <template slot-scope="scope">
+          <p>{{ scope.row.releasePrice?scope.row.releasePrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</p>
+        </template>
       </el-table-column>
-      <el-table-column prop="goodsName" label="当前零售指导价" width="120">
+      <el-table-column prop="nowPrice" label="当前零售指导价(元)" width="150">
+        <template slot-scope="scope">
+          <p>{{ scope.row.nowPrice?scope.row.nowPrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</p>
+        </template>
       </el-table-column>
-      <el-table-column prop="goodsCode" label="设置时间" width="300">
+      <el-table-column prop="setTime" label="设置时间" >
       </el-table-column>
 
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column fixed="right" align='center' label="操作">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-          <el-button type="text" size="small">编辑</el-button>
+          <el-button @click="handleClick(scope.row)" type="text" size="mini">设置指导价</el-button>
+          <el-button type="text" size="mini" @click="showHis(scope.row)">查看历史设置</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -50,66 +56,136 @@
         :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+    <!-- 修改指导价模态框 -->
+    <el-dialog title="修改指导价" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="商品名称" :label-width="formLabelWidth">
+          <el-input v-text="form.goodsName" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="商品代码" :label-width="formLabelWidth">
+          <el-input v-text="form.goodsCode"  auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="设置指导价" :label-width="formLabelWidth">
+          <el-input style="width:100px;" type='number' class="deal"  v-model="form.nowPrice" auto-complete="off"></el-input><span>元/{{this.form.benchmarkingUnit}}</span>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" style="text-aline">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editIt">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- 指导价历史模态框 -->
+    <el-dialog title="修改指导价" :visible.sync="dialogFormVisible2">
+      <el-table :data="tableData2"  style="width: 100%">
+        <el-table-column prop="setTime" label="设置时间" >
+        </el-table-column>
+        <el-table-column prop="nowPrice" label="零售指导价">
+          <template slot-scope="scope">
+            <p>{{ scope.row.nowPrice?scope.row.nowPrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</p>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" style="text-aline">
+        <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible2 = false">确 定</el-button>
+      </div>
+    <div class="block">
+      <el-pagination @size-change="handleSizeChange2" @current-change="handleCurrentChange2" :current-page="currentPage2" :page-sizes="[10, 20, 50]"
+        :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total2">
+      </el-pagination>
+    </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
   import qs from 'qs'
   export default {
+    inject:['reload'],
     methods: {
       getData() {
-        this.axios.post("https://ent.teaexs.com/platform/interface/pc/personal/pcAllotment/pcAllotmentList", qs.stringify({
-          releaseEnterpriseId: this.enterpriseCode,
+        this.axios.post(this.http+"/interface/pc/personal/PcRetailGuidancePrice/priceList", qs.stringify({
+          enterpriseId: this.enterpriseCode,
           currentPage: this.currentPage,
           showCount: this.showCount,
           goodsName: this.goodsName,
-          releaseBeginTime: this.releaseBeginTime,
-          releaseStatus: this.value
+          goodsCode: this.goodsCode,
         })).then(res => {
-          console.log(JSON.parse(res.data.data).totalPage);
           this.tableData = JSON.parse(res.data.data).data;
           this.total = JSON.parse(res.data.data).total;
+          console.log( JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
-          for (let index = 0; index < this.tableData.length; index++) {
-            if (this.tableData[index].releaseStatus == 1) {
-              this.tableData[index].releaseStatus = "待配售"
-            } else if (this.tableData[index].releaseStatus == 2) {
-              this.tableData[index].releaseStatus = "已配售"
-            } else if (this.tableData[index].releaseStatus == 5) {
-              this.tableData[index].releaseStatus = "已发行"
-            } else if (this.tableData[index].releaseStatus == 6) {
-              this.tableData[index].releaseStatus = "待结算"
-            } else if (this.tableData[index].releaseStatus == 7) {
-              this.tableData[index].releaseStatus = "已结束"
-            }
-          }
-          for (let index = 0; index < this.tableData.length; index++) {
-            if (this.tableData[index].releaseType == 1) {
-              this.tableData[index].releaseType = "封闭"
-            } else {
-              this.tableData[index].releaseType = "公开"
-            }
-          }
-          for (let index = 0; index < this.tableData.length; index++) {
-            if (this.tableData[index].rushBuyType == 1) {
-              this.tableData[index].rushBuyType = "被动配售"
-            } else {
-              this.tableData[index].rushBuyType = "主动订货"
-            }
-          }
         })
       },
       handleClick(row) {
         console.log(row);
+        this.dialogFormVisible = true
+        this.form.goodsName=row.goodsName
+        this.form.goodsCode=row.goodsCode
+        this.form.benchmarkingUnit=row.benchmarkingUnit
+        this.form.nowPrice=row.nowPrice
+        this.row=row;
+      },
+      editIt(){
+        this.axios.post(this.http+'/interface/pc/personal/PcRetailGuidancePrice/saveRetail',qs.stringify({
+          enterpriseId: 98980889,
+          goodsName: this.row.goodsName,
+          goodsCode: this.row.goodsCode,
+          nowPrice: this.form.nowPrice,
+          releasePrice: this.row.releasePrice,
+          benchmarkingUnit3: this.row.benchmarkingUnit3,
+          realseCode: this.row.realseCode,
+        })).then(res=>{
+          console.log(res)
+          if(res.data.code==200){
+            this.reload()
+          }else{
+            this.$message({
+                  type: 'info',
+                  message: `修改失败了!`
+                })
+          }
+        }).catch(error=>{
+          this.$message({
+            type: 'info',
+            message: `修改失败了!`+error
+          })
+        })
+      },
+      showHis(row){
+        this.dialogFormVisible2=true
+        this.row=row
+        this.axios.post(this.http+'/interface/pc/personal/PcRetailGuidancePrice/showHistory',qs.stringify({
+          currentPage: this.currentPage2,
+          goodsCode: this.row.goodsCode,
+          showCount: this.showCount2,
+        })).then(res=>{
+          console.log(JSON.parse(res.data.data));
+          this.tableData2=JSON.parse(res.data.data).data;
+          console.log(this.tableData2);
+          this.total2=JSON.parse(res.data.data).total;
+
+        })
       },
       handleSizeChange(data) {
         console.log(data);
         this.showCount = data;
         this.getData()
       },
+      handleSizeChange2(data) {
+        console.log(data);
+        this.showCount2 = data;
+        this.showHis(this.row)
+      },
       handleCurrentChange(data) {
         this.currentPage = data;
         this.getData()
+      },
+      handleCurrentChange2(data) {
+        this.currentPage2 = data;
+        this.showHis(this.row)
+
       },
       search() {
         this.getData()
@@ -120,35 +196,37 @@
     },
     data() {
       return {
-        goodsName: '',
-        releaseBeginTime: '',
+        tableData:[{}],
+        tableData2:[{}],
         http: this.$store.state.dialog.http,
         enterpriseCode: this.$store.state.dialog.enterpriseCode,
-        total: 1,
-        currentPage: 1,
-        showCount: 2,
-        tableData: [{}],
-        options: [{
-          value: '',
-          label: '全部'
-        }, {
-          value: '1',
-          label: '待配售'
-        }, {
-          value: '2',
-          label: '已配售'
-        }, {
-          value: '5',
-          label: '已发行'
-        }, {
-          value: '6',
-          label: '待结算'
-        }, {
-          value: '7',
-          label: '已结束'
-        }],
-        value: ''
+        currentPage:1,
+        showCount:10,
+        currentPage2:1,
+        showCount2:10,
+        goodsName:"",
+        goodsCode:"",
+        total:0,
+        total2:0,
+        dialogFormVisible:false,
+        dialogFormVisible2:false,
+        formLabelWidth: '120px',
+        form:{
+          nowPrice:1,
+          benchmarkingUnit:'',
+          goodsName:'',
+          goodsCode:''
+        }
       }
     },
   }
 </script>
+<style>
+  input::-webkit-inner-spin-button {  
+   -webkit-appearance: none;  
+}  
+  input::-webkit-outer-spin-button {  
+   -webkit-appearance: none;  
+}  
+</style>
+
