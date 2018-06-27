@@ -37,42 +37,43 @@
           </el-date-picker>
         </div>
       </el-col>
-      <el-col :span="2" style="margin-left:10px">          
+      <el-col :span="6" style="margin-left:10px">          
         <el-button style="margin-top: 19px;" icon="el-icon-search" circle @click="search"></el-button>
+        <el-button  @click="times=value=loginAccount=goodsName=takeTeaOrderCode=''">重置</el-button>
       </el-col>
     </el-row>
     <el-table :data="tableData" border style="width: 100%;font-size:12px">
-      <el-table-column prop="takeTeaOrderCode" label="提货单号">
+      <el-table-column prop="takeTeaOrderCode" fixed align="center" label="提货单号" width="170">
       </el-table-column>
-      <el-table-column prop="goodsCode" label="商品代码">
+      <el-table-column prop="goodsCode"  align="center" label="商品代码" width="100">
       </el-table-column>
-      <el-table-column prop="goodsName" label="商品名称">
+      <el-table-column prop="goodsName"  align="center" label="商品名称">
       </el-table-column>
-      <el-table-column prop="takeTeaCount" label="提货数量">
+      <el-table-column prop="takeTeaCount" align="center" label="提货数量">
         <template slot-scope="scope">
-              <p>{{ scope.row.takeTeaCount?scope.row.takeTeaCount:'0'}}  {{scope.row.benchmarkingUnit3}}</p>
+              <span>{{ scope.row.takeTeaCount?scope.row.takeTeaCount:'0'}}  {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="applyTime" label="申请时间">
+      <el-table-column prop="applyTime"  align="center" label="申请时间" width="150">
       </el-table-column>
-      <el-table-column prop="loginAccount" label="经销商账号">
+      <el-table-column prop="loginAccount"  align="center" label="经销商账号" width="100">
       </el-table-column>
-      <el-table-column prop="distributorName" label="经销商名称">
+      <el-table-column prop="distributorName"  align="center" label="经销商名称" width="130">
       </el-table-column>
-      <el-table-column prop="phone" label="手机号">
+      <el-table-column prop="phone"  align="center" label="手机号" width="100">
       </el-table-column>
-      <el-table-column prop="postalAddress" label="地址">
+      <el-table-column prop="postalAddress"  align="center" label="地址" width="180">
       </el-table-column>
-      <el-table-column prop="legalPersonName" label="法人">
+      <el-table-column prop="legalPersonName" align="center" label="法人">
       </el-table-column>
-      <el-table-column prop="warehousingFee" label="仓储费">
+      <el-table-column prop="warehousingFee"  align="center" label="仓储费">
         <template slot-scope="scope">
-              <p>{{ scope.row.warehousingFee?scope.row.warehousingFee:'0'}} 元</p>
+              <span>{{ scope.row.warehousingFee?scope.row.warehousingFee:'0'}} 元</span>
         </template>
       </el-table-column>
-      <el-table-column prop="status" :formatter="statusFmt" label="当前状态">
+      <el-table-column prop="status" :formatter="statusFmt"  align="center" label="当前状态">
       </el-table-column>
-      <el-table-column fixed="right" :formatter="takeFmt" label="操作" min-width="100">
+      <el-table-column fixed="right" :formatter="takeFmt" align="center" label="操作" min-width="100">
         <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">
               {{scope.row.status==1?"确认":scope.row.status==2?"填写物流单号":"查看单号"}}

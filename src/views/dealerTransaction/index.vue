@@ -36,6 +36,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-button style="margin-top: 19px;" icon="el-icon-search" circle @click="search"></el-button>
+          <el-button  @click="loginAccount=distributorName=times=startMoney=endMoney=''">重置</el-button>
         </div>
       </el-col>
     </el-row>

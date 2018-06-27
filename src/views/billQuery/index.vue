@@ -4,7 +4,7 @@
     <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
     <el-breadcrumb-item>账单查询</el-breadcrumb-item>
   </el-breadcrumb>
-  <el-row style="margin-bottom: 20px;" :gutter="20">
+  <el-row style="margin-bottom: 10px;" :gutter="20">
     <el-col :span="6">
       <div class="grid-content bg-purple">
         <span class="demonstration">资金方向</span>
@@ -23,7 +23,7 @@
         </el-select>
       </div>
     </el-col>
-    <el-col :span="10">
+    <el-col :span="12">
       <div class="grid-content bg-purple">
         <span class="demonstration">结算时间</span>
         <el-date-picker style="width:100%" v-model="times" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期"
@@ -31,28 +31,29 @@
         </el-date-picker>
       </div>
     </el-col>
-    <el-col :span="2">
-      <div class="grid-content bg-purple">
+  </el-row>
+  <el-row style="margin-bottom:20px">
+    <el-col :span="6">
         <el-button style="margin-top: 19px;" icon="el-icon-search" circle @click="search"></el-button>
-      </div>
+          <el-button  @click="transactionDirection=transactionType=times=''">重置</el-button>
     </el-col>
   </el-row>
   <el-table :data="tableData" border style="width: 100%">
-    <el-table-column prop="transactionTime" label="结算时间" width="170">
+    <el-table-column prop="transactionTime" align="center" label="结算时间" width="170">
     </el-table-column>
-    <el-table-column prop="transactionType" label="费用类型" width="120">
+    <el-table-column prop="transactionType" align="center" label="费用类型" width="120">
       <template slot-scope="scope">
-          <p>{{scope.row.transactionType==1?'提现':scope.row.transactionType==2?'手续费':scope.row.transactionType==3?'仓储费':scope.row.transactionType==4?'贷款':scope.row.transactionType==5?'充值':'未知'}}</p>
+          <span>{{scope.row.transactionType==1?'提现':scope.row.transactionType==2?'手续费':scope.row.transactionType==3?'仓储费':scope.row.transactionType==4?'货款':scope.row.transactionType==5?'充值':'未知'}}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="transactionDirection" label="资金方向"  width="120">
+    <el-table-column prop="transactionDirection" align="center" label="资金方向"  width="120">
       <template slot-scope="scope">
-          <p>{{scope.row.transactionDirection==1?'收入':'支出'}}</p>
+          <span>{{scope.row.transactionDirection==1?'收入':'支出'}}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="transactionAmmount" label="收支金额">
+    <el-table-column prop="transactionAmmount" header-align="center" align="left" label="收支金额">
       <template slot-scope="scope">
-          <p>{{scope.row.transactionDirection==1?'+￥':'-￥'}} {{ scope.row.transactionAmmount?scope.row.transactionAmmount:'0'}} 元</p>
+          <span>{{scope.row.transactionDirection==1?'+￥':'-￥'}} {{ scope.row.transactionAmmount?scope.row.transactionAmmount:'0'}} 元</span>
       </template>
     </el-table-column>
   </el-table>

@@ -9,9 +9,9 @@
             <img src="../../assets/images/user-head.jpg">
           </div>
           <div class="fr txt">
-            <h3>{{this.person.enterpriseName}}</h3>
+            <h3>{{person.enterpriseName}}</h3>
             <p id="producerNo">
-              <i>会员账号</i>{{this.person.loginAccount}}
+              <i>会员账号</i>{{person.loginAccount}}
             </p>
             <p>
               <i>会员类型</i>茶企</p>
@@ -32,13 +32,13 @@
             <p>账户余额
               <i>(元)</i>
             </p>
-            <h5 id="my_balance">{{this.person.capitalBalance}}</h5>
+            <h5 id="my_balance">{{person.capitalBalance}}</h5>
           </div>
         </div>
         <div class="fl usable">
           <p class="p1">
             <em></em>可用余额
-            <span id="my_balance_useable"> {{this.person.capitalBalance}}元</span>
+            <span id="my_balance_useable"> {{person.capitalBalance}}元</span>
           </p>
           <p class="p2">
             <em></em>冻结资金
@@ -66,22 +66,22 @@
           </el-table-column>
           <el-table-column prop="shelRetentionCount" label="持有数量"  width="150">
             <template slot-scope="scope">
-              <p>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+              <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="releaseCountTotal" label="抢购数量"  width="150">
             <template slot-scope="scope">
-              <p>{{ scope.row.releaseCountTotal?scope.row.releaseCountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+              <span>{{ scope.row.releaseCountTotal?scope.row.releaseCountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="CountTotal" label="冻结数量"  width="150">
             <template slot-scope="scope">
-              <p>{{ scope.row.CountTotal?scope.row.CountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+              <span>{{ scope.row.CountTotal?scope.row.CountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="takeTeaCount" label="已提货数量"  >
             <template slot-scope="scope">
-              <p>{{ scope.row.takeTeaCount?scope.row.takeTeaCount:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+              <span>{{ scope.row.takeTeaCount?scope.row.takeTeaCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -96,45 +96,45 @@
           <a class="fr" @click="$router.openPage('/myCenter/rushby')">更多&gt;</a>
         </h4>
           <el-table :data="allotment" border style="width: 100%" slot="empty">
-          <el-table-column prop="goodsCode" label="商品代码" width="100">
+          <el-table-column align="center" prop="goodsCode" label="商品代码" width="100">
           </el-table-column>
-          <el-table-column prop="goodsName" label="商品名称" width="100">
+          <el-table-column prop="goodsName" align="center" label="商品名称" width="100">
           </el-table-column>
-          <el-table-column prop="partakeAllomentCount" label="抢购总量" >
+          <el-table-column prop="partakeAllomentCount" align="center" label="抢购总量" >
             <template slot-scope="scope">
-              <p>{{ scope.row.partakeAllomentCount?scope.row.partakeAllomentCount:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+              <span>{{ scope.row.partakeAllomentCount?scope.row.partakeAllomentCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="releasePrice" label="抢购价格">
+          <el-table-column prop="releasePrice" align="center" label="抢购价格">
             <template slot-scope="scope">
-              <p>{{ scope.row.releasePrice?scope.row.releasePrice:'0'}} 元</p>
+              <span>{{ scope.row.releasePrice?scope.row.releasePrice:'0'}} 元</span>
             </template>
           </el-table-column>
-          <el-table-column prop="releaseBeginTime" label="抢购开始时间">
+          <el-table-column resizable show-overflow-tooltip align="center" prop="releaseBeginTime" label="抢购开始时间">
           </el-table-column>
-          <el-table-column prop="releaseEndTime" label="抢购结束时间">
+          <el-table-column show-overflow-tooltip align="center" prop="releaseEndTime" label="抢购结束时间">
           </el-table-column>
-          <el-table-column prop="partakeAllomentCount" label="参与抢购数量">
+          <el-table-column  align="center" prop="partakeAllomentCount" label="参与抢购数量">
             <template slot-scope="scope">
-              <p>{{ scope.row.partakeAllomentCount?scope.row.partakeAllomentCount:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+              <span>{{ scope.row.partakeAllomentCount?scope.row.partakeAllomentCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="transferCount" label="已售卖数量" >
+          <el-table-column  align="center" prop="transferCount" label="已售卖数量" >
             <template slot-scope="scope">
-              <p>{{ scope.row.transferCount?scope.row.transferCount:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+              <span>{{ scope.row.transferCount?scope.row.transferCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="releaseType" label="公开封闭" >
+          <el-table-column align="center" prop="releaseType" label="公开封闭" >
             <template slot-scope="scope">
-              <p>{{ scope.row.releaseType==0?'公开':'封闭'}}</p>
+              <span>{{ scope.row.releaseType==0?'公开':'封闭'}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="warehousingCount" label="库存总量">
+          <el-table-column align="center" prop="warehousingCount" label="库存总量">
             <template slot-scope="scope">
-              <p>{{ scope.row.warehousingCount?scope.row.warehousingCount:'0'}} {{scope.row.benchmarkingUnit33}}</p>
+              <span>{{ scope.row.warehousingCount?scope.row.warehousingCount:'0'}} {{scope.row.benchmarkingUnit33}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="releaseStatus" :formatter="releaseStatusFmt" label="当前状态" width="100">
+          <el-table-column align="center" prop="releaseStatus" :formatter="releaseStatusFmt" label="当前状态" width="100">
           </el-table-column>
         </el-table>
       </div>
@@ -158,7 +158,8 @@
       }
     },
     created() {
-      this.getData()
+      this.getData();
+      console.log(this.$store.state.dialog);
     },
     methods: {
       releaseStatusFmt(row, column) {
@@ -200,6 +201,7 @@
         this.$alert('网络错误请求失败!', '错误', {
           confirmButtonText: '确定',
           callback: action => {
+            this.$router.openPage('/login')
             this.$message({
               type: 'info',
               message: `错误原因: ${ err }`

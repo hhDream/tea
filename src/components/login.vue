@@ -10,11 +10,11 @@
         </div>
         <div>
           <el-form-item label="登陆密码" prop="pwd">
-            <el-input type="password" v-model="ruleForm.pwd"></el-input>
+            <el-input type="password" v-model="ruleForm.pwd" @keyup.enter.native="submitForm('ruleForm')"></el-input>
           </el-form-item>
         </div>
         <div>
-          <el-button @click="submitForm('ruleForm')">跳转</el-button>
+          <el-button @click="submitForm('ruleForm')">登录</el-button>
         </div>
       </div>
     </el-form>
@@ -77,11 +77,12 @@
           pwd: this.ruleForm.pwd
         })).then(res => {
           if (res.data.code == 200) {
-            this.setCookie('JSESSIONID', JSON.parse(res.data.data).sessionId, 2);
-            // this.setCookie('ENTER_ID', JSON.parse(res.data.data).enterpriseId, 2);
-            // this.setCookie('LOGIN_PHONE', JSON.parse(res.data.data).loginPhone, 2);
-            this.$store.commit('changePhone',this.ruleForm.phone);
-            this.$store.commit('changeEnterpriseCode', JSON.parse(res.data.data).enterpriseId);
+            this.setCookie('JSESSIONID', JSON.parse(res.data.data).sessionId, 1);
+            this.setCookie('ENTER_ID', JSON.parse(res.data.data).enterpriseId, 1);
+            this.setCookie('LOGIN_PHONE', JSON.parse(res.data.data).loginPhone, 1);
+            // this.$store.commit('changePhone',this.ruleForm.phone);
+            // this.$store.commit('changeEnterpriseCode', JSON.parse(res.data.data).enterpriseId);
+            console.log(this.$store.state.dialog)
             this.$router.openPage('/myCenter/home')
             location.reload()
           }else{

@@ -22,32 +22,33 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-button style="margin-top: 19px;" icon="el-icon-search" circle @click="search"></el-button>
+          <el-button  @click="goodsName=商品代码=''">重置</el-button>
         </div>
       </el-col>
     </el-row>
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="goodsCode" label="商品代码" width="120">
+    <el-table  :data="tableData" row-class-name="tdHeight" border style="width: 100%">
+      <el-table-column  align="center" prop="goodsCode" label="商品代码" width="120">
       </el-table-column>
-      <el-table-column prop="goodsName" label="商品名称" width="120">
+      <el-table-column align="center" prop="goodsName" sortable label="商品名称" width="120">
       </el-table-column>
-      <el-table-column prop="shelRetentionCount" label="持有数量" width="100">
+      <el-table-column align="center" prop="shelRetentionCount" sortable label="持有数量" width="120">
         <template slot-scope="scope">
-          <p>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="releaseCountTotal" label="抢购数量">
+      <el-table-column align="center" prop="releaseCountTotal" sortable label="抢购数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.releaseCountTotal?scope.row.releaseCountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.releaseCountTotal?scope.row.releaseCountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="" label="冻结数量">
+      <el-table-column align="center" prop="" sortable label="冻结数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.CountTotal?scope.row.CountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.CountTotal?scope.row.CountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="takeTeaCount" label="已提货数量">
+      <el-table-column align="center" prop="takeTeaCount" label="已提货数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.takeTeaCount?scope.row.takeTeaCount:'0'}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.takeTeaCount?scope.row.takeTeaCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
     </el-table>

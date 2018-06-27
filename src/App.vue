@@ -6,7 +6,7 @@
           <div class="clearfix box">
             <div class="fl"><span>您好！</span><span>{{phone}}</span><a class="a3" href="javascript:;"  @click="delCookie('JSESSIONID')">退出</a></div>
             <div class="fr">
-              <a href="#">我的消息</a>
+              <a href="#" @click="$router.openPage('/myCenter/message')">我的消息</a>
               <!--<a>网站导航</a>-->
             </div>
           </div>
@@ -136,7 +136,7 @@
   }
 </script>
 
-<style>
+<style lang="less">
   @import "./assets/teamall.css";
   @import "./assets/bootstrap.css";
   .el-menu-vertical-demo:not(.el-menu--collapse) {
@@ -146,4 +146,8 @@
   a:hover {
     text-decoration: none;
   }
+  .block{
+  margin:10px 0!important;
+  text-align: right;
+}
 </style>

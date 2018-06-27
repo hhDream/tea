@@ -35,8 +35,8 @@
         </div>
       </el-col>
     </el-row>
-    <el-table :data="tableData" border style="width: 100%;font-size:12px">
-      <el-table-column fixed prop="id" label="序号">
+    <el-table :data="tableData" border style="width: 100%">
+      <el-table-column sortable  fixed prop="id" label="序号">
       </el-table-column>
       <el-table-column prop="releaseCode" label="活动编码">
       </el-table-column>
@@ -48,34 +48,34 @@
       </el-table-column>
       <el-table-column prop="warehousingCount" label="库存总量">
         <template slot-scope="scope">
-          <p>{{ scope.row.warehousingCount?scope.row.warehousingCount:0}} {{scope.row.benchmarkingUnit33}}</p>
+          <span>{{ scope.row.warehousingCount?scope.row.warehousingCount:0}} {{scope.row.benchmarkingUnit33}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="releaseCount" label="配订货总量">
         <template slot-scope="scope">
-          <p>{{ scope.row.releaseCount?scope.row.releaseCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.releaseCount?scope.row.releaseCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="shlfRetentionCount" label="自留总量">
         <template slot-scope="scope">
-          <p>{{ scope.row.shlfRetentionCount?scope.row.shlfRetentionCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.shlfRetentionCount?scope.row.shlfRetentionCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="partakeAllomentCount" label="抢购总量">
         <template slot-scope="scope">
-          <p>{{ scope.row.partakeAllomentCount?scope.row.partakeAllomentCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.partakeAllomentCount?scope.row.partakeAllomentCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="releasePrice" label="抢购价格">
         <template slot-scope="scope">
-          <p>{{ scope.row.releasePrice?scope.row.releasePrice:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.releasePrice?scope.row.releasePrice:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="rushBuyType" :formatter="rushBuyTypeFmt" label="配售规则">
       </el-table-column>
       <el-table-column prop="transferCount" label="已售数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.transferCount?scope.row.transferCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.transferCount?scope.row.transferCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="releaseBeginTime" label="活动开始时间" width="150">
@@ -104,7 +104,7 @@
 
 <!-- 模态框表格 -->
 
-<el-dialog title="活动管理" :visible.sync="dialogTableVisible">
+<el-dialog title="活动管理" width="80%" :visible.sync="dialogTableVisible">
   <el-row :gutter="24">
     <el-col :span="6">
       <div class="grid-content bg-purple">
@@ -145,74 +145,74 @@
       <el-col :span="24">
       <div class="grid-content bg-purple">
           <el-button style="margin-top: 19px;" @click="inDataSearch" icon="el-icon-search" circle ></el-button>
-          <el-button type="success">导出</el-button>
+          <el-button type="success" @click="getquotalistin_getExcel">导出</el-button>
       </div>
       </el-col>
   </el-row>
-  <el-table show-summary :summary-method="getSummaries" :data="gridData"  border style="width: 100%;font-size:12px;margin-top:20px;">
-      <el-table-column fixed prop="distributorId" label="经销商编号">
+  <el-table show-summary :summary-method="getSummaries" :data="gridData"  border style="width: 100%;margin-top:20px;">
+      <el-table-column fixed align="center" prop="distributorId" label="经销商编号">
       </el-table-column>
-      <el-table-column prop="distributorName" label="经销商名称">
+      <el-table-column  align="center" prop="distributorName" label="经销商名称">
       </el-table-column>
-      <el-table-column prop="distributorLevel" :formatter="distributorLevelFmt" label="经销商等级">
+      <el-table-column  align="center" prop="distributorLevel" :formatter="distributorLevelFmt" label="经销商等级">
       </el-table-column>
-      <el-table-column prop="distributorLevelRank" label="信用系数">
+      <el-table-column  align="center" prop="distributorLevelRank" label="信用系数">
       </el-table-column>
-      <el-table-column prop="distributorSettlementPrice" label="结算价">
+      <el-table-column  align="center" prop="distributorSettlementPrice" label="结算价">
         <template slot-scope="scope">
-          <p>{{ scope.row.distributorSettlementPrice?scope.row.distributorSettlementPrice:0}} 元</p>
+          <span>{{ scope.row.distributorSettlementPrice?scope.row.distributorSettlementPrice:0}} 元</span>
         </template>
       </el-table-column>
-      <el-table-column prop="goodsName" label="商品名称">
+      <el-table-column  align="center" prop="goodsName" label="商品名称">
       </el-table-column>
-      <el-table-column prop="comfirmStatus" :formatter="comfirmStatusFmt" label="确认状态">
+      <el-table-column  align="center" prop="comfirmStatus" :formatter="comfirmStatusFmt" label="确认状态">
       </el-table-column>
-      <el-table-column prop="bondAmount" label="已支付定金">
+      <el-table-column  align="center" prop="bondAmount" label="已支付定金">
         <template slot-scope="scope">
-          <p>{{ scope.row.bondAmount?scope.row.bondAmount:0}} 元</p>
+          <span>{{ scope.row.bondAmount?scope.row.bondAmount:0}} 元</span>
         </template>
       </el-table-column>
-      <el-table-column prop="rationCount" label="基础订货数量">
+      <el-table-column  align="center" prop="rationCount" label="基础订货数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.rationCount?scope.row.rationCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.rationCount?scope.row.rationCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="fdCount" label="浮动订货数量">
+      <el-table-column  align="center" prop="fdCount" v-if="showIt" label="浮动订货数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.fdCount?scope.row.fdCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.fdCount?scope.row.fdCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="shlfRetentionCount" label="自留数量">
+      <el-table-column  align="center" prop="shlfRetentionCount" label="自留数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.shlfRetentionCount?scope.row.shlfRetentionCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.shlfRetentionCount?scope.row.shlfRetentionCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="partakeAllomentCount" label="抢购数量">
+      <el-table-column  align="center" prop="partakeAllomentCount" label="抢购数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.partakeAllomentCount?scope.row.partakeAllomentCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.partakeAllomentCount?scope.row.partakeAllomentCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="soldCount" label="已售数量">
+      <el-table-column  align="center" prop="soldCount" label="已售数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.soldCount?scope.row.soldCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.soldCount?scope.row.soldCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="customerCount" label="购买商品的客户数量">
+      <el-table-column  align="center" prop="customerCount" label="购买商品的客户数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.customerCount?scope.row.customerCount:0}} 个</p>
+          <span>{{ scope.row.customerCount?scope.row.customerCount:0}} </span>
         </template>
       </el-table-column>
-      <el-table-column prop="inCount" label="调货数量">
+      <el-table-column  align="center" prop="inCount" label="调货数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.inCount?scope.row.inCount:0}} {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.inCount?scope.row.inCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="outCount" label="被调货数量">
+      <el-table-column  align="center" prop="outCount" label="被调货数量">
         <template slot-scope="scope">
-          <p>{{ scope.row.outCount?scope.row.outCount:0}}  {{scope.row.benchmarkingUnit3}}</p>
+          <span>{{ scope.row.outCount?scope.row.outCount:0}}  {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="outCount" v-if="takeIt" fixed="right" label="操作">
+      <el-table-column  align="center" prop="outCount" v-if="takeIt" fixed="right" label="操作">
       <template slot-scope="scope">
         <el-button @click="innerVisible = true;editClick(scope.row)" type="text" size="small">
           修改</el-button>
@@ -226,7 +226,7 @@
       :current-page="currentPage2" 
       :page-sizes="[10, 20, 50]" 
       :page-size="10" 
-      layout="total, sizes, prev, pager, next, jumper" :total="total">
+      layout="total, sizes, prev, pager, next, jumper" :total="total2">
       </el-pagination>
     </div>
       <el-dialog
@@ -326,11 +326,19 @@
       },
       getInData(row) {
         this.axios.post(this.http + "/interface/pc/personal/pcAllotment/distributorrationInfo", qs.stringify({
-          allotmentId: row.releaseCode
+          allotmentId: row.releaseCode,
+          currentPage: this.currentPage2,
+          showCount: this.showCount2,
+
         })).then(res => {
           console.log("元数据", res.data,JSON.parse(res.data.data));
           this.gridData = JSON.parse(res.data.data).pd;
+          this.total2 = JSON.parse(res.data.data).total;
+
         })
+      },
+      getquotalistin_getExcel(){
+        location.href = "https://ent.teaexs.com/platform/interface/pc/personal/pcAllotment/distributorrationExprot?allotmentId=" + this.row.releaseCode
       },
       inDataSearch(){
         this.axios.post(this.http+"/interface/pc/personal/pcAllotment/distributorrationInfo",qs.stringify({
@@ -340,7 +348,7 @@
           distributorLevel: this.distributorLevel,
           comfirmStatus: this.comfirmStatus,
         })).then(res=>{
-          console.log(JSON.parse(res.data.data));
+          console.log("内部",JSON.parse(res.data.data));
           this.gridData = JSON.parse(res.data.data).pd;
         })
       },
@@ -373,8 +381,11 @@
         console.log("数据行", row);
         this.dialogTableVisible = true;
         console.log(this.dialogTableVisible);
-        if (row.releaseStatus != 5&&row.releaseStatus != 6&&row.releaseStatus != 7) {
+        if (row.releaseStatus != 5&&row.releaseStatus != 6&&row.releaseStatus != 7&&row.rushBuyType!=1) {
           this.takeIt = true;
+        }
+        if (row.rushBuyType!=1) {
+          this.showIt = true;
         }
         this.allotmentId=row.releaseCode;
         this.row=row;
@@ -461,6 +472,7 @@
         distributorLevel: "",
         tableData: [{}],
         takeIt: false,
+        showIt:false,
         options: [{
           value: '',
           label: '全部'
@@ -550,9 +562,6 @@
   }
 </script>
 <style >
-  .block {
-    text-align: right
-  }
   .el-select {
     width: 100%;
   }

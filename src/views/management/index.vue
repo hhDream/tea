@@ -26,17 +26,22 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <span class="demonstration">注册手机号</span>
-          <el-input v-model="loginPhone" clearable></el-input>
+          <el-input type="number" v-model="loginPhone" clearable></el-input>
         </div>
       </el-col>
-      <el-col :span="6">
+    </el-row>
+    <el-row style="margin-bottom:20px;">
+      <el-col :span="24">
         <div class="grid-content bg-purple">
-          <el-button style="margin-top: 19px;" icon="el-icon-search" circle @click="search"></el-button>
+          <el-button icon="el-icon-search" circle @click="search"></el-button>
+          <el-button  @click="loginPhone=legalPersonName=distributorName=distributorCode=''">重置</el-button>
+          <!-- <el-button @click="array=1;getData()">升序</el-button>
+          <el-button @click="array=0;getData()">降序</el-button> -->
         </div>
       </el-col>
     </el-row>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column fixed prop="distributorCode" label="经销商编号" >
+      <el-table-column fixed prop="distributorCode" sortable label="经销商编号" >
       </el-table-column>
       <el-table-column prop="distributorName" label="经销商名称">
       </el-table-column>
@@ -44,7 +49,7 @@
       </el-table-column>
       <el-table-column prop="loginPhone" label="注册手机号">
       </el-table-column>
-      <el-table-column prop="count" label="注册客户数量">
+      <el-table-column prop="count" sortable label="注册客户数量">
       </el-table-column>
     </el-table>
     <div class="block">
@@ -113,3 +118,11 @@
     },
   }
 </script>
+<style>
+  input::-webkit-inner-spin-button {  
+   -webkit-appearance: none!important;  
+}  
+  input::-webkit-outer-spin-button {  
+   -webkit-appearance: none!important;  
+}  
+</style>

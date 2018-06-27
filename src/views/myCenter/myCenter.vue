@@ -5,7 +5,7 @@
       <div class="grid-content  bg-purple clearfix top-side-box">
         <el-col :span="5">
           <div class="fl">
-            <el-menu default-active="1-4-1" class="el-menu-vertical-demo">
+            <el-menu unique-opened default-active="1-4-1" class="el-menu-vertical-demo">
                 <el-menu-item index="0">
                 <i class="el-icon-menu"></i>
                 <span slot="title" @click="$router.openPage('/myCenter/home')">个人中心</span>

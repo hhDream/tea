@@ -32,12 +32,12 @@
       </el-table-column>
       <el-table-column prop="releasePrice" label="抢购价格" width="150">
         <template slot-scope="scope">
-          <p>{{ scope.row.releasePrice?scope.row.releasePrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</p>
+          <span>{{ scope.row.releasePrice?scope.row.releasePrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="nowPrice" label="当前零售指导价(元)" width="150">
         <template slot-scope="scope">
-          <p>{{ scope.row.nowPrice?scope.row.nowPrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</p>
+          <span>{{ scope.row.nowPrice?scope.row.nowPrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="setTime" label="设置时间" >
@@ -57,12 +57,12 @@
       </el-pagination>
     </div>
     <!-- 修改指导价模态框 -->
-    <el-dialog title="修改指导价" :visible.sync="dialogFormVisible">
+    <el-dialog title="修改指导价" width="30%" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="商品名称" :label-width="formLabelWidth">
+        <el-form-item style="border-bottom:1px solid #ddd" label="商品名称" :label-width="formLabelWidth">
           <el-input v-text="form.goodsName" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="商品代码" :label-width="formLabelWidth">
+        <el-form-item style="border-bottom:1px solid #ddd" label="商品代码" :label-width="formLabelWidth">
           <el-input v-text="form.goodsCode"  auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="设置指导价" :label-width="formLabelWidth">
@@ -75,13 +75,13 @@
       </div>
     </el-dialog>
     <!-- 指导价历史模态框 -->
-    <el-dialog title="修改指导价" :visible.sync="dialogFormVisible2">
+    <el-dialog title="查看指导价历史" :visible.sync="dialogFormVisible2">
       <el-table :data="tableData2"  style="width: 100%">
         <el-table-column prop="setTime" label="设置时间" >
         </el-table-column>
         <el-table-column prop="nowPrice" label="零售指导价">
           <template slot-scope="scope">
-            <p>{{ scope.row.nowPrice?scope.row.nowPrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</p>
+            <span>{{ scope.row.nowPrice?scope.row.nowPrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</span>
           </template>
         </el-table-column>
       </el-table>

@@ -132,14 +132,25 @@ const router = new Router({
     ]
 })
 
-function getCookie(name) {
-    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg)) {
-        return true;
-        // return (arr[2]);
-    } else {
-        return false
+// function getCookie(name) {
+//     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+//     if (arr = document.cookie.match(reg)) {
+//         return true;
+//         // return (arr[2]);
+//     } else {
+//         return false
+//     }
+// }
+  //获取cookie
+  function getCookie  (cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
     }
+    return "";
 }
 
 // 全局路由守卫
@@ -154,6 +165,16 @@ router.beforeEach((to, from, next) => {
         store.commit('changeCookie', true);
     } else {
         store.commit('changeCookie', false);
+    }
+    if (getCookie('ENTER_ID')) {
+        store.commit('changeEnterpriseCode', getCookie('ENTER_ID'));
+    } else {
+        store.commit('changeEnterpriseCode', "");
+    }
+    if (getCookie('LOGIN_PHONE')) {
+        store.commit('changePhone', getCookie('LOGIN_PHONE'));
+    } else {
+        store.commit('changePhone', "");
     }
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
     console.log('即将去的路由', to.name, '我是对的吗', isLogin);

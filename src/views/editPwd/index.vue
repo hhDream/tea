@@ -30,10 +30,10 @@
         </el-col>
         <el-col :span='5'>
           <span class="img-validate-code">
-              <el-tooltip class="item" effect="dark"  content="点图片重新获取验证码" placement="right" >
-                <img id="codeimg" @click="changeCode()" :src="imgCodeUrl">
-              </el-tooltip>
-          </span>
+                <el-tooltip class="item" effect="dark"  content="点图片重新获取验证码" placement="right" >
+                  <img id="codeimg" @click="changeCode()" :src="imgCodeUrl">
+                </el-tooltip>
+            </span>
         </el-col>
       </el-form-item>
       <el-form-item label="手机验证码" prop="phoneCode">
@@ -41,7 +41,7 @@
           <el-input placeholder="请输入手机验证码" v-model="ruleForm2.phoneCode" clearable></el-input>
         </el-col>
         <el-col :span='5' class="get_btn">
-          <el-button @click="getPhoneCode()">获取验证码</el-button>
+          <el-button @click="getPhoneCode()" :disabled="isDisabled">{{buttonName}}</el-button>
         </el-col>
       </el-form-item>
       <el-form-item>
@@ -78,8 +78,8 @@
       var validatePass3 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('不能为空'));
-        }else{
-           callback();
+        } else {
+          callback();
         }
       };
       var validatePass4 = (rule, value, callback) => {
@@ -88,19 +88,21 @@
           return false;
         };
         this.validateCode(
-          function (ok) { 
-          if (ok==false) {
-          callback(new Error('图形验证码或手机验证码错误'));
-          return false;
-        }else{
-           callback();
-        }
-        ;
-           }
+          function(ok) {
+            if (ok == false) {
+              callback(new Error('图形验证码或手机验证码错误'));
+              return false;
+            } else {
+              callback();
+            };
+          }
         )
       };
       return {
-        ok:'',
+        buttonName: "发送短信",
+        isDisabled: false,
+        time: 60,
+        ok: '',
         http: this.$store.state.dialog.http,
         imgCodeUrl: '',
         phone: this.$store.state.dialog.phone,
@@ -134,17 +136,30 @@
       this.changeCode();
     },
     methods: {
+      sendMsg() {
+        let me = this;
+        me.isDisabled = true;
+        let interval = window.setInterval(function() {
+          me.buttonName = me.time + '秒后重新发送';
+          --me.time;
+          if (me.time < 0) {
+            me.buttonName = "重新发送";
+            me.time = 10;
+            me.isDisabled = false;
+            window.clearInterval(interval);
+          }
+        }, 1000);
+      },
       submitForm(formName) {
         this.$refs[formName].validate(valid => {
-          if (!valid) { 
+          if (!valid) {
             console.log(valid)
-            this.$message('请将字段填写完整');
+            this.$message('请按照提示修改字段');
             return false;
           } else {
             this.editPassWord()
             this.$message('修改中');
           }
-          
         });
       },
       resetForm(formName) {
@@ -154,6 +169,7 @@
         this.imgCodeUrl = this.http + '/code.do?t=' + new Date().getTime()
       },
       getPhoneCode() {
+        this.sendMsg()
         this.axios.post(this.http + '/interface/pc/personal/pcEnterprise/sendCode', qs.stringify({
           phone: this.phone
         })).then(res => {
@@ -165,18 +181,35 @@
           loginPhone: this.phone,
           loginPassword: this.ruleForm2.pass
         })).then(res => {
-          if(res.data.code==200){
+          if (res.data.code == 200) {
+            this.clearCookie()
+            this.$message({
+              type: 'success',
+              message: '即将跳回登陆页!'
+            });
+          location.reload()
+          }else{
           this.$message({
-            type: 'success',
-            message: '即将跳回登陆页!'
-          });
+              type: 'info',
+              message: '修改失败!'
+            });
           }
-
           console.log(res);
         })
       },
+      //清除cookie
+      clearCookie: function() {
+        this.setCookie('JSESSIONID', "", -1);
+        this.setCookie('ENTER_ID', "", -1);
+        this.setCookie('LOGIN_PHONE', "", -1);
+      },
+      setCookie(name, value, expiredays) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + expiredays);
+        document.cookie = name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+      },
       validateCode(callback) {
-        this.axios.post(this.http+'/interface/pc/personal/pcEnterprise/validateCode', qs.stringify({
+        this.axios.post(this.http + '/interface/pc/personal/pcEnterprise/validateCode', qs.stringify({
           phone: this.phone,
           pictureCode: this.ruleForm2.imageCode,
           code: this.ruleForm2.phoneCode

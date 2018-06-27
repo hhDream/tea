@@ -34,21 +34,11 @@
       <el-col :span="24">
         <div class="grid-content bg-purple">
           <el-button icon="el-icon-search" circle @click="search"></el-button>
+          <el-button  @click="distributorCode=distributorName=legalPersonName=postalAddress=''">重置</el-button>
           <el-button type="success" @click="distributor_getExcel">经销商模板下载</el-button>
           <el-button type="success" @click="distributorRelation_getExcel">经销商关系模板下载</el-button>
-          <!-- <el-upload action="https://ent.teaexs.com/platform/interface/pc/personal/pcDistributor/importDistributor" 
-          :on-preview="handlePreview" 
-          :on-remove="handleRemove" 
-          :before-remove="beforeRemove" 
-          :limit="1" 
-          :on-exceed="handleExceed" 
-          :file-list="fileList"
-          :before-upload="beforeAvatarUpload">
-            <el-button size="small" type="primary">经销商导入</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传xls文件</div>
-          </el-upload> -->
-          <el-button type="success">经销商导入</el-button>
-          <el-button type="success">经销商关系导入</el-button>
+          <el-button type="success" @click="dialogVisible=true">经销商导入</el-button>
+          <el-button type="success" @click="dialogVisible2=true">经销商关系导入</el-button>
         </div>
       </el-col>
     </el-row>
@@ -92,6 +82,42 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+    <el-dialog 
+    title="经销商导入"
+    :visible.sync="dialogVisible"
+    width="30%">
+          <el-upload action="https://ent.teaexs.com/platform/interface/pc/personal/pcDistributor/importDistributor" 
+          :on-preview="handlePreview" 
+          :on-remove="handleRemove" 
+          :before-remove="beforeRemove" 
+          :limit="1" 
+          :name="filename"
+          :on-exceed="handleExceed" 
+          :on-error="errorMsg"
+          :file-list="fileList"
+          :before-upload="beforeAvatarUpload">
+            <el-button size="small" type="primary">经销商导入</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传xls文件</div>
+          </el-upload>
+    </el-dialog>
+    <el-dialog 
+    title="经销商关系导入"
+    :visible.sync="dialogVisible2"
+    width="30%">
+          <el-upload action="https://ent.teaexs.com/platform/interface/pc/personal/pcDistributor/importDistributorRelation" 
+          :on-preview="handlePreview" 
+          :on-remove="handleRemove" 
+          :before-remove="beforeRemove" 
+          :limit="1" 
+          :name="filename"
+          :on-exceed="handleExceed" 
+          :on-error="errorMsg"
+          :file-list="fileList"
+          :before-upload="beforeAvatarUpload">
+            <el-button size="small" type="primary">经销商关系导入</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传xls文件</div>
+          </el-upload>
+    </el-dialog>
   </div>
 </template>
 
@@ -161,11 +187,15 @@
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
       beforeAvatarUpload(file, fileList){
-        console.log(file.type);
+        // console.log(file.type);
         const isXLS = file.type === 'application/vnd.ms-excel';
         if (!isXLS) {
           this.$message.error('上传文件只能是 xls 格式!');
         }
+      },
+      errorMsg(error, file, fileList){
+        // this.$message(error)
+        console.log(error);
       }
     },
     created() {
@@ -184,8 +214,15 @@
         postalAddress: "",
         total: 1,
         currentPage: 1,
-        fileList: []
+        fileList: [],
+        dialogVisible:false,
+        dialogVisible2:false,
+        filename:'filename'
       }
     },
   }
 </script>
+<style>
+
+</style>
+

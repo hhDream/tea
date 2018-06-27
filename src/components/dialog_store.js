@@ -1,8 +1,9 @@
 export default {
     state: {
-        phone: "13062539890",
+        phone: "",
+        // http: "http://192.168.1.126:8080/tea",
         http: "https://ent.teaexs.com/platform",
-        enterpriseCode: 98980889,
+        enterpriseCode: "",
         cookie: false,
         isLogin: false,
     },
@@ -23,6 +24,6 @@ export default {
 
         // swich_dialog(state){
         //     state.phone = state.phone
-        // } https://ent.teaexs.com/platform    http://192.168.1.117:8080/tea
+        // } https://ent.teaexs.com/platform    http://192.168.1.126:8080/tea
     }
 }
