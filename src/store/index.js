@@ -6,7 +6,7 @@ vue.use(vuex)
 import dialog_store from '../components/dialog_store'
 export default new vuex.Store({
     modules: {
-        dialog: dialog_store
+        dialog: dialog_store //茶企个人中心的store
     },
     mutations: {},
     plugins: debug ? [createLogger()] : [] // 开发环境下显示vuex的状态修改

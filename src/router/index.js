@@ -19,7 +19,84 @@ const router = new Router({
     // mode: 'history',
     routes: [{
             path: '/',
-            redirect: '/login'
+            redirect: '/teaMallIndex'
+        },
+        {
+            path: '/ccfwxy',
+            name: 'ccfwxy',
+            component(resolve) {
+                require(['@/views/common/ccfwxy/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/cqtptjj',
+            name: 'cqtptjj',
+            component(resolve) {
+                require(['@/views/common/cqtptjj/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/fpbz',
+            name: 'fpbz',
+            component(resolve) {
+                require(['@/views/common/fpbz/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/gsyyzz',
+            name: 'gsyyzz',
+            component(resolve) {
+                require(['@/views/common/gsyyzz/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/payAgreement',
+            name: 'payAgreement',
+            component(resolve) {
+                require(['@/views/common/payAgreement/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/payLimit',
+            name: 'payLimit',
+            component(resolve) {
+                require(['@/views/common/payLimit/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/qgsm',
+            name: 'qgsm',
+            component(resolve) {
+                require(['@/views/common/qgsm/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/yssm',
+            name: 'yssm',
+            component(resolve) {
+                require(['@/views/common/yssm/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/zcxy',
+            name: 'zcxy',
+            component(resolve) {
+                require(['@/views/common/zcxy/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/zczn',
+            name: 'zczn',
+            component(resolve) {
+                require(['@/views/common/zczn/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/zffwxy',
+            name: 'zffwxy',
+            component(resolve) {
+                require(['@/views/common/zffwxy/index.vue'], resolve)
+            }
         },
         {
             path: '/login',
@@ -128,7 +205,21 @@ const router = new Router({
                     }
                 }
             ]
-        }
+        },
+        {
+            path: '/teaMallIndex',
+            name: 'teaMallIndex',
+            component(resolve) {
+                require(['@/teaMall/teaMallIndex/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/teaMailShop',
+            name: 'teaMailShop',
+            component(resolve) {
+                require(['@/teaMall/teaMailShop/index.vue'], resolve)
+            }
+        },
     ]
 })
 
@@ -141,8 +232,8 @@ const router = new Router({
 //         return false
 //     }
 // }
-  //获取cookie
-  function getCookie  (cname) {
+//获取cookie
+function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
@@ -152,8 +243,11 @@ const router = new Router({
     }
     return "";
 }
-
-// 全局路由守卫
+// 跳转后返回顶部
+router.afterEach((to, from, next) => {
+        window.scrollTo(0, 0);
+    })
+    // 全局路由守卫
 router.beforeEach((to, from, next) => {
     console.log(this, 'navigation-guards');
     // to: Route: 即将要进入的目标 路由对象
@@ -177,6 +271,13 @@ router.beforeEach((to, from, next) => {
         store.commit('changePhone', "");
     }
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
+    console.log(nextRoute.indexOf(to.name));
+    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0) { //限定隐藏顶部搜索
+        console.log(123);
+        store.commit('changeToLogin', false);
+    } else {
+        store.commit('changeToLogin', true);
+    }
     console.log('即将去的路由', to.name, '我是对的吗', isLogin);
 
     // 未登录状态；当路由到nextRoute指定页时，跳转至login

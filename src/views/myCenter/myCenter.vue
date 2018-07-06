@@ -1,7 +1,7 @@
 <template>
 <div>
   <el-row>
-    <el-col :span="24">
+    <el-col style="min-width:1190px;margin:20px auto;float: none;" :span="16">
       <div class="grid-content  bg-purple clearfix top-side-box">
         <el-col :span="5">
           <div class="fl">
@@ -18,7 +18,7 @@
                 <el-menu-item-group>
                     <el-menu-item index="1-1" @click="$router.openPage('/myCenter/editPwd')">密码管理</el-menu-item>
                     <el-menu-item index="1-2" @click="$router.openPage('/myCenter/editMoneyPsw')">资金密码管理</el-menu-item>
-                    <el-menu-item index="1-3" @click="$router.openPage('/myCenter/message')">我的消息</el-menu-item>
+                    <!-- <el-menu-item index="1-3" @click="$router.openPage('/myCenter/message')">我的消息</el-menu-item> -->
                 </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="2">

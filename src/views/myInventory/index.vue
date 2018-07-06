@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/myCenter/home' }">个人中心</el-breadcrumb-item>
       <el-breadcrumb-item>我的库存</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-bottom: 20px;" :gutter="20">
@@ -22,7 +22,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <el-button style="margin-top: 19px;" icon="el-icon-search" circle @click="search"></el-button>
-          <el-button  @click="goodsName=商品代码=''">重置</el-button>
+          <el-button  @click="goodsName=goodsCode=''">重置</el-button>
         </div>
       </el-col>
     </el-row>
@@ -33,15 +33,15 @@
       </el-table-column>
       <el-table-column align="center" prop="shelRetentionCount" sortable label="持有数量" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
+          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} 粒</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="releaseCountTotal" sortable label="抢购数量">
+      <el-table-column align="center" prop="releaseCountTotal" label="抢购数量">
         <template slot-scope="scope">
           <span>{{ scope.row.releaseCountTotal?scope.row.releaseCountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="" sortable label="冻结数量">
+      <el-table-column align="center" prop="" label="冻结数量">
         <template slot-scope="scope">
           <span>{{ scope.row.CountTotal?scope.row.CountTotal:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
@@ -100,7 +100,7 @@
     },
     data() {
       return {
-        tableData: [{}],
+        tableData: [],
         http: this.$store.state.dialog.http,
         enterpriseCode: this.$store.state.dialog.enterpriseCode,
         currentPage: 1,

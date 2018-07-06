@@ -66,7 +66,7 @@
           </el-table-column>
           <el-table-column prop="shelRetentionCount" label="持有数量"  width="150">
             <template slot-scope="scope">
-              <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
+              <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} 粒</span>
             </template>
           </el-table-column>
           <el-table-column prop="releaseCountTotal" label="抢购数量"  width="150">
@@ -96,7 +96,7 @@
           <a class="fr" @click="$router.openPage('/myCenter/rushby')">更多&gt;</a>
         </h4>
           <el-table :data="allotment" border style="width: 100%" slot="empty">
-          <el-table-column align="center" prop="goodsCode" label="商品代码" width="100">
+          <el-table-column align="center" show-overflow-tooltip prop="goodsCode" label="商品代码" width="100">
           </el-table-column>
           <el-table-column prop="goodsName" align="center" label="商品名称" width="100">
           </el-table-column>
@@ -197,11 +197,33 @@
           this.open(err)
         })
       },
+      
+      //删除cookie
+      delCookie(name) {
+          var exp = new Date();
+          exp.setTime(exp.getTime() - 1);
+          var cval = this.getCookie(name);
+          if (cval != null) document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+          this.$router.openPage('/login')
+          location.reload()
+      },
+      
+      //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
+      getCookie(name) {
+          var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+          if (arr = document.cookie.match(reg)) {
+              return true;
+              // return (arr[2]);
+          } else {
+              return false
+          }
+      },
       open(err) {
         this.$alert('网络错误请求失败!', '错误', {
           confirmButtonText: '确定',
           callback: action => {
-            this.$router.openPage('/login')
+            this.delCookie('JSESSIONID')
+            this.$router.openPage('/login') 
             this.$message({
               type: 'info',
               message: `错误原因: ${ err }`

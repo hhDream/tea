@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/myCenter/home' }">个人中心</el-breadcrumb-item>
       <el-breadcrumb-item>我的抢购</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-bottom: 20px;" :gutter="20">
@@ -212,7 +212,7 @@
           <span>{{ scope.row.outCount?scope.row.outCount:0}}  {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column  align="center" prop="outCount" v-if="takeIt" fixed="right" label="操作">
+      <el-table-column  align="center" v-if="takeIt" fixed="right" label="操作">
       <template slot-scope="scope">
         <el-button @click="innerVisible = true;editClick(scope.row)" type="text" size="small">
           修改</el-button>
@@ -381,7 +381,7 @@
         console.log("数据行", row);
         this.dialogTableVisible = true;
         console.log(this.dialogTableVisible);
-        if (row.releaseStatus != 5&&row.releaseStatus != 6&&row.releaseStatus != 7&&row.rushBuyType!=1) {
+        if (row.releaseStatus != '5'&&row.releaseStatus != '6'&&row.releaseStatus != '7'&&row.rushBuyType!='1') {
           this.takeIt = true;
         }
         if (row.rushBuyType!=1) {
@@ -470,7 +470,7 @@
         distributorId: "",
         distributorName: "",
         distributorLevel: "",
-        tableData: [{}],
+        tableData: [],
         takeIt: false,
         showIt:false,
         options: [{

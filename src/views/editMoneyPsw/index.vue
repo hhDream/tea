@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <el-breadcrumb style='padding:24px' separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/myCenter/home' }">个人中心</el-breadcrumb-item>
       <el-breadcrumb-item>资金密码管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px">

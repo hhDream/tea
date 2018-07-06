@@ -1,7 +1,7 @@
 <template>
 <div>
   <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
-    <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '/myCenter/home' }">个人中心</el-breadcrumb-item>
     <el-breadcrumb-item>账单查询</el-breadcrumb-item>
   </el-breadcrumb>
   <el-row style="margin-bottom: 10px;" :gutter="20">
@@ -43,7 +43,8 @@
     </el-table-column>
     <el-table-column prop="transactionType" align="center" label="费用类型" width="120">
       <template slot-scope="scope">
-          <span>{{scope.row.transactionType==1?'提现':scope.row.transactionType==2?'手续费':scope.row.transactionType==3?'仓储费':scope.row.transactionType==4?'货款':scope.row.transactionType==5?'充值':'未知'}}</span>
+          <!-- <span>{{scope.row.transactionType==1?'提现':scope.row.transactionType==2?'手续费':scope.row.transactionType==3?'仓储费':scope.row.transactionType==4?'货款':scope.row.transactionType==5?'充值':'未知'}}</span> -->
+          <span>{{scope.row.transactionType==1?'抢购货款':scope.row.transactionType==2?'保证金缴纳':scope.row.transactionType==3?'补交保证金':scope.row.transactionType==4?'补交货款':scope.row.transactionType==5?'快递费':'茶企仓储费'}}</span>
       </template>
     </el-table-column>
     <el-table-column prop="transactionDirection" align="center" label="资金方向"  width="120">
@@ -68,11 +69,7 @@
 
 <script>
     import qs from 'qs'
-    import left_block from '../../components/left_block.vue'
     export default {
-            components: {
-              "left-block": left_block
-            },
     methods: {
       getData() {
         this.axios.post(this.http + "/interface/pc/personal/pcEnterprise/myBill", qs.stringify({
@@ -116,7 +113,7 @@
     },
     data() {
       return {
-        tableData: [{}],
+        tableData: [],
         http: this.$store.state.dialog.http,
         enterpriseCode: this.$store.state.dialog.enterpriseCode,
         currentPage: 1,

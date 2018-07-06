@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/myCenter/home' }">个人中心</el-breadcrumb-item>
       <el-breadcrumb-item>经销商交易</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-bottom: 20px;" :gutter="20">
@@ -41,21 +41,21 @@
       </el-col>
     </el-row>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column fixed prop="loginAccount" label="经销商账号" width="120">
+      <el-table-column fixed prop="loginAccount" align="center" label="经销商账号" width="120">
       </el-table-column>
-      <el-table-column prop="distributorName" label="经销商名称" width="100">
+      <el-table-column prop="distributorName" align="center" label="经销商名称" width="100">
       </el-table-column>
-      <el-table-column prop="orderTime" label="日期" width="160">
+      <el-table-column prop="orderTime" align="center" label="日期" width="160">
       </el-table-column>
-      <el-table-column prop="newCount" label="新增会员数量" width="130">
+      <el-table-column prop="newCount" align="center" label="新增会员数量" width="130">
       </el-table-column>
-      <el-table-column prop="customerCount" label="总会员数量" width="100">
+      <el-table-column prop="customerCount" align="center" label="总会员数量" width="100">
       </el-table-column>
-      <el-table-column prop="count" label="订单总数" width="100">
+      <el-table-column prop="count" label="订单总数" align="center" width="100">
       </el-table-column>
-      <el-table-column prop="actualAmountPayment" label="订单总额" width="100">
+      <el-table-column prop="actualAmountPayment" align="center" label="订单总额(元)" width="100">
       </el-table-column>
-      <el-table-column prop="avger" label="订单平均额" >
+      <el-table-column prop="avger" align="center" label="订单平均额(元)" >
       </el-table-column>
     </el-table>
     <div class="block">
@@ -110,7 +110,7 @@
     },
     data() {
       return {
-        tableData: [{}],
+        tableData: [],
         http: this.$store.state.dialog.http,
         enterpriseCode: this.$store.state.dialog.enterpriseCode,
         phone: this.$store.state.dialog.phone,

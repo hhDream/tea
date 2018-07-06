@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">个人中心</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/myCenter/home' }">个人中心</el-breadcrumb-item>
       <el-breadcrumb-item>零售指导价</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-bottom: 20px;" :gutter="20">
@@ -196,8 +196,8 @@
     },
     data() {
       return {
-        tableData:[{}],
-        tableData2:[{}],
+        tableData:[],
+        tableData2:[],
         http: this.$store.state.dialog.http,
         enterpriseCode: this.$store.state.dialog.enterpriseCode,
         currentPage:1,
