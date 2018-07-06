@@ -72,7 +72,7 @@
                                 <div style="padding: 14px;">
                                     <span style="display: block;font-family:'微软雅黑';font-weight: 600;">{{o.title}}</span>
                                     <div class="bottom clearfix">
-                                        <time class="time">{{ o.text }}</time>
+                                        <span class="text_my">{{ o.text }}</span>
                                         <el-button type="text" class="button" @click="showChange(index)">查看简介</el-button>
                                     </div>
                                 </div>
@@ -277,19 +277,20 @@
             }
         }
     }
-    .time {
-        font-size: 13px;
-        color: #999;
-        line-height: 20px;
-        padding: 2px;
-        text-indent: 2em;
-        text-overflow: ellipsis;
-        -o-text-overflow: ellipsis;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-        margin-bottom: 10px;
+    .text_my {
+        display: block;
+    font-size: 13px;
+    color: #999;
+    line-height: 20px;
+    padding: 2px;
+    text-indent: 2em;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    max-height: 4.5em;
+    -webkit-line-clamp: 3;
+    margin-bottom: 10px;
     }
     .bottom {
         margin-top: 13px;

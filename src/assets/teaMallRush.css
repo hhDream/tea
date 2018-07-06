@@ -1,0 +1,178 @@
+@charset "UTF-8";
+.new-tea-sale {
+    background-color: #fff;
+}
+
+.newTeaSale-banner {
+    height: 426px;
+    background: url(./images/banner1.jpeg) no-repeat center center;
+}
+
+.new-tea-sale .notice {
+    margin: 0 0 30px;
+}
+
+.new-tea-sale .notice h4 {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.new-tea-sale .notice h4 span {
+    display: inline-block;
+    background: url(./images/icon/announcement.png) no-repeat left 0;
+}
+
+.new-tea-sale .notice h5 {
+    font-size: 16px;
+}
+
+.new-tea-sale .notice p {
+    line-height: 1.75em;
+}
+
+.new-tea-sale h4 {
+    position: relative;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.new-tea-sale h4 span {
+    display: inline-block;
+    padding: 5px 8px 5px 43px;
+}
+
+.new-tea-sale h4 em {
+    float: left;
+    display: inline-block;
+    height: 1px;
+    width: 100%;
+    margin: -13px 0 0 0;
+    background-color: #e1e1e1;
+}
+
+.new-tea-sale .release h4 span {
+    background: #fff url(./images/icon/new-directory.png) no-repeat 8px 7px;
+}
+
+.new-tea-sale .release.start h4 span {
+    background: #fff url(./images/icon/start.png) no-repeat 15px center;
+    background-size: auto 20px;
+}
+
+.new-tea-sale .release.end h4 span {
+    background: #fff url(./images/icon/over.png) no-repeat 15px center;
+    background-size: auto 20px;
+}
+
+.new-tea-sale .release .info {
+    display: inline-block;
+    margin: 90px 0 0;
+    padding: 0 15px;
+}
+
+.new-tea-sale .release .tit {
+    margin: 0 0 15px;
+}
+
+.new-tea-sale .release .tit h5 {
+    font-size: 18px;
+    margin: 0 0 5px;
+}
+
+.new-tea-sale .release .tit p {
+    color: #a0783a;
+}
+
+.new-tea-sale .release .tit .a {
+    display: inline-block;
+}
+
+.new-tea-sale .release .tit .b {
+    display: inline-block;
+    color: #dc2b01;
+    font-style: italic;
+    font-weight: bold;
+    margin: 0 0 0 30px;
+}
+
+.new-tea-sale .release .tit i {
+    font-size: 22px;
+}
+
+.new-tea-sale .release .tit b {
+    font-size: 35px;
+}
+
+.new-tea-sale .property {
+    margin: 0 0 30px;
+}
+
+.new-tea-sale .property p {
+    color: #a0783a;
+}
+
+.new-tea-sale .property span {
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+
+.new-tea-sale .property b {
+    display: inline-block;
+    font-weight: normal;
+    color: #211d1d;
+    margin: 0 0 0 5px;
+}
+
+.new-tea-sale .clock {
+    margin: 0;
+}
+
+.new-tea-sale .clock span {
+    display: inline-block;
+    padding: 5px 0 5px 22px;
+    background: url(./images/icon/clock.png) no-repeat left center;
+    background-size: auto 16px;
+}
+
+.new-tea-sale .btn {
+    width: 150px;
+}
+
+.new-tea-sale .release.start .property .p,
+.new-tea-sale .release.end .property .p {
+    color: #222;
+    margin: 15px 0 10px;
+}
+
+.new-tea-sale .schedule {
+    position: relative;
+    width: 210px;
+    height: 12px;
+    border-radius: 50px;
+    background-color: #eee;
+    text-align: left;
+}
+
+.new-tea-sale .schedule p {
+    height: 100%;
+    margin: 0;
+}
+
+.new-tea-sale .schedule p em {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #ff5f00;
+    border-radius: 50px;
+}
+
+.new-tea-sale .schedule i {
+    position: absolute;
+    right: -60px;
+    top: -5px;
+    font-style: normal;
+    color: #222;
+}

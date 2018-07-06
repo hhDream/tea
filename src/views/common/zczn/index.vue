@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="4">&nbsp;</el-col>
-      <el-col :span="16">
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
+      <el-col  style="min-width:1190px;margin:0 auto;float: none;" :span="16">
         <div class="content">
           <div class="font_bold">一、网页注册</div>
           1.在首页左上角点击注册或在登录页面点击免费注册链接<br>
@@ -71,7 +71,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="4">&nbsp;</el-col>
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
     </el-row>
   </div>
 </template>

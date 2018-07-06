@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="4">&nbsp;</el-col>
-      <el-col :span="16">
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
+      <el-col  style="min-width:1190px;margin:0 auto;float: none;" :span="16">
         <div class="content">
           本协议是您与茶企通平台网站（以下简称“本站”，网址：www.teaexs.com）之间就使用本站提供的仓储物流服务所订立的契约，请您仔细阅读本注册协议，您点击同意并继续按钮后，本协议即构成对双方有约束力的法律文件。
           <br>
@@ -100,7 +100,7 @@
           <b>您点击本协议下方的同意并继续按钮即视为您完全接受本协议，在点击之前请您再次确认已知悉并完全理解本协议的全部内容。</b>
         </div>
       </el-col>
-      <el-col :span="4">&nbsp;</el-col>
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
     </el-row>
   </div>
 </template>

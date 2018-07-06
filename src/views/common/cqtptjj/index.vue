@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="4">&nbsp;</el-col>
-      <el-col :span="16">
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
+      <el-col  style="min-width:1190px;margin:0 auto;float: none;" :span="16">
         <div class="content">
           <h2 style=" text-align: center; text-shadow:1px 2px 1px #CDC5BF;">茶企通平台简介</h2>
           <br>
@@ -27,7 +27,7 @@
           <br>
         </div>
       </el-col>
-      <el-col :span="4">&nbsp;</el-col>
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
     </el-row>
   </div>
 </template>

@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="4">&nbsp;</el-col>
-      <el-col :span="16">
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
+      <el-col  style="min-width:1190px;margin:0 auto;float: none;" :span="16">
         <div class="content">
           本隐私声明是我们对访问者隐私保护的许诺。网站访问者（以下也称“用户”或“您”）的信息对我们非常重要，并且我们非常重视对您的隐私信息的保护,因此我们特对隐私信息的收集、使用和许可等作如下声明：
           <br>
@@ -43,7 +43,7 @@
           我们可能会不时更新本《隐私声明》，并在更新时在本网站上醒目位置发布公告，我们欢迎您随时会来查看本声明。
         </div>
       </el-col>
-      <el-col :span="4">&nbsp;</el-col>
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
     </el-row>
   </div>
 </template>

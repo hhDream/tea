@@ -214,10 +214,17 @@ const router = new Router({
             }
         },
         {
-            path: '/teaMailShop',
-            name: 'teaMailShop',
+            path: '/teaMallShop',
+            name: 'teaMallShop',
             component(resolve) {
-                require(['@/teaMall/teaMailShop/index.vue'], resolve)
+                require(['@/teaMall/teaMallShop/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/teaMallRush',
+            name: 'teaMallRush',
+            component(resolve) {
+                require(['@/teaMall/teaMallRush/index.vue'], resolve)
             }
         },
     ]

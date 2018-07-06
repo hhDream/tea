@@ -181,7 +181,7 @@
     })
 </script>
 <style lang = 'less' scoped>
-    @import '../../assets/mail.css';
+    @import '../../assets/mall.css';
     .center_style {
         background-color: #F6F6F6
     }

@@ -66,8 +66,8 @@
             <div v-if="this.$store.state.dialog.toLogin==true" class="fl menu-box">
               <ul class="fl nav">
                 <li :class="{active:isShow==0}" ><a @click="$router.openPage('/');addClass(0)">首页</a></li>
-                <li :class="{active:isShow==1}"><a @click="$router.openPage('/teaMailShop');addClass(1)">品牌商城</a></li>
-                <li :class="{active:isShow==2}"><a @click="$router.openPage('/');addClass(2)">新茶抢购</a></li>
+                <li :class="{active:isShow==1}"><a @click="$router.openPage('/teaMallShop');addClass(1)">品牌商城</a></li>
+                <li :class="{active:isShow==2}"><a @click="$router.openPage('/teaMallRush');addClass(2)">新茶抢购</a></li>
                 <li :class="{active:isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li>
                 <li :class="{active:isShow==4}"><a @click="$router.openPage('/');addClass(4)">品牌馆</a></li>
               </ul>
@@ -200,7 +200,7 @@
 
 <style lang="less">
   @import "./assets/teamall.css";
-  @import "./assets/bootstrap.css";
+  @import "./assets/styleIndex.css";
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 400px;

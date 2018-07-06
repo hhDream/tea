@@ -169,12 +169,16 @@
     float: left;
 }
 
+.productList a:nth-child(4n) li {
+    margin-right: 0;
+}
+
 .productList .mr0px {
     margin-right: 0px;
 }
 
 .productList-img {
-    width: 265px;
+    width: 266px;
     height: 265px;
 }
 

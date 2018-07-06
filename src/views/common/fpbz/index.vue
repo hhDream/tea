@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="4">&nbsp;</el-col>
-            <el-col :span="16">
+            <!-- <el-col :span="4">&nbsp;</el-col> -->
+            <el-col  style="min-width:1190px;margin:0 auto;float: none;" :span="16">
                 <div class="content">
                     <div class="font_bold">一、普通发票</div>
                     您在订单信息确认过程中可以选择是否开具发票，个人及企业客户，均开具普通发票，请在提交订单页面，在“发票信息—发票类型”（如下图），选择普通发票，并按提示填写发票抬头。企业开票需填写纳税人识别码。发票信息与您输入的信息一致的情况下，发票一经开出，恕不退换。<br>
@@ -26,7 +26,7 @@
                     <br> 发票寄送方式您可以选择到付或快递物流，寄送费将按照卖家设置的计费收取，卖家收到发票申请后，将在5-7日将发票寄出。
                 </div>
             </el-col>
-            <el-col :span="4">&nbsp;</el-col>
+            <!-- <el-col :span="4">&nbsp;</el-col> -->
         </el-row>
     </div>
 </template>

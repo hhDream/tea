@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="4">&nbsp;</el-col>
-            <el-col :span="16">
+            <!-- <el-col :span="4">&nbsp;</el-col> -->
+            <el-col  style="min-width:1190px;margin:0 auto;float: none;" :span="16">
                 <div class="content">
                     <div class="font_bold">一、抢购时间及流程</div>
                     1、茶企通平台将不定期进行新茶抢购，发布新品。平台将提前15天发布新茶上市公告，您可在此期间对产品进行全方位了解；如您考虑入手，可在发行开始后下单抢购。抢购期为3天。详情请关注茶企通平台动态。
@@ -18,7 +18,7 @@
                     <br> 2、新茶抢购期订单不能取消，已抢购成功的商品不予退货，有问题请联系客服。
                 </div>
             </el-col>
-            <el-col :span="4">&nbsp;</el-col>
+            <!-- <el-col :span="4">&nbsp;</el-col> -->
         </el-row>
     </div>
 </template>

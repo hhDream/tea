@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="4">&nbsp;</el-col>
-      <el-col :span="16">
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
+      <el-col  style="min-width:1190px;margin:0 auto;float: none;" :span="16">
         <div class="content">
           <div class="font_bold">一、概述</div>
           1、本快捷支付服务协议（以下简称“本协议”）由西双版纳璟泰茶业有限公司（以下简称“茶企通”）与您就快捷支付服务所订立的有效合约。您通过网络页面点击确认本协议或以其他方式选择接受本协议，即表示您与茶企通已达成协议并同意接受本协议的全部约定内容。
@@ -117,7 +117,7 @@
           <br>
         </div>
       </el-col>
-      <el-col :span="4">&nbsp;</el-col>
+      <!-- <el-col :span="4">&nbsp;</el-col> -->
     </el-row>
   </div>
 </template>

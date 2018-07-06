@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="4">&nbsp;</el-col>
-            <el-col :span="16">
+            <!-- <el-col :span="4">&nbsp;</el-col> -->
+            <el-col  style="min-width:1190px;margin:0 auto;float: none;" :span="16">
                 <div class="page-cover-paylimit">
                     <div class="instructions">
                         <div class="title">限额说明</div>
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </el-col>
-            <el-col :span="4">&nbsp;</el-col>
+            <!-- <el-col :span="4">&nbsp;</el-col> -->
         </el-row>
     </div>
 </template>
