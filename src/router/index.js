@@ -106,6 +106,13 @@ const router = new Router({
             }
         },
         {
+            path: '/register',
+            name: 'register',
+            component(resolve) {
+                require(['@/components/register'], resolve)
+            }
+        },
+        {
             path: '/myCenter',
             name: 'myCenter',
             component(resolve) {
@@ -279,7 +286,7 @@ router.beforeEach((to, from, next) => {
     }
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
     console.log(nextRoute.indexOf(to.name));
-    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0) { //限定隐藏顶部搜索
+    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || to.name == 'register') { //限定隐藏顶部搜索
         console.log(123);
         store.commit('changeToLogin', false);
     } else {

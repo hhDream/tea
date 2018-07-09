@@ -12,7 +12,11 @@
               <span>{{phone}}</span>
               <a class="a3" href="javascript:;" @click="delCookie('JSESSIONID')">退出</a>
             </div>
-            <div class="fl" v-else><span>欢迎来到茶企通!</span><a class="a3" href="javascript:;" @click="$router.openPage('/login');">登陆</a><a class="a2" href="javascript:;">注册</a></div>
+            <div class="fl" v-else>
+              <span>欢迎来到茶企通!</span>
+              <a class="a3" href="javascript:;" @click="$router.openPage('/login');">登陆</a>
+              <a class="a2" href="register:;" @click="$router.openPage('/register')">注册</a>
+            </div>
             <div class="fr" v-if="this.$store.state.dialog.cookie==true">
               <a href="#" @click="$router.openPage('/myCenter/home')">个人中心</a>
               <a href="#" @click="$router.openPage('/myCenter/message')">我的消息</a>

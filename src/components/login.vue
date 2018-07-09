@@ -1,5 +1,5 @@
 <template>
-  <div class="login_style" v-loading.fullscreen.lock="fullscreenLoading">
+  <div class="login_style"  style="min-width:1190px;margin:0px auto;float: none;" v-loading.fullscreen.lock="fullscreenLoading">
     <el-form :label-position="labelPosition" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
       <div class="login_box">
         <h4>用户登陆</h4>
@@ -127,7 +127,7 @@
     padding: 3% 8%;
     border-radius: 10px;
     width: 600px;
-    background-color: #ffffffd9;
+    background-color:rgba(255,255,255,0.8);
     div {
        :after,
        :before {

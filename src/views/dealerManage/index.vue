@@ -95,6 +95,7 @@
           :on-exceed="handleExceed" 
           :on-error="errorMsg"
           :file-list="fileList"
+          :data="moreData"
           :before-upload="beforeAvatarUpload">
             <el-button size="small" type="primary">经销商导入</el-button>
             <div slot="tip" class="el-upload__tip">只能上传xls文件</div>
@@ -109,7 +110,7 @@
           :on-remove="handleRemove" 
           :before-remove="beforeRemove" 
           :limit="1" 
-          :name="filename"
+          :name="filenameRelation"
           :on-exceed="handleExceed" 
           :on-error="errorMsg"
           :file-list="fileList"
@@ -162,8 +163,9 @@
       },
       distributor_getExcel() {
         this.axios.post(this.http + '/interface/pc/personal/pcDistributor/templateDown', qs.stringify({
-          templateName: 'distributo'
+          templateName: 'distributor',
         })).then(res => {
+          // console.log(JSON.parse(res.data.data));
           location.href = JSON.parse(res.data.data)
         })
       },
@@ -217,7 +219,11 @@
         fileList: [],
         dialogVisible:false,
         dialogVisible2:false,
-        filename:'filename'
+        filename:'filename',
+        filenameRelation:'filenameRelation',
+        moreData:{
+          enterpriseCode:this.$store.state.dialog.enterpriseCode
+        }
       }
     },
   }

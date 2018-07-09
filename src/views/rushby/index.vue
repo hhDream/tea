@@ -68,7 +68,7 @@
       </el-table-column>
       <el-table-column prop="releasePrice" label="抢购价格">
         <template slot-scope="scope">
-          <span>{{ scope.row.releasePrice?scope.row.releasePrice:0}} {{scope.row.benchmarkingUnit3}}</span>
+          <span>{{ scope.row.releasePrice?scope.row.releasePrice:0}} 元</span>
         </template>
       </el-table-column>
       <el-table-column prop="rushBuyType" :formatter="rushBuyTypeFmt" label="配售规则">
@@ -172,9 +172,14 @@
           <span>{{ scope.row.bondAmount?scope.row.bondAmount:0}} 元</span>
         </template>
       </el-table-column>
-      <el-table-column  align="center" prop="rationCount" label="基础订货数量">
+      <el-table-column  align="center" prop="rationCount" label="订货总量">
         <template slot-scope="scope">
           <span>{{ scope.row.rationCount?scope.row.rationCount:0}} {{scope.row.benchmarkingUnit3}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column  align="center" prop="jcCount" label="基础订货数量">
+        <template slot-scope="scope">
+          <span>{{ scope.row.jcCount?scope.row.jcCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column  align="center" prop="fdCount" v-if="showIt" label="浮动订货数量">
@@ -202,19 +207,19 @@
           <span>{{ scope.row.customerCount?scope.row.customerCount:0}} </span>
         </template>
       </el-table-column>
-      <el-table-column  align="center" prop="inCount" label="调货数量">
+      <el-table-column  align="center" prop="inCount" label="被调货数量">
         <template slot-scope="scope">
           <span>{{ scope.row.inCount?scope.row.inCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column  align="center" prop="outCount" label="被调货数量">
+      <el-table-column  align="center" prop="outCount" label="调货数量">
         <template slot-scope="scope">
           <span>{{ scope.row.outCount?scope.row.outCount:0}}  {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column  align="center" v-if="takeIt" fixed="right" label="操作">
       <template slot-scope="scope">
-        <el-button @click="innerVisible = true;editClick(scope.row)" type="text" size="small">
+        <el-button v-if="scope.row.comfirmStatus == 1" @click="innerVisible = true;editClick(scope.row)" type="text" size="small">
           修改</el-button>
       </template>
       </el-table-column>
@@ -257,9 +262,12 @@
         </el-col>
         <el-col :span="15">
           <div class="grid-content bg-purple">
-              <el-input v-model="quotasNumber" width="60" clearable></el-input>
+              <el-input v-model="quotasNumber"  v-on:input="inpChange"  type="number" width="60" clearable></el-input>
           </div>
         </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="10">修改后总量为:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{newNumber}}</el-col>
       </el-row>
       <el-row :gutter="20"  style="text-align:right">
         <el-col :span="20">
@@ -347,12 +355,20 @@
           distributorName: this.distributorName,
           distributorLevel: this.distributorLevel,
           comfirmStatus: this.comfirmStatus,
+          currentPage: this.currentPage2,
+          showCount: this.showCount2,
         })).then(res=>{
           console.log("内部",JSON.parse(res.data.data));
           this.gridData = JSON.parse(res.data.data).pd;
         })
       },
       editData() {
+        // console.log(this.quotasNumber);
+        this.$message('正在修改,请稍等...');
+        if(this.quotasNumber==""&&this.quotasNumber<0){
+          this.$message('请填写大于零且不为空的值'); 
+          return false;
+        }
         this.axios.post(this.http + "/interface/pc/personal/pcDistributor/editDistributorrationCount", qs.stringify({
           distributorrationId: this.rowId,
           quotasType: this.quotasType,
@@ -368,20 +384,37 @@
                   type: 'info',
                   message: `修改成功,数据将会更新!`
                 });
+                this.innerVisible=false;
+                this.dialogTableVisible=false;
               }
+              
             });
           }
         })
       },
+      inpChange(){
+        if(this.quotasType==1){
+            this.newNumber= +this.e.rationCount+ +this.quotasNumber;
+            if(this.newNumber<0){ this.newNumber=0}
+        }else if(this.quotasType==2){
+            this.newNumber= +this.e.rationCount- +this.quotasNumber;
+            if(this.newNumber<0){ this.newNumber=0}
+
+        }else{
+          this.$message("请选择类型")
+        }
+          // console.log('ssss',this.e);
+      },
       editClick(row) {
         console.log(row.id);
         this.rowId = row.id;
+        this.e=row
       },
       handleClick(row) {
         console.log("数据行", row);
         this.dialogTableVisible = true;
         console.log(this.dialogTableVisible);
-        if (row.releaseStatus != '5'&&row.releaseStatus != '6'&&row.releaseStatus != '7'&&row.rushBuyType!='1') {
+        if (row.releaseStatus != '5'&&row.releaseStatus != '6'&&row.releaseStatus != '7'&&row.releaseStatus!='1') {
           this.takeIt = true;
         }
         if (row.rushBuyType!=1) {
@@ -473,6 +506,8 @@
         tableData: [],
         takeIt: false,
         showIt:false,
+        newNumber:"",
+        e:'',
         options: [{
           value: '',
           label: '全部'

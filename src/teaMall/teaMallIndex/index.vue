@@ -278,19 +278,20 @@
         }
     }
     .text_my {
-        display: block;
     font-size: 13px;
     color: #999;
     line-height: 20px;
     padding: 2px;
+    line-height: 17px;
     text-indent: 2em;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     overflow: hidden;
     display: -webkit-box;
-    max-height: 4.5em;
+    /* max-height: 48px; */
     -webkit-line-clamp: 3;
     margin-bottom: 10px;
+    -webkit-box-orient: vertical;
     }
     .bottom {
         margin-top: 13px;
