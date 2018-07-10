@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/index.js'
-import _ from 'lodash' //这个工具可以降低js对数组的操作
+// import _ from 'lodash' //这个工具可以降低js对数组的操作
 
 Router.prototype.openPage = function(link, query) {
     this.push({ //向后面添加
@@ -234,6 +234,34 @@ const router = new Router({
                 require(['@/teaMall/teaMallRush/index.vue'], resolve)
             }
         },
+        {
+            path: '/teaMallNotice',
+            name: 'teaMallNotice',
+            component(resolve) {
+                require(['@/teaMall/teaMallNotice/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/teaMallMoreNotice',
+            name: 'teaMallMoreNotice',
+            component(resolve) {
+                require(['@/teaMall/teaMallMoreNotice/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/teaMallNew',
+            name: 'teaMallNew',
+            component(resolve) {
+                require(['@/teaMall/teaMallNew/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/teaMallNews',
+            name: 'teaMallNews',
+            component(resolve) {
+                require(['@/teaMall/teaMallNews/index.vue'], resolve)
+            }
+        },
     ]
 })
 
@@ -260,6 +288,7 @@ function getCookie(cname) {
 // 跳转后返回顶部
 router.afterEach((to, from, next) => {
         window.scrollTo(0, 0);
+        store.commit('changeLoading', false); //加载loading
     })
     // 全局路由守卫
 router.beforeEach((to, from, next) => {
@@ -284,16 +313,25 @@ router.beforeEach((to, from, next) => {
     } else {
         store.commit('changePhone', "");
     }
+    store.commit('changeLoading', true); //加载loading
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
-    console.log(nextRoute.indexOf(to.name));
-    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || to.name == 'register') { //限定隐藏顶部搜索
+    const teaMallArr = ['teaMallMoreNotice', 'teaMallNotice', 'teaMallNew', 'teaMallNews']
+    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || to.name == 'register' || teaMallArr.indexOf(to.name) >= 0) { //限定隐藏顶部搜索 teaMallMoreNotice teaMallNotice
         console.log(123);
         store.commit('changeToLogin', false);
     } else {
         store.commit('changeToLogin', true);
     }
     console.log('即将去的路由', to.name, '我是对的吗', isLogin);
-
+    if (to.name == 'teaMallIndex') {
+        store.commit('changeIsShow', 0)
+    }
+    if (to.name == 'teaMallRush') {
+        store.commit('changeIsShow', 2)
+    }
+    if (to.name == 'teaMallShop') {
+        store.commit('changeIsShow', 1)
+    }
     // 未登录状态；当路由到nextRoute指定页时，跳转至login
     if (nextRoute.indexOf(to.name) >= 0) {
         if (!isLogin) {

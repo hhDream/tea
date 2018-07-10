@@ -69,11 +69,11 @@
             </div>
             <div v-if="this.$store.state.dialog.toLogin==true" class="fl menu-box">
               <ul class="fl nav">
-                <li :class="{active:isShow==0}" ><a @click="$router.openPage('/');addClass(0)">首页</a></li>
-                <li :class="{active:isShow==1}"><a @click="$router.openPage('/teaMallShop');addClass(1)">品牌商城</a></li>
-                <li :class="{active:isShow==2}"><a @click="$router.openPage('/teaMallRush');addClass(2)">新茶抢购</a></li>
-                <li :class="{active:isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li>
-                <li :class="{active:isShow==4}"><a @click="$router.openPage('/');addClass(4)">品牌馆</a></li>
+                <li :class="{active:this.$store.state.index.isShow==0}" ><a @click="$router.openPage('/');addClass(0)">首页</a></li>
+                <li :class="{active:this.$store.state.index.isShow==1}"><a @click="$router.openPage('/teaMallShop');addClass(1)">品牌商城</a></li>
+                <li :class="{active:this.$store.state.index.isShow==2}"><a @click="$router.openPage('/teaMallRush');addClass(2)">新茶抢购</a></li>
+                <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li>
+                <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/');addClass(4)">品牌馆</a></li>
               </ul>
             </div>
           </div>
@@ -83,7 +83,9 @@
     </el-row>
     <el-row>
       <el-col  :span="24">
-        <router-view v-if="isRouterAlive"></router-view>
+        <router-view
+        v-loading.fullscreen.lock="this.$store.state.index.loading"
+        v-if="isRouterAlive"></router-view>
       </el-col>
       <!-- <transition name="bounce" enter-active-class="fadeInDown" leave-active-class=""> -->
       <!-- </transition> -->
@@ -158,7 +160,7 @@
         document.documentElement.scrollTop = document.body.scrollTop = 0;
                 },
       addClass(i){
-        this.isShow=i
+        this.$store.commit('changeIsShow',i)
       },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);

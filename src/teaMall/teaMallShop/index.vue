@@ -195,14 +195,22 @@
         padding-left: 4%;
     }
     .active_1 {
-        color: #DB4B29!important
+        color: #DB4B29!important;
+        border: 1px solid #db4b29;
+        padding: 5px;
+        box-sizing: border-box;
     }
     .active_2 {
-        color: #DB4B29!important
+        color: #DB4B29!important;
+        border: 1px solid #db4b29;
+        padding: 5px;
+        box-sizing: border-box;
         
     }
     .active_3 {
-        color: #DB4B29!important
-       
+        color: #DB4B29!important;
+        border: 1px solid #db4b29;
+        box-sizing: border-box;
+        padding: 5px;
     }
 </style>

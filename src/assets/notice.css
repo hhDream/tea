@@ -1,0 +1,219 @@
+.article {
+    background: #fff none repeat scroll 0 0;
+    overflow: hidden;
+    padding: 30px 0 100px;
+}
+
+.wz_text {
+    color: #646464;
+    font-size: 13px;
+    padding: 20px 0;
+}
+
+.wz_text h1 {
+    color: #333;
+    font-size: 23px;
+    padding: 10px 0 20px;
+    text-align: center;
+}
+
+.fontsize {
+    font-family: Arial;
+    font-size: 12px;
+    text-align: center;
+}
+
+.ment {
+    background: #ececec none repeat scroll 0 0;
+    color: #999;
+    font-size: 12px;
+    overflow: hidden;
+    padding: 12px;
+}
+
+.padding-top {
+    padding-top: 80px;
+}
+
+.wire {
+    background: #fff none repeat scroll 0 0;
+    overflow: hidden;
+}
+
+.cent {
+    margin: 0 auto;
+    overflow: hidden;
+    width: 1200px;
+}
+
+.article-list dl {
+    border-bottom: 1px solid #cfcfcf;
+    overflow: hidden;
+    padding: 25px 5px;
+}
+
+.article-list dl dt {
+    background: #ccc none repeat scroll 0 0;
+    float: left;
+    height: 126px;
+    width: 206px;
+}
+
+.article-list dl dd {
+    float: left;
+    padding: 0 0 0 30px;
+    width: 830px;
+}
+
+.article-list dl dd span a {
+    display: block;
+    height: 26px;
+    overflow: hidden;
+    width: 598px;
+    color: #333;
+    font-size: 20px;
+}
+
+.article-list dl dd span a:hover {
+    color: #fe8602;
+    text-decoration: none;
+}
+
+.article-list dl dd span em {
+    color: #999;
+    display: block;
+    font-family: "宋体";
+    font-size: 12px;
+}
+
+.article-list dl dd p {
+    color: #666;
+    font-family: "微软雅黑";
+    font-size: 13px;
+    padding-top: 10px;
+}
+
+.left_imgz {
+    border: 1px solid #eee;
+}
+
+.public_t {
+    padding: 73px 0 30px;
+    text-align: center;
+}
+
+.fenye {
+    clear: left;
+    padding: 40px 0;
+    text-align: center;
+    width: 100%;
+}
+
+.page {
+    height: 32px;
+    line-height: 32px;
+    padding: 4px 0;
+    width: auto;
+}
+
+.page .page_pre {
+    /* background: url("../images/preh_btn.jpg") no-repeat scroll 0 0; */
+    display: inline-block;
+    height: 32px;
+    margin: 0 3px;
+    vertical-align: middle;
+    width: 32px;
+}
+
+.page .page_pre:hover {
+    /* background: url("../images/prehh_btn.jpg") no-repeat scroll 0 0; */
+    text-decoration: none;
+}
+
+.page .page_next {
+    /* background: url("../images/next_btn.jpg") no-repeat scroll 0 0; */
+    display: inline-block;
+    font-size: 0;
+    height: 32px;
+    margin: 0 3px;
+    vertical-align: middle;
+    width: 32px;
+}
+
+.page .page_next:hover {
+    /* background: url("../images/nexth_btn.jpg") no-repeat scroll 0 0; */
+    text-decoration: none;
+}
+
+.page .page_num {
+    border: 1px solid #d2d2d2;
+    color: #4e4e4e;
+    display: inline-block;
+    font-size: 14px;
+    height: 30px;
+    margin: 0 3px;
+    text-align: center;
+    vertical-align: middle;
+    width: 30px;
+}
+
+.page .page_num:hover {
+    border-color: #d51e13;
+    color: #d51e13;
+    text-decoration: none;
+}
+
+.page .page_current:link,
+.page .page_current:visited {
+    background-color: #ff8603;
+    border: 1px solid #ff8603;
+    color: #fff;
+    display: inline-block;
+    height: 30px;
+    margin: 0 3px;
+    text-align: center;
+    vertical-align: middle;
+    width: 30px;
+}
+
+.page .page_current:hover {
+    text-decoration: none;
+}
+
+.page span {
+    display: inline;
+    margin: 0 3px;
+}
+
+.page span.page_zhuan {
+    margin-left: 30px;
+}
+
+.page .page_input {
+    border: 1px solid #d2d2d2;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    width: 35px;
+}
+
+.page .page_button {
+    /* background: url("../images/fenye_btn.jpg") no-repeat scroll 0 0; */
+    border: 0 none;
+    cursor: pointer;
+    display: inline-block;
+    height: 32px;
+    margin-left: 10px;
+    vertical-align: middle;
+    width: 51px;
+}
+
+.page .page_button:hover {
+    /* background: url("../images/fenyeh_btn.jpg") no-repeat scroll 0 0; */
+    text-decoration: none;
+}
+
+.article-cont {
+    min-height: 568px
+}

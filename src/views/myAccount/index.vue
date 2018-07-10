@@ -123,6 +123,7 @@
       return {
         phone: this.$store.state.dialog.phone,
         http: this.$store.state.dialog.http,
+        enterpriseCode: this.$store.state.dialog.enterpriseCode,
         no_card2: false,
         no_card1: true,
         license_date:'',//营业证照起止日期
@@ -280,7 +281,8 @@
         this.ruleForm.branchcardName = e.split(',')[0];
       },
       binding(){
- this.axios.post(this.http+"/interface/pcLogin/openEnterprise",qs.stringify({
+ this.axios.post(this.http+"/interface/pc/personal/pcEnterprise",qs.stringify({
+          enterpriseCode:this.enterpriseCode,
           corp_license_type: this.ruleForm.corp_license_type,
           corp_type: this.ruleForm.corp_type,
           social_credit_code: this.ruleForm.social_credit_code,
@@ -313,9 +315,9 @@
           console.log(JSON.parse(res.data.data));
           var r=JSON.parse(res.data.data)
           this.axios.post('/apis',qs.stringify({
-            cmdId:r.cmdId,
-            merCustId:r.merCustId,
-            sign:r.sign,
+            cmd_id:r.cmdId,
+            mer_cust_id :r.merCustId,
+            check_value:r.sign,
             version:r.version
           })).then(res=>{
             console.log('内部res',res);
