@@ -10,10 +10,10 @@ module.exports = {
         // Paths
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
-        proxyList: {
+        proxyTable: {
             '/apis': {
                 // 测试环境
-                target: 'localhost',
+                target: 'http://mertest.chinapnr.com/npay/merchantRequest',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/apis': ''

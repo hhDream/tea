@@ -15,9 +15,11 @@
                         <li v-for="(item,index) in prizeList" :key="index" @mouseenter="stopInterval" @mouseleave="intervalStart">
                             <img style="width:30px;height:30px;margin-right:30px" src="../../assets/images/icon/gg.svg" alt="">
                             <a href="">{{item.name}}</a>
+                            <a href="" style="float:right" @click="$router.openPage('/moreNotice');">查看更多...</a>
                         </li>
                     </ul>
                 </div>
+                
             </el-col>
             <!-- <el-col :span="4">&nbsp;</el-col> -->
         </el-row>
@@ -27,7 +29,9 @@
                 <div style="text-align:center;margin-bottom:50px;"><img src="../../assets/images/tea-title.png" alt=""></div>
                 <el-carousel trigger="click" :autoplay="false" arrow='always'>
                     <el-carousel-item v-for="(item,index) in SPbannerList" :key="index">
-                        <img style="width:100%" :src="item.src" alt="">
+                        <a href="#" @click="$router.openPage('/teaMallRush');"> 
+                            <img style="width:100%" :src="item.src" alt="">
+                        </a>
                     </el-carousel-item>
                 </el-carousel>
                 <div style="margin-bottom:80px;">
@@ -54,11 +58,11 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li><a target="_blank" href="" title="关于茶企通春节放假公告">●&nbsp;&nbsp;关于茶企通春节放假公告</a><span class="time">02-09</span></li>
-                                <li><a target="_blank" href="" title="春节快递停发公告">●&nbsp;&nbsp;春节快递停发公告</a><span class="time">02-07</span></li>
-                                <li><a target="_blank" href="" title="关于强暴雪天气延误快递服务的公告">●&nbsp;&nbsp;关于强暴雪天气延误快递服务的公告</a><span class="time">01-30</span></li>
-                                <li><a target="_blank" href="" title="【新品上市】佩紫饼茶，茶者，紫为上">●&nbsp;&nbsp;【新品上市】佩紫饼茶，茶者，紫为上</a><span class="time">01-18</span></li>
-                                <li><a target="_blank" href="" title="2018，年轻群体或成茶叶消费新突破点！">●&nbsp;&nbsp;2018，年轻群体或成茶叶消费新突破点！</a><span class="time">12-28</span></li>
+                                <li><a href="" title="关于茶企通春节放假公告">●&nbsp;&nbsp;关于茶企通春节放假公告</a><span class="time">02-09</span></li>
+                                <li><a href="" title="春节快递停发公告">●&nbsp;&nbsp;春节快递停发公告</a><span class="time">02-07</span></li>
+                                <li><a href="" title="关于强暴雪天气延误快递服务的公告">●&nbsp;&nbsp;关于强暴雪天气延误快递服务的公告</a><span class="time">01-30</span></li>
+                                <li><a href="" title="【新品上市】佩紫饼茶，茶者，紫为上">●&nbsp;&nbsp;【新品上市】佩紫饼茶，茶者，紫为上</a><span class="time">01-18</span></li>
+                                <li><a href="" title="2018，年轻群体或成茶叶消费新突破点！">●&nbsp;&nbsp;2018，年轻群体或成茶叶消费新突破点！</a><span class="time">12-28</span></li>
                             </ul>
                         </div>
                     </div>
@@ -280,18 +284,28 @@
     .text_my {
     font-size: 13px;
     color: #999;
-    line-height: 20px;
     padding: 2px;
     line-height: 17px;
     text-indent: 2em;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
+    /* -o-text-overflow: ellipsis; */
     overflow: hidden;
-    display: -webkit-box;
-    /* max-height: 48px; */
-    -webkit-line-clamp: 3;
+    display: block;
+    max-height: 53px;
+    /* -webkit-line-clamp: 3; */
     margin-bottom: 10px;
-    -webkit-box-orient: vertical;
+    position: relative;
+    /* -webkit-box-orient: vertical; */
+
+    }
+    .text_my::after {
+        content:"...";
+        font-weight:bold;
+        position:absolute;
+        bottom:0;
+        right:0;
+        padding:0 20px;
+        background:url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;
     }
     .bottom {
         margin-top: 13px;

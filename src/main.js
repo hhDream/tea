@@ -15,7 +15,7 @@ vue.use(vueAxios, axios);
 vue.use(vuex)
 vue.use(ElementUI);
 
-
+console.log(process.env.API_HOST);
 /* eslint-disable no-new */
 new vue({
     el: '#app',
