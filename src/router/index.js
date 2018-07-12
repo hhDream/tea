@@ -283,6 +283,20 @@ const router = new Router({
                 require(['@/teaMall/teaMallShopProduct/index.vue'], resolve)
             }
         },
+        {
+            path: '/teaMallOrderForm',
+            name: 'teaMallOrderForm',
+            component(resolve) {
+                require(['@/teaMall/teaMallOrderForm/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/teaMallPayMent',
+            name: 'teaMallPayMent',
+            component(resolve) {
+                require(['@/teaMall/teaMallPayMent/index.vue'], resolve)
+            }
+        },
     ]
 })
 
@@ -336,8 +350,8 @@ router.beforeEach((to, from, next) => {
     }
     store.commit('changeLoading', true); //加载loading
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
-    const teaMallArr = ['teaMallMoreNotice', 'teaMallNotice', 'teaMallNew', 'teaMallNews']
-    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || to.name == 'register' || teaMallArr.indexOf(to.name) >= 0) { //限定隐藏顶部搜索 teaMallMoreNotice teaMallNotice
+    const teaMallArr = ['teaMallMoreNotice', 'teaMallNotice', 'teaMallNew', 'teaMallNews', 'teaMallPayMent', 'register']
+    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || teaMallArr.indexOf(to.name) >= 0) { //限定隐藏顶部搜索 
         console.log(123);
         store.commit('changeToLogin', false);
     } else {

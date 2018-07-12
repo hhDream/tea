@@ -292,8 +292,8 @@
           institution_code: this.ruleForm.institution_code,
           tax_code: this.ruleForm.tax_code,
           corp_name: this.ruleForm.corp_name,
-          license_start_date: this.license_date[0],
-          license_end_date:this.license_date[1],
+          license_start_date: this.license_date[0].replace("-","").replace("-",""),
+          license_end_date:this.license_date[1].replace("-","").replace("-",""),
           corp_business_address:this.ruleForm.corp_business_address,
           corp_reg_address:this.ruleForm.corp_reg_address,
           corp_fixed_telephone:this.ruleForm.corp_fixed_telephone,
@@ -302,8 +302,8 @@
           legal_name:this.ruleForm.legal_name,
           legal_cert_type:this.ruleForm.legal_cert_type,
           legal_cert_id:this.ruleForm.legal_cert_id,
-          legal_cert_start_date:this.legal_cert_date[0],
-          legal_cert_end_date:this.legal_cert_date[1],
+          legal_cert_start_date:this.legal_cert_date[0].replace("-","").replace("-",""),
+          legal_cert_end_date:this.legal_cert_date[1].replace("-","").replace("-",""),
           legal_mobile:this.ruleForm.legal_mobile,
           contact_mobile:this.ruleForm.contact_mobile,
           contact_email:this.ruleForm.contact_email,
@@ -316,7 +316,7 @@
         })).then(res=>{
           console.log(JSON.parse(res.data.data));
           var r=JSON.parse(res.data.data)
-          this.axios.post('/apis',qs.stringify({
+          this.axios.post('https://bird.ioliu.cn/v1?url='+'http://mertest.chinapnr.com/npay/merchantRequest',qs.stringify({
             cmd_id:r.cmdId,
             mer_cust_id :r.merCustId,
             check_value:r.sign,

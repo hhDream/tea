@@ -34,20 +34,6 @@
       <!-- <el-col :span="4">&nbsp;</el-col> -->
       <el-col style="min-width:1190px;margin:0 auto;float: none;"  :span="16">
         <div class="top-side">
-          <!-- <div class="clearfix top-side-box">
-              <div class="fl logo">
-                <a class="img" href="#"></a>
-              </div>
-              <ul class="fl nav">
-                        <li><a href="#">首页</a></li>
-                        <li><a href="#">品牌商城</a></li>
-                        <li><a href="#">新茶抢购</a></li>
-                    </ul>
-              <div class="fr phone-box">
-                <p>24小时全国服务热线</p>
-                <h4>4009286990</h4>
-              </div>
-            </div> -->
           <div class="clearfix top-side-box">
             <div class="fl logo">
               <a class="img" @click="$router.openPage('/')"></a>
@@ -63,7 +49,7 @@
               </div>
               <button type="button" onclick="doSearch()"></button>
             </div>
-            <div class="fr phone-box">
+            <div class="fr phone-box" v-if="this.$store.state.dialog.toLogin==true">
               <p>24小时全国服务热线</p>
               <h4>4009286990</h4>
             </div>
