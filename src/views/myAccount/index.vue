@@ -170,6 +170,7 @@
         ruleForm: {
           corp_license_type: '',
           corp_type: '',
+          contact_name:'',
           social_credit_code: '',
           business_code: '',
           institution_code: '',
@@ -281,8 +282,9 @@
         this.ruleForm.branchcardName = e.split(',')[0];
       },
       binding(){
- this.axios.post(this.http+"/interface/pc/personal/pcEnterprise",qs.stringify({
+ this.axios.post(this.http+"/interface/pc/personal/pcEnterprise/openEnterprise",qs.stringify({
           enterpriseCode:this.enterpriseCode,
+          contact_name:this.ruleForm.contact_name,
           corp_license_type: this.ruleForm.corp_license_type,
           corp_type: this.ruleForm.corp_type,
           social_credit_code: this.ruleForm.social_credit_code,

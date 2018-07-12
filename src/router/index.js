@@ -262,6 +262,27 @@ const router = new Router({
                 require(['@/teaMall/teaMallNews/index.vue'], resolve)
             }
         },
+        {
+            path: '/teaMallProduct',
+            name: 'teaMallProduct',
+            component(resolve) {
+                require(['@/teaMall/teaMallProduct/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/teaMallTeaExperts',
+            name: 'teaMallTeaExperts',
+            component(resolve) {
+                require(['@/teaMall/teaMallTeaExperts/index.vue'], resolve)
+            }
+        },
+        {
+            path: '/teaMallShopProduct',
+            name: 'teaMallShopProduct',
+            component(resolve) {
+                require(['@/teaMall/teaMallShopProduct/index.vue'], resolve)
+            }
+        },
     ]
 })
 

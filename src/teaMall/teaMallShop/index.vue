@@ -71,7 +71,7 @@
                                 <a v-for="(Sp,index) in SpList" :key="index">
                                     <li>
                                         <div>
-                                            <img class="productList-img" :src="Sp.src">
+                                            <img @click="$router.openPage('/teaMallShopProduct')" class="productList-img" :src="Sp.src">
                                         </div>
                                         <h6 style="height:35px;">{{Sp.name}}</h6>
                                         <div class="productList-leaf">

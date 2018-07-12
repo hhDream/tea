@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div style="min-width:1190px;margin:20px auto;float: none;" class="block">
+    <div >
+        <div style="min-width:1190px;margin:20px auto;float: none;" >
             <el-carousel height="350px">
                 <el-carousel-item v-for="(item,index) in bannerList" :key="index">
                     <a href="" :style="{ 'background': 'url(' + item.src + ') center top no-repeat','display':'block','width':'100%','height':'100%' }"></a>
@@ -44,8 +44,8 @@
                                 <a class="more" id="moreInformationLink" @click="$router.openPage('/teaMallNews')">MORE&gt;</a>
                             </div>
                             <ul id="newsUL" v-for="(item,index) in newsList" :key="index">
-                                <li v-if="index==0" class="first clearfix">
-                                    <a target="_blank" href="" :title='item.title'>
+                                <li v-if="index==0"  @click="$router.openPage('/teaMallNew')" class="first clearfix">
+                                    <a target="_blank" :title='item.title'>
                                         <div class="fr">
                                             <div class="tit">{{item.title}}
                                                 <div class="bottom"></div>

@@ -28,7 +28,7 @@
                             <div v-if='index%2==0'  class="row">
                                 <div class="col-sm-6">
                                     <div class="img text-right">
-                                        <a href=""><img src="../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png" style="width:495px;height:460px;"></a>
+                                        <a><img  @click="$router.openPage('/teaMallProduct')" src="../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png" style="width:495px;height:460px;"></a>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="img text-left">
-                                        <a href=""><img src="../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png" style="width:495px;height:460px;"></a>
+                                        <a><img @click="$router.openPage('/teaMallProduct')" src="../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png" style="width:495px;height:460px;"></a>
                                     </div>
                                 </div>
                             </div>

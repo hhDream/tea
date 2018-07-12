@@ -1,0 +1,764 @@
+@charset "UTF-8";
+h4 {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.main-cont-mall {
+    margin-bottom: 40px;
+    padding: 20px;
+    box-shadow: #999 0px 3px 7px;
+}
+
+.product-detail .bb-none {
+    border-bottom: none;
+}
+
+.detail-productContent-l {
+    width: 758px;
+    height: 406px;
+    border: 1px solid #e1e1e1;
+}
+
+.detail-productContent-r {
+    width: 340px;
+    height: 406px;
+    margin-left: 20px;
+    font-size: 14px;
+}
+
+.w290px {
+    width: 290px;
+}
+
+.product-picture-big {
+    width: 288px;
+    height: 288px;
+    border: 1px solid #e1e1e1;
+    position: relative;
+}
+
+.product-picture-big .loading {
+    background: url("./images/icon/load-icon.gif") no-repeat 0 0;
+    display: none;
+    height: 32px;
+    left: 50%;
+    margin-left: -16px;
+    margin-top: -16px;
+    position: absolute;
+    top: 50%;
+    width: 32px;
+}
+
+.product-picture-big img {
+    width: 288px;
+    height: 288px;
+}
+
+.detail-productContent-l .product-picture-small {
+    width: 245px;
+    height: 44px;
+    top: 0px;
+    left: 26px;
+    overflow: hidden;
+    position: absolute;
+}
+
+.detail-productContent-l .small {
+    position: relative;
+}
+
+.picture-arrow-left,
+.picture-arrow-right {
+    width: 16px;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    color: #646464;
+    background: #dcdcdc;
+    font-size: 18px;
+    margin-top: 3px;
+    display: inline-block;
+    position: absolute;
+}
+
+.picture-arrow-left {
+    left: 3px;
+}
+
+.picture-arrow-right {
+    right: 3px;
+}
+
+.detail-productContent-l ul {
+    position: absolute;
+    height: 44px;
+    left: 0;
+    top: 0;
+}
+
+.detail-productContent-l li {
+    width: 44px;
+    height: 44px;
+    text-align: center;
+    margin-right: 5px;
+    cursor: pointer;
+    float: left;
+    border: 1px solid #fff;
+}
+
+.detail-productContent-l li:hover,
+.detail-productContent-l .active {
+    width: 44px;
+    height: 44px;
+    border: 1px solid #e93f3d;
+}
+
+.detail-productContent-l li img {
+    width: 42px;
+    height: 42px;
+}
+
+.productContent-parameter {
+    width: 428px;
+    padding: 20px;
+    color: #646464;
+    line-height: 18px;
+}
+
+.productContent-parameter h2 {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0px;
+}
+
+.bg-price {
+    width: 428px;
+    height: 73px;
+    padding-top: 11px;
+    background: url(./images/bg-price.jpg) no-repeat center;
+}
+
+.bg-price label {
+    width: 140px;
+    line-height: 40px;
+    color: #999;
+    text-align: right;
+    font-weight: normal;
+    display: inline-block;
+}
+
+.bg-price .c-red {
+    font-size: 22px;
+    margin-left: 15px;
+}
+
+.productContent-parameter-data {
+    height: 36px;
+    padding-top: 10px;
+    border-top: 1px dashed #e1e1e1;
+    border-bottom: 1px dashed #e1e1e1;
+}
+
+.productContent-parameter-data div {
+    width: 33%;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    float: left;
+    border-right: 1px solid #e1e1e1;
+}
+
+.productContent-grade,
+.productContent-expertise {
+    width: 340px;
+    border: 1px solid #e1e1e1;
+    padding: 15px 20px 20px 20px;
+}
+
+.productContent-grade {
+    height: 208px;
+}
+
+.productContent-expertise {
+    height: 178px;
+    margin-top: 20px;
+}
+
+.detail-productContent-r h4,
+.detail-priceTrend h4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    margin-top: 0px;
+}
+
+.productContent-grade div {
+    color: #666;
+    margin: 15px 0px;
+}
+
+.productContent-expertise div {
+    color: #999;
+    line-height: 17px;
+}
+
+.productContent-grade .star {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    display: inline-block;
+    background: url(./images/icon/star.png) no-repeat left center;
+}
+
+.productContent-grade .c666 {
+    color: #666;
+}
+
+
+/*价格趋势*/
+
+.detail-priceTrend {
+    width: 1118px;
+    height: 380px;
+    border: 1px solid #e1e1e1;
+    padding: 15px 30px 30px 30px;
+}
+
+
+/*tab切换*/
+
+.detail-tab .fade {
+    display: none;
+}
+
+.detail-tab .fade.in {
+    display: block;
+}
+
+
+/*商品详情*/
+
+.detail-tab .row.info {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.detail-tab .info .col-md-3 {
+    width: 25%;
+    float: left;
+}
+
+.detail-tab,
+.detail-tab .w1118px {
+    width: 1118px;
+}
+
+.detail-tab-tit {
+    height: 41px;
+}
+
+.detail-tab-tit li {
+    float: left;
+}
+
+.detail-tab-tit a {
+    width: 125px;
+    line-height: 42px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #666;
+    text-align: center;
+    display: inline-block;
+}
+
+.detail-tab-tit a:hover,
+.detail-tab-tit .active a {
+    color: #db4b29;
+}
+
+.detail-tab-tit .active a {
+    width: 123px;
+    line-height: 40px;
+    border: 1px solid #e1e1e1;
+    border-bottom: 1px solid #fff;
+}
+
+
+/*报价窗口*/
+
+.detail-tab-price {
+    padding: 30px;
+}
+
+.price-screeningCondition {
+    width: 1058px;
+    height: 91px;
+}
+
+.price-screeningCondition-tit {
+    height: 50px;
+    background: #f0f0f0;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.price-screeningCondition-tit h4 {
+    width: 150px;
+    line-height: 48px;
+    text-align: center;
+    border-bottom: 2px solid #db4b29;
+    float: left;
+    margin: 0px;
+    background: url(./images/icon/arrow-orange-up.png) no-repeat center bottom;
+}
+
+.price-screeningCondition-tit a,
+.price-screeningResult tbody td a {
+    width: 95px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 12px;
+    color: #fff;
+    background: #db4b29;
+    display: block;
+}
+
+.price-screeningCondition-tit a {
+    float: right;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+.price-screeningCondition-cont {
+    height: 40px;
+    line-height: 40px;
+}
+
+.price-screeningCondition-cont label {
+    height: 40px;
+    font-weight: normal;
+    margin-bottom: 0px;
+}
+
+.price-screeningCondition-cont .br-e1e1e1 {
+    height: 38px;
+    border-right: 1px solid #e1e1e1;
+    padding-right: 30px;
+}
+
+.price-screeningCondition-cont select {
+    width: 90px;
+    height: 26px;
+    padding-left: 8px;
+    border: 1px solid #e1e1e1;
+    cursor: pointer;
+}
+
+.price-input {
+    width: 98px;
+    height: 26px;
+    line-height: 26px;
+    border: 1px solid #e1e1e1;
+    color: #666;
+    margin-top: 7px;
+    padding-left: 5px;
+    display: inline-block;
+}
+
+.price-input input {
+    width: 76px;
+    height: 22px;
+    color: #333;
+    border: none;
+}
+
+.price-submit,
+.price-reset {
+    width: 50px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 12px;
+}
+
+.price-submit {
+    color: #db4b29;
+    background: #fff;
+    border: 1px solid #db4b29;
+}
+
+.price-reset {
+    color: #333;
+    background: #eee;
+    border: 1px solid #999;
+}
+
+.price-page {
+    width: 95px;
+    text-align: center;
+    margin-right: 20px;
+    display: inline-block;
+}
+
+.price-screeningResult {
+    width: 1058px;
+    color: #666;
+}
+
+.price-screeningResult tbody tr {
+    border: 1px solid #e1e1e1;
+}
+
+.price-screeningResult th,
+.price-screeningResult td {
+    text-align: center;
+}
+
+.price-screeningResult th {
+    height: 40px;
+    line-height: 40px;
+    font-weight: normal;
+    background: #f6f6f6;
+}
+
+.price-screeningResult td {
+    height: 70px;
+    line-height: 70px;
+}
+
+.price-screeningResult tbody td a {
+    margin: 0 auto;
+}
+
+.price-table-page a {
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    color: #333;
+    border: 1px solid #eee;
+    display: inline-block;
+}
+
+.price-table-page .price-table-page-current,
+.price-table-page .price-table-page-current:hover {
+    color: #fff;
+    background: #db4b29;
+}
+
+.price-table-page a:hover,
+.price-table-page-button .price-table-page-orange,
+.price-table-page-button .price-table-page-orange:hover {
+    color: #db4b29;
+    border: 1px solid #db4b29;
+}
+
+.price-table-page .w78px {
+    width: 78px;
+}
+
+.price-table-page .price-table-page-gray,
+.price-table-page .price-table-page-gray:hover {
+    color: #ccc;
+    background: #eee;
+    border: 1px solid #eee;
+}
+
+.price-table-page-text {
+    width: 36px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.price-table-page-button {
+    margin-top: 20px;
+    margin-left: 2px;
+    float: right;
+}
+
+.price-table-page-button a {
+    width: 20px;
+    height: 14px;
+    line-height: 10px;
+    font-size: 12px;
+    color: #333;
+    background: #fff;
+    border: 1px solid #eee;
+    display: block;
+}
+
+.price-screeningResult tbody td .a-gray {
+    background: #999;
+}
+
+
+/*通用样式*/
+
+.fs12px {
+    font-size: 12px;
+}
+
+.c-orange {
+    color: #db4b29;
+}
+
+.c-aaa {
+    color: #aaa;
+}
+
+.c-999 {
+    color: #999;
+}
+
+.c-blue {
+    color: #0166bb;
+}
+
+.c-red {
+    color: #dc2b01;
+}
+
+.b-e1e1e1 {
+    border: 1px solid #e1e1e1;
+    border-top: 0
+}
+
+.mt2px {
+    margin-top: 2px;
+}
+
+.mt10px {
+    margin-top: 10px;
+}
+
+.mt20px {
+    margin-top: 20px;
+}
+
+.mt30px {
+    margin-top: 30px;
+}
+
+.mr10px {
+    margin-right: 10px;
+}
+
+.ml10px {
+    margin-left: 10px;
+}
+
+.ml20px {
+    margin-left: 20px;
+}
+
+.ml30px {
+    margin-left: 30px;
+}
+
+.pt0px {
+    padding-top: 0px;
+}
+
+.bt-none {
+    border-top: none;
+}
+
+.br-none,
+.productContent-parameter-data .br-none {
+    border-right: none;
+}
+
+.bb-none {
+    border-bottom: none;
+}
+
+#xiangqing {
+    margin-bottom: 30px;
+    padding: 20px 0;
+    background-color: #fff;
+}
+
+.lh16px {
+    line-height: 16px;
+}
+
+.lh24px {
+    line-height: 24px;
+}
+
+.c-666 {
+    color: #666;
+}
+
+.w986px {
+    width: 950px;
+}
+
+
+/* 茶品点评 */
+
+.review-list {
+    margin: 0px 30px;
+}
+
+
+/* .review-list li {
+    padding: 30px 0px;
+} */
+
+.review-list li+li {
+    border-top: 1px solid #e1e1e1;
+}
+
+.headPortrait-box {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+
+.headPortrait-box img {
+    width: 100%;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+
+.review-list h6 {
+    line-height: 22px;
+    font-size: 14px;
+    margin: 0px;
+}
+
+.icon-expert,
+.icon-teaMan {
+    padding-left: 25px;
+}
+
+.icon-expert {
+    background: url(./images/icon/icon-expert.png) no-repeat left center;
+}
+
+.icon-teaMan {
+    background: url(./images/icon/icon-teaMan.png) no-repeat left center;
+}
+
+.lh16px span {
+    display: inline-block;
+}
+
+.icon-leaf,
+.icon-leaf-half {
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.icon-leaf {
+    background: url(./images/icon/leaf.png) no-repeat center;
+}
+
+.icon-leaf-half {
+    background: url(./images/icon/leaf-half.png) no-repeat center;
+}
+
+.review-list p {
+    color: #666;
+    word-wrap: break-word;
+}
+
+.mt0px {
+    margin-top: 0px;
+}
+
+.m60px30px40px0px {
+    margin: 60px 30px 40px 0px;
+}
+
+
+/* 专家茶人弹出框 */
+
+.modal-dialog {
+    width: 645px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -322px;
+    margin-top: -180px;
+}
+
+.modal-content {
+    border-radius: 8px;
+}
+
+.modal-header {
+    padding: 7px;
+    background: #db4b29;
+    border-bottom: none;
+    border-radius: 7px 7px 0px 0px;
+}
+
+.modal-header h4 {
+    color: #fff;
+}
+
+.close {
+    font-size: 25px;
+    font-weight: normal;
+    color: #fff;
+    filter: alpha(opacity=99);
+    opacity: .99;
+}
+
+.close:focus,
+.close:hover {
+    color: #fff;
+    filter: alpha(opacity=99);
+    opacity: .99
+}
+
+.modal-body {
+    padding: 40px 50px;
+}
+
+.modal-body .headPortrait-box {
+    width: 90px;
+    height: 90px;
+    margin: 0px auto;
+    position: relative;
+}
+
+.modal-body .headPortrait-box img {
+    border: 2px solid #ddd;
+}
+
+.icon-expert-border,
+.icon-teaMan-border {
+    width: 18px;
+    height: 22px;
+    position: absolute;
+    bottom: 2px;
+    right: 8px;
+    z-index: 99;
+}
+
+.icon-expert-border {
+    background: url(./images/icon/icon-expert-border.png) no-repeat center;
+}
+
+.icon-teaMan-border {
+    background: url(./images/icon/icon-teaMan-border.png) no-repeat center;
+}
+
+.fs16px {
+    font-size: 16px;
+}
+
+.fs18px-bold {
+    font-size: 18px;
+    font-weight: bold;
+}

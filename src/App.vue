@@ -72,8 +72,8 @@
                 <li :class="{active:this.$store.state.index.isShow==0}" ><a @click="$router.openPage('/');addClass(0)">首页</a></li>
                 <li :class="{active:this.$store.state.index.isShow==1}"><a @click="$router.openPage('/teaMallShop');addClass(1)">品牌商城</a></li>
                 <li :class="{active:this.$store.state.index.isShow==2}"><a @click="$router.openPage('/teaMallRush');addClass(2)">新茶抢购</a></li>
-                <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li>
-                <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/');addClass(4)">品牌馆</a></li>
+                <!-- <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li> -->
+                <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/teaMallTeaExperts');addClass(4)">茶评专家</a></li>
               </ul>
             </div>
           </div>
@@ -82,7 +82,7 @@
       <!-- <el-col :span="4">&nbsp;</el-col> -->
     </el-row>
     <el-row>
-      <el-col  :span="24">
+      <el-col :span="24">
         <router-view
         v-loading.fullscreen.lock="this.$store.state.index.loading"
         v-if="isRouterAlive"></router-view>
