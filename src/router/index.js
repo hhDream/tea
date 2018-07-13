@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/index.js'
-// import _ from 'lodash' //这个工具可以降低js对数组的操作
+import _ from 'lodash' //这个工具可以降低js对数组的操作
 
 Router.prototype.openPage = function(link, query) {
     this.push({ //向后面添加
@@ -103,13 +103,6 @@ const router = new Router({
             name: 'login',
             component(resolve) {
                 require(['@/components/login'], resolve)
-            }
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component(resolve) {
-                require(['@/components/register'], resolve)
             }
         },
         {
@@ -235,6 +228,277 @@ const router = new Router({
             }
         },
         {
+            path: '/buyListDetail',
+            name: 'buyListDetail',
+            component(resolve) {
+                require(['@/components/buyListDetail.vue'], resolve)
+            }
+        },
+        {
+            path: '/myUserCenter',
+            name: 'myUserCenter',
+            component(resolve) {
+                require(['@/userCenter/myUserCenter/myUserCenter.vue'], resolve)
+            },
+            children: [{
+                    path: 'userHome',
+                    name: 'userHome',
+                    component(resolve) {
+                        require(['@/userCenter/userHome/index.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'userInfo',
+                    name: 'userInfo',
+                    component(resolve) {
+                        require(['@/userCenter/userAccount/userInfo.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'userPwd',
+                    name: 'userPwd',
+                    component(resolve) {
+                        require(['@/userCenter/userAccount/userPwd.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'userAddress',
+                    name: 'userAddress',
+                    component(resolve) {
+                        require(['@/userCenter/userAccount/userAddress.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'purchaseOrder',
+                    name: 'purchaseOrder',
+                    component(resolve) {
+                        require(['@/userCenter/userOrder/purchaseOrder.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'sellOrder',
+                    name: 'sellOrder',
+                    component(resolve) {
+                        require(['@/userCenter/userOrder/sellOrder.vue'], resolve)
+                    }
+                },
+
+                {
+                    path: 'userStock',
+                    name: 'userStock',
+                    component(resolve) {
+                        require(['@/userCenter/takeGoods/userStock.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'takeDetail',
+                    name: 'takeDetail',
+                    component(resolve) {
+                        require(['@/userCenter/takeGoods/takeDetail.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'bankCard',
+                    name: 'bankCard',
+                    component(resolve) {
+                        require(['@/userCenter/userFinance/bankCard.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'coupon',
+                    name: 'coupon',
+                    component(resolve) {
+                        require(['@/userCenter/userFinance/coupon.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'increaseAptitudes',
+                    name: 'increaseAptitudes',
+                    component(resolve) {
+                        require(['@/userCenter/userFinance/increaseAptitudes.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'orderSearch',
+                    name: 'orderSearch',
+                    component(resolve) {
+                        require(['@/userCenter/userFinance/orderSearch.vue'], resolve)
+                    }
+                }
+            ],
+        },
+        {
+            path: '/distributorCenter',
+            name: 'distributorCenter',
+            redirect: '/distributorCenter/banlance',
+            component(resolve) {
+                require(['@/distributorCenter/DistributorHome/DistributorHome.vue'], resolve)
+            },
+            children: [{
+                    path: 'banlance',
+                    name: 'banlance',
+                    component(resolve) {
+                        require(['@/distributorCenter/Banlance/Banlance.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'enterpriseInfo',
+                    name: 'enterpriseInfo',
+                    component(resolve) {
+                        require(['@/distributorCenter/EnterpriseInfo/EnterpriseInfo.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'password',
+                    name: 'password',
+                    component(resolve) {
+                        require(['@/distributorCenter/Password/Password.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'distributorAddress',
+                    name: 'distributorAddress',
+                    component(resolve) {
+                        require(['@/distributorCenter/DistributorAddress/DistributorAddress.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'myGoods',
+                    name: 'myGoods',
+                    component(resolve) {
+                        require(['@/distributorCenter/MyGoods/MyGoods.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'saleList',
+                    name: 'saleList',
+                    component(resolve) {
+                        require(['@/distributorCenter/SaleList/SaleList.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'buyList',
+                    name: 'buyList',
+                    component(resolve) {
+                        require(['@/distributorCenter/BuyList/BuyList.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'rushBuy',
+                    name: 'rushBuy',
+                    component(resolve) {
+                        require(['@/distributorCenter/RushBuy/RushBuy.vue'], resolve)
+                    }
+                },
+
+                {
+                    path: 'myRushBuy',
+                    name: 'myRushBuy',
+                    component(resolve) {
+                        require(['@/distributorCenter/MyRushBuy/MyRushBuy.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'myStock',
+                    name: 'myStock',
+                    component(resolve) {
+                        require(['@/distributorCenter/MyStock/MyStock.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'takeGoodsDetail',
+                    name: 'takeGoodsDetail',
+                    component(resolve) {
+                        require(['@/distributorCenter/TakeGoodsDetail/TakeGoodsDetail.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'shippingTemplates',
+                    name: 'shippingTemplates',
+                    component(resolve) {
+                        require(['@/distributorCenter/ShippingTemplates/ShippingTemplates.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'vipInfo',
+                    name: 'vipInfo',
+                    component(resolve) {
+                        require(['@/distributorCenter/VipInfo/VipInfo.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'vipTransaction',
+                    name: 'vipTransaction',
+                    component(resolve) {
+                        require(['@/distributorCenter/VipTransaction/VipTransaction.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'myBank',
+                    name: 'myBank',
+                    component(resolve) {
+                        require(['@/distributorCenter/MyBank/MyBank.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'myCoupon',
+                    name: 'myCoupon',
+                    component(resolve) {
+                        require(['@/distributorCenter/MyCoupon/MyCoupon.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'increaseAptitude',
+                    name: 'increaseAptitude',
+                    component(resolve) {
+                        require(['@/distributorCenter/IncreaseAptitude/IncreaseAptitude.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'invoiceSetting',
+                    name: 'invoiceSetting',
+                    component(resolve) {
+                        require(['@/distributorCenter/InvoiceSetting/InvoiceSetting.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'invoiceManage',
+                    name: 'invoiceManage',
+                    component(resolve) {
+                        require(['@/distributorCenter/InvoiceManage/InvoiceManage.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'billCheck',
+                    name: 'billCheck',
+                    component(resolve) {
+                        require(['@/distributorCenter/BillCheck/BillCheck.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'deliveryApplication',
+                    name: 'deliveryApplication',
+                    component(resolve) {
+                        require(['@/distributorCenter/DeliveryApplication/DeliveryApplication.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'billDetail',
+                    name: 'billDetail',
+                    component(resolve) {
+                        require(['@/distributorCenter/BillDetail/BillDetail.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'makeBill',
+                    name: 'makeBill',
+                    component(resolve) {
+                        require(['@/distributorCenter/MakeBill/MakeBill.vue'], resolve)
+                    }
+                }
+            ]
+        }, ,
+        {
             path: '/teaMallNotice',
             name: 'teaMallNotice',
             component(resolve) {
@@ -297,6 +561,13 @@ const router = new Router({
                 require(['@/teaMall/teaMallPayMent/index.vue'], resolve)
             }
         },
+        {
+            path: '/register',
+            name: 'register',
+            component(resolve) {
+                require(['@/components/register.vue'], resolve)
+            }
+        },
     ]
 })
 
@@ -323,7 +594,7 @@ function getCookie(cname) {
 // 跳转后返回顶部
 router.afterEach((to, from, next) => {
         window.scrollTo(0, 0);
-        store.commit('changeLoading', false); //加载loading
+        // store.commit('changeLoading', false); //加载loading
     })
     // 全局路由守卫
 router.beforeEach((to, from, next) => {
@@ -348,10 +619,12 @@ router.beforeEach((to, from, next) => {
     } else {
         store.commit('changePhone', "");
     }
-    store.commit('changeLoading', true); //加载loading
+    // store.commit('changeLoading', true); //加载loading
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
     const teaMallArr = ['teaMallMoreNotice', 'teaMallNotice', 'teaMallNew', 'teaMallNews', 'teaMallPayMent', 'register']
-    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || teaMallArr.indexOf(to.name) >= 0) { //限定隐藏顶部搜索 
+    const userCenter = ['myUserCenter', 'takeDetail', 'userStock', 'userAddress', 'userInfo', 'userPwd', 'bankCard', 'coupon', 'increaseAptitudes', 'orderSearch', 'userHome', 'userInfo', 'buyListDetail', 'purchaseOrder', 'sellOrder', 'userPwd']
+    const distributorCenter = ['banlance', 'billCheck', 'billDetail', 'buyList', 'buyListDetail', 'deliveryApplication', 'distributorAddress', 'distributorHome', 'enterpriseInfo', 'freightTemplate', 'increaseAptitude', 'invoiceManage', 'invoiceSetting', 'makeBill', 'myBank', 'myCoupon', 'myGoods', 'myRushBuy', 'myStock', 'password', 'rushBuy', 'saleList', 'shippingTemplates', 'takeGoodsDetail', 'vipInfo', 'vipTransaction']
+    if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || teaMallArr.indexOf(to.name) >= 0 || distributorCenter.indexOf(to.name) >= 0 || userCenter.indexOf(to.name) >= 0) { //限定隐藏顶部搜索 
         console.log(123);
         store.commit('changeToLogin', false);
     } else {

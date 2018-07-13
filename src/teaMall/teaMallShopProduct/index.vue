@@ -1,9 +1,9 @@
 <template>
   <div style="background:#F6F6F6">
     <el-row>
-      <el-col style="min-width:1190px;margin:20px auto;float: none;background:#fff" :span="16">
+      <el-col class="main-cont-mall" style="min-width:1190px;margin:20px auto;float: none;background:#fff" :span="16">
         <div class="main-side">
-          <div style="padding-left: 35px;" class="main-cont main-cont-mall">
+          <div class="main-cont" style="min-width:1119px">
             <el-breadcrumb style="margin-bottom:10px" separator-class="el-icon-arrow-right">
               <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
               <el-breadcrumb-item :to="{ path: '/teaMallShop' }">品牌商城</el-breadcrumb-item>
@@ -71,14 +71,14 @@
             </div>
             <div id="myChart" class="detail-priceTrend mt20px"></div>
 
-            <el-tabs v-model="activeName2" style="margin-right: 16px;margin-top:20px" type="border-card">
+            <el-tabs v-model="activeName2" style="margin-right: 16px;margin-top:20px;max-width:1118px" type="border-card">
 
 
               <el-tab-pane label="报价窗口" name="first">
                 <el-row>
                   <el-col :span="7">
                     按规格显示
-                    <el-select v-model="value" size="mini" clearable placeholder="请选择">
+                    <el-select style="width:193px" v-model="value" size="mini" clearable placeholder="请选择">
                       <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                       </el-option>
                     </el-select>
@@ -221,12 +221,12 @@
             {{row.univalence}}元/{{row.specification}}
           </el-form-item>
           <el-form-item label="购买数量" prop="name">
-            <el-input v-model="ruleForm.number"></el-input>
+            <el-input style="width:150px" v-model="ruleForm.number"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="dialogVisible = false;$router.openPage('/teaMallPayMent')">确 定</el-button>
         </span>
       </el-dialog>
   </div>
@@ -290,7 +290,22 @@
           },
         ],
         currentPage:1,
-        pageSize:10
+        pageSize:10,
+        data:{
+              title: null,
+              xAxisTitle: "",
+              yAxisTitle: "价格(元/盒)",
+              xAxis: ["6.12", "6.13", "6.14", "6.15", "6.16", "6.17", "6.18", "6.19", "6.20", "6.21", "6.22", "6.23", "6.24", "6.25", "6.26", "6.27", "6.28", "6.29", "6.30", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10"],
+              items: [{
+                  "name": "历史成交均价",
+                  "data": ["238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238"],
+                  "type": "line"
+              }, {
+                  "name": "零售指导价",
+                  "data": ["288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288"],
+                  "type": "line"
+              }]
+          }
       }
     },
     methods: {
@@ -357,8 +372,8 @@
           series: []
         });
 
-        this.axios.get('../../../static/data.json').then(res=>{
-          let data=res.data
+
+          let data=this.data
           var legendData=new Array(data.items.length);
 				for(var i=0;i<data.items.length;i++){
 					legendData.push(data.items[i].name);
@@ -381,7 +396,7 @@
 			        },
 			        series: data.items
 			    });
-        })
+        
 
 
       }

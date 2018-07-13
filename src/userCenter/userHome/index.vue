@@ -19,11 +19,19 @@
         </div>
       </div>
     </el-col>
-    <el-col class="myCenter_right" :span="12">
+    <el-col class="myCenter_right" :span="16">
+      
       <div class="grid-content bg-purple">
         <h4 class="clearfix">
           <span class="fl">我的资产</span>
         </h4>
+        <div style="float: right;position: absolute;right: 60px;top: 24px;">
+          <el-button @click="$router.openPage('/myUserCenter/coupon')" type="text">我的优惠券</el-button>
+          <!-- <span style="color: #0166bb">我的优惠券</span> -->
+          <span style="font-size: 16px;color: #66b1ff"> | </span>
+          <el-button @click="$router.openPage('/myUserCenter/bankCard')" type="text">我的银行卡</el-button>
+        </div>
+        
         <div class="fl" id="indicatorContainer">
           <div class="time-graph">
             <el-progress id="time-graph-canvas" color="#85d824" type="circle" :percentage="100" :width="152" :show-text="false"></el-progress>
@@ -62,13 +70,24 @@
         <el-table :data="bill" border style="width: 100%" slot="empty">
           <el-table-column prop="orderNum" label="订单编号"  width="120">
           </el-table-column>
-          <el-table-column prop="goodsInfo" label="商品信息"  width="120">
+          <el-table-column prop="goodsInfo" label="商品信息"  width="240">
+            <template slot-scope="scope">
+              <div class="sp_info">
+                <div class="sp_cover">
+                  <img src="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=32b52bc5f51f4134f43a0d2c4476feaf/b999a9014c086e06893e896d0a087bf40ad1cb06.jpg">
+                </div>
+                <div class="sp_content">
+                  <span>{{scope.row.goodsInfo}}</span><br>
+                  <span class="sp_code">商品代码：CS2018030601</span>
+                </div>
+              </div>
+            </template>
           </el-table-column>
           <el-table-column resizable show-overflow-tooltip align="center" prop="orderTime" label="下单时间" width="120">
             </el-table-column>
-          <el-table-column prop="seller" label="卖家"  width="100">
+          <el-table-column prop="seller" label="卖家"  width="150">
           </el-table-column>
-          <el-table-column prop="countTotal" label="商品数量"  width="150">
+          <el-table-column prop="countTotal" label="商品数量"  width="100">
             <template slot-scope="scope">
               <span>{{ scope.row.countTotal?scope.row.countTotal:'0'}} {{scope.row.unit}}</span>
             </template>
@@ -80,6 +99,9 @@
           <el-table-column prop="currentState" label="当前状态"  >
           </el-table-column>
           <el-table-column prop="action" label="操作"  >
+            <template slot-scope="scope">
+              <el-button @click="$router.openPage('/buyListDetail')" type="text">{{ scope.row.action}}</el-button>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -131,7 +153,7 @@
       }
     },
     created() {
-      this.getData();
+      // this.getData();
       console.log(this.$store.state.dialog);
     },
     // methods: {
@@ -208,7 +230,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   .myCenter {
     padding: 25px 30px;
     background-color: #fff;
@@ -311,5 +333,26 @@
   .el-icon-menu:before {
     /* margin-left: -10px; */
     color: #b4b4b4;
+  }
+  .sp_info{
+    display: flex;
+  }
+  .sp_cover{
+    width: 55px;
+    height: 80%;
+    >img{
+      display: block;
+      width: 45px;
+      height: 45px;
+      margin-top: 2px;
+    }
+  }
+  .sp_content{
+    width: 70%;
+    text-align: left;
+    .sp_code{
+      font-size: 12px;
+      color: #999;
+    }
   }
 </style>

@@ -1,7 +1,7 @@
 export default {
     state: {
         noticeId: '',
-        loading: true,
+        loading: false,
         newId: '',
         isShow: 0
     },

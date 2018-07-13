@@ -1,23 +1,23 @@
 <template>
     <div>
-        <div style="min-width:1190px;margin:20px auto;float: none;">
+        <div style="min-width:1190px;margin:0 auto;float: none;">
             <el-carousel height="350px">
                 <el-carousel-item v-for="(item,index) in bannerList" :key="index">
                     <a href="" :style="{ 'background': 'url(' + item.src + ') center top no-repeat','display':'block','width':'100%','height':'100%' }"></a>
                 </el-carousel-item>
             </el-carousel>
         </div>
-        <el-row style="border-bottom:1px solid #ddd;padding:20px 0;margin-bottom:70px">
+        <el-row style="border-bottom:1px solid #ddd;margin-bottom:70px">
             <!-- <el-col :span="4">&nbsp;</el-col> -->
-            <el-col style="min-width:1190px;margin:20px auto;float: none;" :span="16">
-                <div class="scroll-wrap">
+            <el-col style="min-width:1190px;margin:10px auto;float: none;" :span="16">
+                <div class="scroll-wrap" style="position:relative">
                     <ul class="scroll-content" :style="{ top }">
                         <li v-for="(item,index) in prizeList" :key="index" @mouseenter="stopInterval" @mouseleave="intervalStart">
                             <img style="width:30px;height:30px;margin-right:30px" src="../../assets/images/icon/gg.svg" alt="">
                             <a href="#" @click="jumbNotice(index)">{{item.name}}</a>
                         </li>
                     </ul>
-                    <a href="#" style="float:right" @click="$router.openPage('/teaMallMoreNotice');">查看更多...</a>
+                    <a href="#" style="position: absolute;right: 0;top: 17px;font-size: 17px;" @click="$router.openPage('/teaMallMoreNotice');">查看更多...</a>
                 </div>
             </el-col>
             <!-- <el-col :span="4">&nbsp;</el-col> -->
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <!-- <div>
                     <div style="text-align:center;margin-bottom:50px;"><img src="../../assets/images/brand-title.png" alt=""></div>
                     <div style="width:100%;height:300px;margin-bottom:100px">
                         <div v-for="(o, index) in merchantList" style="width:100%" :key="index">
@@ -82,19 +82,130 @@
                             </el-card>
                         </div>
                     </div>
+                </div> -->
+                        <div class="brand-image">
+                <div class="tit"><img src="../../assets/images/brand-title.png"></div>
+                <div class="clearfix tab-list">
+                    <div class="tab-list-con" style="display: block;">
+                        <div class="active active-l"><span class="img"><img src="../../assets/images/brand-head4-img01.jpg"></span></div>
+                        <div class="active active-m"><span class="img"><img src="../../assets/images/brand-head4-img02.jpg"></span><span class="txts">
+                                    <h4>岁月知味</h4>
+                                    <p>岁月知味茶业由资深茶人郑少烘先生创办于2005年,公司一直以“纯正易武茶”的传承者为己任，尊重人文历史和自然法则，弘扬古法制茶工艺，以“匠心与品质”为企业主旨，经过十年沉积，已成为易武茶区经营规模及老茶存量皆具说服力的代言企业，并拥有易武千亩古茶园有机认证。岁月知味用了很多时间去读懂易武，从2005年生产出第一款【易武正山古树】始，到2008年细分出易武各村寨小产区，再到2010年建立易武四大古树茶基地，并在2012年获得有机认证至今，公司所生产的每一款产品都是心血的结晶和品质的见证。</p>
+                                </span></div>
+                        <div class="active active-r"><span class="img"><img src="../../assets/images/brand-head4-img03.jpg"></span></div>
+                    </div>
+                    <em class="loading" style="display: none;"></em>
                 </div>
-                <div>
-                    <el-carousel style="text-align:center" :autoplay="false" type="card">
-                        <el-carousel-item v-for="(item,index) in JSbannerList" :key="index">
-                            <img :src="item.src" alt="">
-                        </el-carousel-item>
-                    </el-carousel>
-                    <span class="txt" style="display: block;">
-                        <h4>{{teaText.title}}</h4>
-                        <p>{{teaText.text}}
-                        </p>
-                        </span>
+                <div class="clearfix tab-nav">
+                    <ul class="clearfix">
+                        <li style="display: inline-block!important;" class="active-3"><img src="../../assets/images/brand-head-img01.png"><span>下关沱茶</span>
+                            <div class="tab-con">
+                                <div class="img-l"><img src="../../assets/images/brand-head1-img01.jpg"></div>
+                                <div class="img-m"><img src="../../assets/images/brand-head1-img02.jpg"></div>
+                                <div class="img-r"><img src="../../assets/images/brand-head1-img03.jpg"></div>
+                                <div class="txts">
+                                    <h4>下关沱茶</h4>
+                                    <p>云南下关沱茶（集团）股份有限公司位于风景秀丽、气候宜人的大理市下关，苍山洱海优良的生态环境，大理地区悠久精湛的制茶技艺，为下关沱茶的优良品质提供了得天独厚的条件。 下关沱茶集团公司产品是以下关沱茶、饼茶、砖茶等各种紧压茶为主的云南普洱茶，也包括部分绿茶、特种茶、袋泡茶等共200多个品种。 下关沱茶集团拥有8项桂冠：农业产业化国家级重点龙头企业、国家扶贫龙头企业、全国民族特需商品定点生产企业、国家边销茶原料储备企业、国家茶叶加工技术研发分中心、中华老字号、下关沱茶制作技艺入选国务院公布的第三批非物质文化遗产名录、“下关”商标认定为
+                                        “中国驰名商标”。
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li style="display: inline-block!important;" class="active-2"><img src="../../assets/images/brand-head-img02.png"><span>臻味号</span>
+                            <div class="tab-con">
+                                <div class="img-l"><img src="../../assets/images/brand-head2-img01.jpg"></div>
+                                <div class="img-m"><img src="../../assets/images/brand-head2-img02.jpg"></div>
+                                <div class="img-r"><img src="../../assets/images/brand-head2-img03.jpg"></div>
+                                <div class="txts">
+                                    <h4>臻味号</h4>
+                                    <p>在花开四季的云南，在地处热带的西双版纳，在常有云雾升起的高山、群山之间，有傣人、布朗人、拉祜人、爱尼人的家园、几百年来，他们仰俯大地，以茶为生，守望着历史悠久的古树茶园。臻味号和这片土地结缘，和守望土地的人们结缘。臻味号以虔诚之心，扎根这片土地；阅读这片土地；拣选最好的古树茶，以古法精心加工，利于越陈越香。尊重土地、尊重传统的人、尊重原生古茶。真味、真实、真地道。</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display: inline-block!important;" class="active-1"><img src="../../assets/images/brand-head-img03.png"><span>老同志</span>
+                            <div class="tab-con">
+                                <div class="img-l"><img src="../../assets/images/brand-head3-img01.jpg"></div>
+                                <div class="img-m"><img src="../../assets/images/brand-head3-img02.jpg"></div>
+                                <div class="img-r"><img src="../../assets/images/brand-head3-img03.jpg"></div>
+                                <div class="txts">
+                                    <h4>老同志</h4>
+                                    <p>云南海湾茶业有限公司于2002年成立，位于昆明国家经济技术开发区，建筑面积5200平方米。作为与国内外客户的贸易合作桥梁，它不仅是海湾茶业的销售窗口，而且是茶叶研究、开发的中心。 云南海湾茶业不仅重视生产技术，还聚集了一大批专业的市场营销人员，公司自2002年成立，2003年取得进出口经营权以来，每年的普洱茶出口量在800吨左右,位居云南普洱茶出口的前列，为亚洲出口，欧美出口，专业市场内销，大众市场营销等提供优质的普洱茶产品，满足市场需求，为客户创造价值。</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="display: inline-block!important;" class="active"><em class="b-line"></em><img src="../../assets/images/brand-head-img04.png"><span>岁月知味</span>
+                            <div class="tab-con">
+                                <div class="img-l"><img src="../../assets/images/brand-head4-img01.jpg"></div>
+                                <div class="img-m"><img src="../../assets/images/brand-head4-img02.jpg"></div>
+                                <div class="img-r"><img src="../../assets/images/brand-head4-img03.jpg"></div>
+                                <div class="txts">
+                                    <h4>岁月知味</h4>
+                                    <p>岁月知味茶业由资深茶人郑少烘先生创办于2005年,公司一直以“纯正易武茶”的传承者为己任，尊重人文历史和自然法则，弘扬古法制茶工艺，以“匠心与品质”为企业主旨，经过十年沉积，已成为易武茶区经营规模及老茶存量皆具说服力的代言企业，并拥有易武千亩古茶园有机认证。岁月知味用了很多时间去读懂易武，从2005年生产出第一款【易武正山古树】始，到2008年细分出易武各村寨小产区，再到2010年建立易武四大古树茶基地，并在2012年获得有机认证至今，公司所生产的每一款产品都是心血的结晶和品质的见证。</p>
+                                </div>
+                            </div>
+                        </li>
+                        <!--<li><img src="../../assets/images/brand-head-img05.png"><span>斗记茶业</span>-->
+                            <!--<div class="tab-con">-->
+                                <!--<div class="img-l"><img src="../../assets/images/brand-head5-img01.jpg"></div>-->
+                                <!--<div class="img-m"><img src="../../assets/images/brand-head5-img02.jpg"></div>-->
+                                <!--<div class="img-r"><img src="../../assets/images/brand-head5-img03.jpg"></div>-->
+                                <!--<div class="txts">-->
+                                    <!--<h4>斗记茶业</h4>-->
+                                    <!--<p>云南西双版纳易武正山茶业有限公司是一家以传统制作理念为基石，实施现代化管理的知名普洱茶企业。公司成立至今一直秉持“用心做茶，做好茶”的企业理念，精选云南境内澜沧江流域的优质大叶种普洱茶原料 ，遵循传统制作工艺，以纯手工石磨压制传统普洱茶。 经过多年对原料及工艺的不停探索，2006年“斗记”品牌正式诞生。凭借完善生产技术 、优化产品包装 、推介冲泡方法、推广普洱茶知识的多重营销策略，斗记茶品逐渐形成了其独有的风格特色，更是赢得广大茶友的喜爱和称道。</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <li style="display: inline-block!important;" class="active-1"><img src="../../assets/images/brand-head-img06.png"><span>六大茶山</span>
+                            <div class="tab-con">
+                                <div class="img-l"><img src="../../assets/images/brand-head6-img01.jpg"></div>
+                                <div class="img-m"><img src="../../assets/images/brand-head6-img02.jpg"></div>
+                                <div class="img-r"><img src="../../assets/images/brand-head6-img03.jpg"></div>
+                                <div class="txts">
+                                    <h4>六大茶山</h4>
+                                    <p>云南六大茶山茶业有限公司于2002年在昆明成立，是一家专业生产和销售精品系列普洱茶的茶叶企业。公司在凤庆、勐海两个云南茶叶主产地建有完全符合食品生产标准的现代化茶厂，拥有位于西双版纳勐海县的贺开16200亩有机古茶原料基地及位于临沧凤庆县的岔河10000多亩有机茶园原料基地，年生产能力50000吨，并在全国二十多个省（市、自治区）与1000余家机构（个人）建立了合作伙伴关系。公司主要生产和销售以普洱茶为主的各种茶叶珍品：包括六大茶山野生茶系列的饼茶、砖茶、沱茶、竹筒茶，以及上等的各级有机生态茶系列品。公司生产的精品系列普洱茶不仅得到国内同行的好评，而且受到海外茶人的认可和赞誉，近年来在各种茶叶评奖活动中公司产品多次获奖，“六大茶山”正成为普洱茶的强势品牌。
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <!--<li><img src="../../assets/images/brand-head-img07.png"><span>云南普洱茶</span>-->
+                            <!--<div class="tab-con">-->
+                                <!--<div class="img-l"><img src="../../assets/images/brand-head7-img01.jpg"></div>-->
+                                <!--<div class="img-m"><img src="../../assets/images/brand-head7-img02.jpg"></div>-->
+                                <!--<div class="img-r"><img src="../../assets/images/brand-head7-img03.jpg"></div>-->
+                                <!--<div class="txts">-->
+                                    <!--<h4>云南普洱茶（集团）有限公司</h4>-->
+                                    <!--<p>云南普洱茶（集团）有限公司位于驰名中外的“普洱茶都”——云南省普洱市宁洱县（原古普洱府）的普洱山下、龙潭池畔，其前身为成立于1975年4月的“普洱茶厂”，其历史可追溯到雍正七年（1729年）。现在该公司是云南农业产业化重点龙头企业，是一家历史悠久从事茶叶种植、加工技术推广、茶文化传播及茶叶营销的专业化集团公司。现有五个子公司、四个分公司、六大生态茶园基地和九个茶叶制所。其中，板山基地为清代皇家贡茶园，原始森林内生长着大量古茶树和古茶树群落。</p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li><img src="../../assets/images/brand-head-img08.png"><span>祥源茶业</span>-->
+                            <!--<div class="tab-con">-->
+                                <!--<div class="img-l"><img src="../../assets/images/brand-head8-img01.jpg"></div>-->
+                                <!--<div class="img-m"><img src="../../assets/images/brand-head8-img02.jpg"></div>-->
+                                <!--<div class="img-r"><img src="../../assets/images/brand-head8-img03.jpg"></div>-->
+                                <!--<div class="txts">-->
+                                    <!--<h4>祥源茶业股份有限公司</h4>-->
+                                    <!--<p>西双版纳祥源易武茶业有限公司(以下简称祥源易武公司)是祥源茶业股份有限公司旗下成员企业,成立于2013年9月,位于云南普洱茶源头地区、驰名中外的普洱茶六大古茶山核心所在地——西双版纳州勐腊县易武乡。2014年5月,祥源易武茶厂正式落成,总投资4500万元,总建筑面积10000平方米,是易武茶区目前最大的现代化、专业化精品普洱茶生产加工中心,也是易武茶叶产业化发展的标志性平台。 </p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                        <!--<li><img src="../../assets/images/brand-head-img09.png"><span>祥源茶业</span>-->
+                            <!--<div class="tab-con">-->
+                                <!--<div class="img-l"><img src="../../assets/images/brand-head9-img01.jpg"></div>-->
+                                <!--<div class="img-m"><img src="../../assets/images/brand-head9-img02.jpg"></div>-->
+                                <!--<div class="img-r"><img src="../../assets/images/brand-head9-img03.jpg"></div>-->
+                                <!--<div class="txts">-->
+                                    <!--<h4>祥源茶业股份有限公司</h4>-->
+                                    <!--<p>西双版纳祥源易武茶业有限公司(以下简称祥源易武公司)是祥源茶业股份有限公司旗下成员企业,成立于2013年9月,位于云南普洱茶源头地区、驰名中外的普洱茶六大古茶山核心所在地——西双版纳州勐腊县易武乡。2014年5月,祥源易武茶厂正式落成,总投资4500万元,总建筑面积10000平方米,是易武茶区目前最大的现代化、专业化精品普洱茶生产加工中心,也是易武茶叶产业化发展的标志性平台。 </p>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
+                    </ul>
                 </div>
+            </div>
+
+
             </el-col>
             <!-- <el-col :span="4">&nbsp;</el-col> -->
         </el-row>
@@ -261,12 +372,12 @@
     export default ({
         data() {
             return {
-                dialogVisible: true,
+                dialogVisible: false,
                 newsList: [{
                         title: "【新品上市】一念间·小粒茶和红柑丸"
                     },
                     {
-                        title: "【新品上市】一念间·小粒茶和红柑丸"
+                        title: "【新品上市】一念间·小粒茶和红柑丸",
                     },
                     {
                         title: "【新品上市】一念间·小粒茶和红柑丸"
@@ -349,9 +460,208 @@
             }
         },
         mounted() {
-            this.intervalStart()
+            this.intervalStart();
+            var $brand = $(".brand-image");
+            console.log($brand);
+            this.ani()
         },
         methods: {
+            ani(){$(function() {
+                var classname, index, active_index, code,
+                    $brand = $(".brand-image"),
+                    $tab_ul = $(".brand-image .tab-nav ul"),
+                    $tab_list_con = $(".brand-image .tab-list-con"),
+                    $active_l = $(".brand-image .active-l"),
+                    $active_m = $(".brand-image .active-m"),
+                    $active_r = $(".brand-image .active-r"),
+                    $loading = $(".brand-image .tab-list .loading"),
+                    length = $tab_ul.children("li").length;
+
+                //初始化
+                var init = ".brand-image .tab-nav li.active";
+                $tab_ul.children("li").eq(0).addClass("active-3");
+                $tab_ul.children("li").eq(1).addClass("active-2");
+                $tab_ul.children("li").eq(2).addClass("active-1");
+                $tab_ul.children("li").eq(3).addClass("active")
+                    .prepend("<em class='b-line'></em>");
+                $tab_ul.children("li").eq(4).addClass("active-1");
+                $tab_ul.children("li").eq(5).addClass("active-2");
+                $tab_ul.children("li").eq(6).addClass("active-3");
+                tab_list(init); ////头像上部添加内容
+
+                //点击头像
+                $tab_ul.on("click", "li:not(.active)", function() {
+                    code = "";
+                    index = $(this).index();
+                    active_index = $tab_ul.children("li.active").index();
+
+                    $tab_list_con.hide(); //头像上部内容隐藏
+                    $loading.fadeIn("fast"); //loading显示
+
+                    $(this).siblings(".active").find(".b-line").remove();
+                    $(this).removeClass().addClass("active").prepend("<em class='b-line'></em>");
+
+                    if (index > active_index) { //如果点击的是active后面
+
+                        $tab_ul.children("li:lt(" + (index - 3) + ")").removeClass(); //移除active左起3个li之前的class
+
+                        //重置active之前的3个li
+                        $tab_ul.children("li").eq(index - 1).removeClass().addClass("active-1");
+                        $tab_ul.children("li").eq(index - 2).removeClass().addClass("active-2");
+                        $tab_ul.children("li").eq(index - 3).removeClass().addClass("active-3");
+
+                        for (var i = 0; i < index - active_index; i++) { //需要后置的li标签
+                            code += "<li>" + $tab_ul.children("li").eq(i).html() + "</li>";
+                        };
+                        $tab_ul.children("li:gt(" + (index + 3) + ")").removeClass(); //移除active右起3个li之前的class
+                        $tab_ul.append(code); //前面的li后置
+
+                        //重置active之后的3个li
+                        $tab_ul.children("li").eq(index + 1).removeClass().addClass("active-1");
+                        $tab_ul.children("li").eq(index + 2).removeClass().addClass("active-2");
+                        $tab_ul.children("li").eq(index + 3).removeClass().addClass("active-3");
+
+                        $tab_ul.children("li:lt(" + (index - active_index) + ")").remove(); //移除最前面的指定数量li标签
+
+                    } else if (index < active_index) { //如果点击的是active前面
+
+                        $tab_ul.children("li:gt(" + (index + 3) + ")").removeClass(); //移除active右起3个li之后的class
+
+                        //重置active之后的3个li
+                        $tab_ul.children("li").eq(index + 1).removeClass().addClass("active-1");
+                        $tab_ul.children("li").eq(index + 2).removeClass().addClass("active-2");
+                        $tab_ul.children("li").eq(index + 3).removeClass().addClass("active-3");
+
+                        for (var i = length - 1 - (active_index - index) + 1; i < length; i++) { //需要前置的li标签
+                            code += "<li>" + $tab_ul.children("li").eq(i).html() + "</li>";
+                        };
+
+                        $tab_ul.children("li:gt(" + (length - 1 - (active_index - index)) + ")").remove(); //移除最后面的指定数量li标签
+                        $tab_ul.prepend(code); //后面的li前置
+
+                        //重置active之前的3个li
+                        $tab_ul.children("li").eq(0).removeClass().addClass("active-3");
+                        $tab_ul.children("li").eq(1).removeClass().addClass("active-2");
+                        $tab_ul.children("li").eq(2).removeClass().addClass("active-1");
+
+                    };
+
+                    tab_list(this); //头像上部内容变化
+
+                });
+
+                //点击头像上部内容右边
+                var active_l_img, active_l_txts, active_m_img, active_m_txts, active_r_img, active_r_txts;
+
+                $brand.on("click", ".active-r", function() {
+
+                    //存储内容
+                    code_save();
+
+                    //文字隐藏处理
+                    txts_hide();
+
+                    //右边动画
+                    $active_r.css("z-index", "1")
+                        .animate({ width: "480px", height: "364px", marginTop: "0", top: "0", left: "50%", marginLeft: "-240px", opacity: "1" }, "fast");
+                    $active_r.find("img").animate({ width: "480px", height: "364px" }, "fast");
+
+                    //中间动画
+                    $active_m.css("z-index", "auto")
+                        .animate({ width: "329px", height: "232px", marginTop: "-116px", top: "50%", left: "0", marginLeft: "0", opacity: "0.65" }, "fast");
+                    $active_m.find("img").animate({ width: "329px", height: "232px" }, "fast");
+
+                    //左边动画
+                    $active_l.css("z-index", "auto")
+                        .animate({ width: "329px", height: "232px", marginTop: "-116px", top: "50%", left: "678px", marginLeft: "0", opacity: "0.65" }, "fast");
+                    $active_l.find("img").animate({ width: "329px", height: "232px" }, "fast", function() {
+
+                        //动画完毕配置内容
+                        code_reset("active-r");
+
+                    });
+                });
+
+                //点击头像上部内容左边
+                $brand.on("click", ".active-l", function() {
+
+                    //存储内容
+                    code_save();
+
+                    //文字隐藏处理
+                    txts_hide();
+
+                    //左边动画
+                    $active_l.css("z-index", "1")
+                        .animate({ width: "480px", height: "364px", marginTop: "0", top: "0", left: "50%", marginLeft: "-240px", opacity: "1" }, "fast");
+                    $active_l.find("img").animate({ width: "480px", height: "364px" }, "fast");
+
+                    //中间动画
+                    $active_m.css("z-index", "auto")
+                        .animate({ width: "329px", height: "232px", marginTop: "-116px", top: "50%", left: "678px", marginLeft: "0", opacity: "0.65" }, "fast");
+                    $active_m.find("img").animate({ width: "329px", height: "232px" }, "fast");
+
+                    //右边动画
+                    $active_r.css("z-index", "auto")
+                        .animate({ width: "329px", height: "232px", marginTop: "-116px", top: "50%", left: "0", marginLeft: "0", opacity: "0.65" }, "fast");
+                    $active_r.find("img").animate({ width: "329px", height: "232px" }, "fast", function() {
+
+                        //动画完毕配置内容
+                        code_reset("active-l");
+
+                    });
+                });
+
+                //定义函数
+                function tab_list(obj) { //头像上部内容变化
+                    var img_code = $(obj).find(".img-m").html(),
+                        img_code_l = $(obj).find(".img-l").html(),
+                        img_code_r = $(obj).find(".img-r").html(),
+                        txts_code = $(obj).find(".txts").html();
+
+                    $active_l.children(".img").html(img_code_l);
+                    $active_m.children(".img").html(img_code);
+                    $active_r.children(".img").html(img_code_r);
+                    $active_m.children(".txts").html(txts_code);
+                    setTimeout(function() {
+                        $loading.hide(); //loading隐藏
+                        $tab_list_con.fadeIn("fast"); //头像上部内容显示
+                    }, 500);
+                };
+
+                function code_save() { //代码内容存储
+                    active_l_img = $active_l.children(".img").html();
+                    active_m_img = $active_m.children(".img").html();
+                    active_r_img = $active_r.children(".img").html();
+                    active_m_txts = $active_m.children(".txts").html();
+                };
+
+                function txts_hide() { //文字隐藏处理
+                    $active_m.children(".txts").fadeOut("fast");
+                };
+
+                function code_reset(obj) { //动画完毕配置内容
+                    $active_l.removeAttr("style");
+                    $active_l.find("img").removeAttr("style");
+                    $active_m.removeAttr("style");
+                    $active_m.find("img").removeAttr("style");
+                    $active_r.removeAttr("style");
+                    $active_r.find("img").removeAttr("style");
+                    if (obj == "active-r") {
+                        $active_l.children(".img").html(active_m_img);
+                        $active_m.children(".img").html(active_r_img);
+                        $active_r.children(".img").html(active_l_img);
+                    } else if (obj == "active-l") {
+                        $active_l.children(".img").html(active_r_img);
+                        $active_m.children(".img").html(active_l_img);
+                        $active_r.children(".img").html(active_m_img);
+                    };
+
+                    $active_m.children(".txts").fadeIn("slow");
+                };
+
+            });
+            },
             jumbNotice(a) {
                 // this.$store.index.noticeId;
                 this.$router.openPage('/teaMallNotice')
@@ -368,7 +678,7 @@
                     } else {
                         this.activeIndex = 0;
                     }
-                }, 1500);
+                }, 2000);
             },
             showChange(i) {
                 console.log(i);
@@ -437,7 +747,7 @@
         }
     })
 </script>
-<style lang = 'less' scoped>
+<style lang = 'less'>
     @import '../../assets/index.css';
     .scroll-wrap {
         width: 100%;

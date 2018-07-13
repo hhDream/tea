@@ -232,6 +232,7 @@
 
 .order-payment .main-cont {
     margin: 40px 0 100px;
+    width: 100%;
 }
 
 .order-payment-cont .title .fl p:first-child {

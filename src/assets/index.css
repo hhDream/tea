@@ -1249,13 +1249,17 @@
     font-size: 16px;
 }
 
-.txt {
+.txts {
     display: block;
     width: 720px;
     padding: 10px 0;
     font-family: "Microsoft Yahei";
     text-align: center;
-    margin: 0 auto
+    /* margin: 0 auto; */
+    /* transform: translateX(-12%); */
+    position: absolute;
+    right: 50%;
+    transform: translateX(50%);
 }
 
 .txt p {
@@ -1271,7 +1275,7 @@
     padding: 160px 0 120px;
 }
 
-.brand-image .tab-nav ul {
+.brand-image ul {
     width: 1070px \0;
     /* ie 8/9*/
     padding: 0 25px;

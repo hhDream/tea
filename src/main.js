@@ -9,7 +9,7 @@ import 'vue2-animate/dist/vue2-animate.min.css';
 import vuex from 'vuex'
 import store from './store'
 import echarts from 'echarts'
-
+import $ from 'jquery'
 vue.config.productionTip = false
 vue.use(vueAxios, axios);
 vue.use(vuex)

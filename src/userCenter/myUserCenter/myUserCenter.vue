@@ -8,7 +8,7 @@
             <el-menu unique-opened default-active="1-4-1" class="el-menu-vertical-demo">
                 <el-menu-item index="0">
                     <i class="el-icon-menu"></i>
-                    <span slot="title" @click="$router.openPage('/myCenter/home')">个人中心</span>
+                    <span slot="title" @click="$router.openPage('/myUserCenter/userHome')">个人中心</span>
                 </el-menu-item>
                 <el-menu-item index="1">
                     <i class="el-icon-tickets"></i>
@@ -22,8 +22,8 @@
                 <el-menu-item-group>
                     <el-menu-item index="2-1" @click="$router.openPage('/myUserCenter/userInfo')">个人信息</el-menu-item>
                     <el-menu-item index="2-2" @click="$router.openPage('/myUserCenter/userPwd')">密码管理</el-menu-item>
-                    <el-menu-item index="2-3" @click="$router.openPage('/myUserCenter/userInfo')">我的地址</el-menu-item>
-                    <el-menu-item index="2-4" @click="$router.openPage('/myUserCenter/userInfo')">我的消息</el-menu-item>
+                    <el-menu-item index="2-3" @click="$router.openPage('/myUserCenter/userAddress')">我的地址</el-menu-item>
+                    <!-- <el-menu-item index="2-4" @click="$router.openPage('/myUserCenter/userInfo')">我的消息</el-menu-item> -->
                 </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="3">
@@ -32,8 +32,8 @@
                     <span slot="title">订单管理</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item index="3-1" @click="$router.openPage('/myUserCenter/userOrder')">购买订单</el-menu-item>
-                    <el-menu-item index="3-2" @click="$router.openPage('/myCenter/takegoodsDetail')">销售订单</el-menu-item>
+                    <el-menu-item index="3-1" @click="$router.openPage('/myUserCenter/purchaseOrder')">购买订单</el-menu-item>
+                    <el-menu-item index="3-2" @click="$router.openPage('/myUserCenter/sellOrder')">销售订单</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="4">
@@ -42,8 +42,8 @@
                     <span slot="title">提货管理</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item index="4-1" @click="$router.openPage('/myCenter/dealerManage')">我的库存</el-menu-item>
-                    <el-menu-item index="4-2" @click="$router.openPage('/myCenter/dealerTransaction')">提货明细</el-menu-item>
+                    <el-menu-item index="4-1" @click="$router.openPage('/myUserCenter/userStock')">我的库存</el-menu-item>
+                    <el-menu-item index="4-2" @click="$router.openPage('/myUserCenter/takeDetail')">提货明细</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="5">
@@ -52,10 +52,10 @@
                     <span slot="title">财务管理</span>
                 </template>
                 <el-menu-item-group>
-                    <el-menu-item index="5-1" @click="$router.openPage('/myCenter/myAccount')">我的银行卡</el-menu-item>
-                    <el-menu-item index="5-2" @click="$router.openPage('/myCenter/billQuery')">我的优惠券</el-menu-item>
-                    <el-menu-item index="5-2" @click="$router.openPage('/myCenter/billQuery')">增票资质</el-menu-item>
-                    <el-menu-item index="5-2" @click="$router.openPage('/myCenter/billQuery')">账单查询</el-menu-item>
+                    <el-menu-item index="5-1" @click="$router.openPage('/myUserCenter/bankCard')">我的银行卡</el-menu-item>
+                    <el-menu-item index="5-2" @click="$router.openPage('/myUserCenter/coupon')">我的优惠券</el-menu-item>
+                    <el-menu-item index="5-3" @click="$router.openPage('/myUserCenter/increaseAptitudes')">增票资质</el-menu-item>
+                    <el-menu-item index="5-4" @click="$router.openPage('/myUserCenter/orderSearch')">账单查询</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
             </el-menu>
