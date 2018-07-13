@@ -25,7 +25,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="验证码" prop="imageCode">
-        <el-col :span='6'>
+        <el-col style="margin-top:0"  :span='6'>
           <el-input placeholder="请输入验证码" v-model="ruleForm2.imageCode" auto-complete="off" clearable></el-input>
         </el-col>
         <el-col :span='5'>
@@ -37,7 +37,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="手机验证码" prop="phoneCode">
-        <el-col :span='6'>
+        <el-col style="margin-top:0"  :span='6'>
           <el-input placeholder="请输入手机验证码" v-model="ruleForm2.phoneCode" clearable></el-input>
         </el-col>
         <el-col :span='5' class="get_btn">

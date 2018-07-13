@@ -2,8 +2,8 @@ export default {
     state: {
         phone: "",
         // http: "http://192.168.1.115:8080/platform/",
-        // http: "http://192.168.1.103:8080/tea",
-        http: "https://ent.teaexs.com/platform",
+        http: "http://192.168.1.103:8080/tea",
+        // http: "https://ent.teaexs.com/platform",
         enterpriseCode: "",
         cookie: false,
         isLogin: false,
