@@ -9,13 +9,49 @@ import 'vue2-animate/dist/vue2-animate.min.css';
 import vuex from 'vuex'
 import store from './store'
 import echarts from 'echarts'
+import "babel-polyfill"
 import $ from 'jquery'
 vue.config.productionTip = false
 vue.use(vueAxios, axios);
 vue.use(vuex)
 vue.use(ElementUI);
-vue.prototype.$echarts = echarts
-console.log(process.env.API_HOST);
+vue.prototype.$echarts = echarts;
+//全局的获取cookie方法
+vue.prototype.$getcookie = function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1);
+            if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+    // 添加请求拦截器
+axios.interceptors.request.use(function(config) {
+    // 在发送请求之前做些什么
+    store.commit('changeLoading', true); //加载loading
+
+    return config;
+}, function(error) {
+    // 对请求错误做些什么
+    store.commit('changeLoading', true); //加载loading
+
+    return Promise.reject(error);
+});
+
+// 添加响应拦截器
+axios.interceptors.response.use(function(response) {
+    // 对响应数据做点什么
+    store.commit('changeLoading', false); //加载loading
+
+    return response;
+}, function(error) {
+    // 对响应错误做点什么
+    store.commit('changeLoading', false); //加载loading
+
+    return Promise.reject(error);
+});
 /* eslint-disable no-new */
 new vue({
     el: '#app',

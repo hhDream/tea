@@ -1,13 +1,13 @@
 export default {
     state: {
         phone: "",
-        // http: "http://192.168.1.115:8080/platform/",
-        http: "http://192.168.1.103:8080/tea",
-        // http: "https://ent.teaexs.com/platform",
+        http: process.env.NODE_ENV === 'development' ? "/apis" : "https://ent.teaexs.com/platform",
+        // http: process.env.NODE_ENV === 'development' ? "/apis" : "http://pc.teaexs.com",
         enterpriseCode: "",
         cookie: false,
         isLogin: false,
         toLogin: false,
+        url: ''
     },
     mutations: {
         changePhone(state, phone) {
@@ -24,6 +24,9 @@ export default {
         },
         changeToLogin(state, toLogin) {
             state.toLogin = toLogin
+        },
+        changeUrl(state, toLogin) {
+            state.Url = toLogin
         },
 
 

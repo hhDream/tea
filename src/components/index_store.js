@@ -6,12 +6,6 @@ export default {
         isShow: 0
     },
     mutations: {
-        changeNoticeId(state, noticeId) {
-            state.noticeId = noticeId
-        }, //公告id
-        changeNewId(state, newId) {
-            state.newId = newId
-        }, //新闻id
         changeLoading(state, loading) {
             state.loading = loading
         }, //loading动画

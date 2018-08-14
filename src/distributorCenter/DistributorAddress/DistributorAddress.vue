@@ -10,22 +10,39 @@
         <el-col :span="24" class="box_dashed">
             <b>所属门店：默认提货门店</b>
         </el-col>
-        <el-col :span="24">门店名称：测试经销商</el-col>
-        <el-col :span="24">所在地区：安徽省 马鞍山市 当涂县</el-col>
-        <el-col :span="24">详细地址：新街口</el-col>
-        <el-col :span="24">联系人：测试经销商</el-col>
-        <el-col :span="24">联系电话：18205190171</el-col>
+        <el-col :span="24">门店名称：{{alldata.distributorName}}</el-col>
+        <el-col :span="24">所在地区：{{alldata.province}} {{alldata.city}} {{alldata.region}}</el-col>
+        <el-col :span="24">详细地址：{{alldata.postalAddress}}</el-col>
+        <el-col :span="24">联系人：{{alldata.distributorName}}</el-col>
+        <el-col :span="24">联系电话：{{alldata.loginPhone}}</el-col>
     </el-row>
     </div>
 </template>
 
 <script>
+import qs from 'qs';
 export default {
     data(){
         return{
-            input:'1101**********007X'
+            input:'1101**********007X',
+            http:this.$store.state.dialog.http,
+            phone:this.$store.state.dialog.phone,
+            alldata:{}
         }
-    }
+    },
+    methods:{
+        getData(){
+            this.axios.post(this.http+'/interface/pc/distributor/pcDistributor/myAddress',qs.stringify({
+                loginPhone:this.phone
+            })).then(res=>{
+                this.alldata=JSON.parse(res.data.data);
+                console.log(JSON.parse(res.data.data));
+            })
+        }
+    },
+    mounted() {
+        this.getData()
+    },
 };
 </script>
 

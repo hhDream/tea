@@ -43,25 +43,23 @@
     </el-table-column>
     <el-table-column prop="transactionType" align="center" label="费用类型" width="120">
       <template slot-scope="scope">
-          <!-- <span>{{scope.row.transactionType==1?'提现':scope.row.transactionType==2?'手续费':scope.row.transactionType==3?'仓储费':scope.row.transactionType==4?'货款':scope.row.transactionType==5?'充值':'未知'}}</span> -->
-          <span>{{scope.row.transactionType==1?'抢购货款':scope.row.transactionType==2?'保证金缴纳':scope.row.transactionType==3?'补交保证金':scope.row.transactionType==4?'补交货款':scope.row.transactionType==5?'快递费':'茶企仓储费'}}</span>
+          <span>{{scope.row.transactionType==1?'抢购货款':scope.row.transactionType==2?'保证金缴纳':scope.row.transactionType==3?'补交保证金':scope.row.transactionType==4?'补交货款':scope.row.transactionType==5?'快递费':scope.row.transactionType==6?'茶企仓储费':scope.row.transactionType==7?'app商城交易':scope.row.transactionType==8?'结算分账':'手续费'}}</span>
       </template>
     </el-table-column>
     <el-table-column prop="transactionDirection" align="center" label="资金方向"  width="120">
       <template slot-scope="scope">
-          <span>{{scope.row.transactionDirection==1?'收入':'支出'}}</span>
+          <span>{{scope.row.transactionDirection==1?'支出':'收入'}}</span>
       </template>
     </el-table-column>
     <el-table-column prop="transactionAmmount" header-align="center" align="left" label="收支金额">
       <template slot-scope="scope">
-          <span>{{scope.row.transactionDirection==1?'+￥':'-￥'}} {{ scope.row.transactionAmmount?scope.row.transactionAmmount:'0'}} 元</span>
+          <span>{{scope.row.transactionDirection==1?'-￥':'+￥'}} {{ scope.row.transactionAmmount?scope.row.transactionAmmount:'0'}} 元</span>
       </template>
     </el-table-column>
   </el-table>
 
   <div class="block">
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 50]"
-      :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
     </el-pagination>
   </div>
 </div>

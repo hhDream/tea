@@ -14,63 +14,65 @@
           <el-input v-model="goodsName" clearable placeholder="商品名称"></el-input>
       </el-form-item>
       <el-form-item>
-          <el-button icon="el-icon-search" circle></el-button>
+          <el-button icon="el-icon-search" @click="getData" circle></el-button>
       </el-form-item>
       <el-form-item>
-          <el-button type="default">重置</el-button>
+          <el-button type="default"  @click='goodsCode=goodsName=""'>重置</el-button>
       </el-form-item>
       </el-form>
     </el-row>
-    <el-tabs v-model="activeName">
-        <el-tab-pane label="全部商品" name="1"></el-tab-pane>
-        <el-tab-pane label="出售中" name="2"></el-tab-pane>
-        <el-tab-pane label="已下架" name="3"></el-tab-pane>
-        <el-tab-pane label="已售完" name="4"></el-tab-pane>
+    <el-tabs v-model="state" @tab-click='changeTab'>
+        <el-tab-pane label="全部商品" name="0"></el-tab-pane>
+        <el-tab-pane label="已上架" name="1"></el-tab-pane>
+        <el-tab-pane label="已下架" name="2"></el-tab-pane>
+        <!-- <el-tab-pane label="已售完" name="4"></el-tab-pane> -->
     </el-tabs>
-    <el-table  :data="tableData" row-class-name="tdHeight" border style="width: 100%;margin-top:-15px">
+    <el-table  @sort-change='mysort' :data="tableData" row-class-name="tdHeight" border style="width: 100%;margin-top:-15px">
       <el-table-column  align="center" prop="goodsCode" label="商品代码" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}}</span>
+          <span>{{ scope.row.goodsCode?scope.row.goodsCode:'无'}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="goodsName" label="商品名称" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}}</span>
+          <span>{{ scope.row.goodsName?scope.row.goodsName:'无'}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="shelRetentionCount" sortable label="上架价格" width="120">
+      <el-table-column align="center" prop="goodsPrice" sortable='custom' label="上架价格" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}}</span>
+          <span>{{ scope.row.goodsPrice?Number(+scope.row.goodsPrice) :'无'}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="releaseCountTotal" label="规格">
+      <el-table-column align="center" prop="param3" label="规格">
         <template slot-scope="scope">
-          <span>{{scope.row.benchmarkingUnit3}}</span>
+          <span>{{scope.row.param3}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="shelRetentionCount" label="规格重量">
+      <el-table-column align="center" prop="weight" label="规格重量">
         <template slot-scope="scope">
-          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}}克</span>
+          <span>{{ scope.row.weight?scope.row.weight:'0'}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="takeTeaCount" label="上架数量">
+      <el-table-column align="center" prop="goodsCount" label="上架数量">
         <template slot-scope="scope">
-          <span>{{ scope.row.takeTeaCount?scope.row.takeTeaCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
+          <span>{{ scope.row.goodsCount?scope.row.goodsCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="takeTeaCount" label="已售">
+      <el-table-column align="center" prop="soldCount" label="已售">
         <template slot-scope="scope">
-          <span>{{ scope.row.takeTeaCount?scope.row.takeTeaCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
+          <span>{{ scope.row.soldCount?scope.row.soldCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="takeTeaCount" label="当前状态">
+      <el-table-column align="center" prop="state " label="当前状态">
         <template slot-scope="scope">
-          <span>已上架</span>
+          <span v-if="scope.row.state==1 ">已上架</span>
+          <span v-else-if="scope.row.state==2 ">已下架</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="takeTeaCount" label="操作">
         <template slot-scope="scope">
-          <a>下架</a>
+          <a v-if="scope.row.state==1 ">下架</a>
+          <a v-else-if="scope.row.state==2 ">上架</a>
         </template>
       </el-table-column>
     </el-table>
@@ -87,16 +89,24 @@
   export default {
     methods: {
       getData() {
-        this.axios.post(this.http + "/interface/pc/personal/pcEnterprise/myStore", qs.stringify({
-          releaseEnterpriseId: this.enterpriseCode,
+        this.axios.post(this.http + "/interface/pc/distributor/pcGoods/myGoods", qs.stringify({
+          loginPhone: this.phone,
           currentPage: this.currentPage,
-          showCount: this.showCount,
+          pageSize: this.showCount,
           goodsName: this.goodsName,
           goodsCode: this.goodsCode,
+          priceSort:this.priceSort,
+          state:this.state
         })).then(res => {
-          this.tableData = JSON.parse(res.data.data).data;
+          console.log(res);
+          if (res.data.code!=200) {
+          this.tableData = [];
+          this.total = 0;
+          this.currentPage = 1;
+          return false;
+          }
+          this.tableData = JSON.parse(res.data.data).onTheShelves;
           this.total = JSON.parse(res.data.data).total;
-          console.log( JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
         })
       },
@@ -111,6 +121,24 @@
       handleCurrentChange(data) {
         this.currentPage = data;
         this.getData()
+      },
+      changeTab(val){
+        console.log(val);
+        this.state=val.name;
+        this.getData()
+
+      },
+      mysort(val){
+        console.log(val);
+        if (val.order=='ascending') {
+          this.priceSort=1
+        this.getData()
+
+        }else{
+          this.priceSort=2
+        this.getData()
+
+        }
       },
       search() {
         this.getData()
@@ -128,8 +156,10 @@
         showCount: 10,
         goodsName: "",
         goodsCode: "",
+        phone:this.$getcookie('LOGIN_PHONE'),
         total:0,
-        activeName:'1',
+        priceSort:1,
+        state:'0',
         formInline: {
           user: '',
           region: ''

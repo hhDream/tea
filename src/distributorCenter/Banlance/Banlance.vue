@@ -1,5 +1,5 @@
 <template>
-<div v-loading.fullscreen.lock="fullscreenLoading">
+<div >
   <el-row class="myCenter" :gutter="20">
     <el-col :span="8" style="padding-right: 10px;padding-left:0">
       <div class="grid-content bg-purple">
@@ -9,9 +9,9 @@
             <img src="../../assets/images/user-head.jpg">
           </div>
           <div class="fr txt">
-            <h3>{{'平台经销商'}}</h3>
+            <h3>{{distributorName}}</h3>
             <p id="producerNo">
-              <i>会员账号</i>{{'00000001'}}
+              <i>会员账号</i>{{loginAccount}}
             </p>
             <p>
               <i>会员类型</i>经销商</p>
@@ -32,13 +32,13 @@
             <p>账户余额
               <i>(元)</i>
             </p>
-            <h5 id="my_balance">{{10000}}</h5>
+            <h5 id="my_balance">{{capitalBalance}}</h5>
           </div>
         </div>
         <div class="fl usable">
           <p class="p1">
             <em></em>可用余额
-            <span id="my_balance_useable"> {{10000}}元</span>
+            <span id="my_balance_useable"> {{availableFunds}}元</span>
           </p>
           <p class="p2">
             <em></em>冻结资金
@@ -61,53 +61,44 @@
           <span class="fl buy-order el-icon-menu">我的买单</span>
           <a class="fr" @click="$router.openPage('/distributorCenter/buyList')">更多&gt;</a>
         </h4>
-        <el-table :data="stock" border style="width: 100%" slot="empty">
-          <el-table-column prop="goodsCode" show-overflow-tooltip align="center" label="订单编号" width="100">
-            <template slot-scope="scope">
-              <span>123456789012345678</span>
-            </template>
+        <el-table :data="buyOrder" border style="width: 100%" slot="empty">
+          <el-table-column prop="orderCode" show-overflow-tooltip align="center" label="订单编号" width="100">
           </el-table-column>
           <el-table-column prop="goodsName" align="center" label="商品信息" width="200">
             <template slot-scope="scope">
               <div class="sp_info">
                 <div class="sp_cover">
-                  <img src="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=32b52bc5f51f4134f43a0d2c4476feaf/b999a9014c086e06893e896d0a087bf40ad1cb06.jpg">
+                  <img :src="scope.row.pcSmallPicture">
                 </div>
                 <div class="sp_content">
-                  <span>微信支付（勿买不发货）</span><br>
-                  <span class="sp_code">商品代码：CS2018030601</span>
+                  <span>{{scope.row.goodsName}}</span><br>
+                  <span class="sp_code">商品代码：{{scope.row.goodsCode}}</span> 
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="shelRetentionCount" show-overflow-tooltip align="center" label="下单时间" width="100">
+          <el-table-column prop="orderTime" show-overflow-tooltip align="center" label="下单时间" width="100">
+          </el-table-column>
+          <el-table-column prop="enterpriseName" show-overflow-tooltip align="center" label="买家" width="100">
+          </el-table-column>
+          <el-table-column prop="buyGoodsCount" show-overflow-tooltip align="center" label="商品数量">
             <template slot-scope="scope">
-              <span>2018-03-02 12:12:12</span>
+              <span>{{scope.row.buyGoodsCount}}{{scope.row.goodsSpecification}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="releaseCountTotal" show-overflow-tooltip align="center" label="买家" width="100">
+          <el-table-column prop="actualAmountPayment" show-overflow-tooltip align="center" label="实付款">
+          </el-table-column>
+          <el-table-column prop="orderType" show-overflow-tooltip align="center" label="订单类型">
             <template slot-scope="scope">
-              <span>茶企001经销商</span>
+              <span v-if="scope.row.orderType==1">秒杀订单</span>
+              <span v-else>商城交易</span>
             </template>
           </el-table-column>
-          <el-table-column prop="CountTotal" show-overflow-tooltip align="center" label="商品数量">
+          <el-table-column prop="orderStatus" show-overflow-tooltip align="center" label="当前状态" width="100">
             <template slot-scope="scope">
-              <span>150</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="实付款">
-            <template slot-scope="scope">
-              <span>150</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="订单类型">
-            <template slot-scope="scope">
-              <span>新茶抢购</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="当前状态" width="100">
-            <template slot-scope="scope">
-              <span>交易取消</span>
+              <span v-if="scope.row.orderStatus==1">待支付</span>
+              <span v-else-if="scope.row.orderStatus==2">已支付</span>
+              <span v-else-if="scope.row.orderStatus==4">已取消</span>
             </template>
           </el-table-column>
           <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="操作" width="100">
@@ -126,53 +117,44 @@
           <span class="fl buy-order el-icon-menu">我的卖单</span>
           <a class="fr" @click="$router.openPage('/distributorCenter/saleList')">更多&gt;</a>
         </h4>
-        <el-table :data="stock" border style="width: 100%" slot="empty">
-          <el-table-column prop="goodsCode" show-overflow-tooltip align="center" label="订单编号" width="100">
-            <template slot-scope="scope">
-              <span>123456789012345678</span>
-            </template>
+        <el-table :data="soldOrder" border style="width: 100%" slot="empty">
+          <el-table-column prop="orderCode" show-overflow-tooltip align="center" label="订单编号" width="100">
           </el-table-column>
           <el-table-column prop="goodsName" align="center" label="商品信息" width="200">
             <template slot-scope="scope">
               <div class="sp_info">
                 <div class="sp_cover">
-                  <img src="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=32b52bc5f51f4134f43a0d2c4476feaf/b999a9014c086e06893e896d0a087bf40ad1cb06.jpg">
+                  <img :src="scope.row.pcSmallPicture">
                 </div>
                 <div class="sp_content">
-                  <span>微信支付（勿买不发货）</span><br>
-                  <span class="sp_code">商品代码：CS2018030601</span>
+                  <span>{{scope.row.goodsName}}</span><br>
+                  <span class="sp_code">商品代码：{{scope.row.goodsCode}}</span> 
                 </div>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="shelRetentionCount" show-overflow-tooltip align="center" label="下单时间" width="100">
-            <template slot-scope="scope">
-              <span>2018-03-02 12:12:12</span>
-            </template>
+          <el-table-column prop="orderTime" show-overflow-tooltip align="center" label="下单时间" width="100">
           </el-table-column>
-          <el-table-column prop="releaseCountTotal" show-overflow-tooltip align="center" label="卖家" width="100">
-            <template slot-scope="scope">
-              <span>茶企001经销商</span>
-            </template>
+          <el-table-column prop="enterpriseName" show-overflow-tooltip align="center" label="卖家" width="100">
           </el-table-column>
           <el-table-column prop="CountTotal" show-overflow-tooltip align="center" label="商品数量">
             <template slot-scope="scope">
-              <span>150</span>
+              <span>{{scope.row.buyGoodsCount}}{{scope.row.goodsSpecification}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="实付款">
+          <el-table-column prop="actualAmountPayment" show-overflow-tooltip align="center" label="实付款">
+          </el-table-column>
+          <el-table-column prop="orderType" show-overflow-tooltip align="center" label="订单类型">
             <template slot-scope="scope">
-              <span>150</span>
+              <span v-if="scope.row.orderType==1">秒杀订单</span>
+              <span v-else>秒杀订单</span>
             </template>
           </el-table-column>
-          <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="订单类型">
+          <el-table-column prop="orderStatus" show-overflow-tooltip align="center" label="当前状态" width="100">
             <template slot-scope="scope">
-              <span>新茶抢购</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="当前状态" width="100">
-            <template slot-scope="scope">
-              <span>交易取消</span>
+              <span v-if="scope.row.orderStatus==1">待支付</span>
+              <span v-else-if="scope.row.orderStatus==2">已支付</span>
+              <span v-else-if="scope.row.orderStatus==4">已取消</span>
             </template>
           </el-table-column>
           <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="操作" width="100">
@@ -196,17 +178,20 @@ export default {
       enterpriseCode: this.$store.state.dialog.enterpriseCode,
       http: this.$store.state.dialog.http,
       person: {},
-      allotment: [],
-      stock: [{
+      distributorName:'加载中',
+      loginAccount:'加载中',
+      availableFunds:'加载中',
+      capitalBalance:"加载中",
+      soldOrder: [],
+      buyOrder: [{
         takeTeaCount:1
       },{
         takeTeaCount:1
       }],
-      fullscreenLoading: false
     };
   },
   created() {
-    // this.getData();
+    this.getData();
     console.log(this.$store.state.dialog);
   },
   methods: {
@@ -222,38 +207,27 @@ export default {
               : row.releaseStatus == 7 ? "已结束" : "";
     },
     getData() {
-      this.fullscreenLoading = true;
       this.axios.post(
-          this.http + "/interface/pc/personal/pcEnterprise/enterpriseInfo",
+          this.http + "/interface/pc/distributor/pcDistributor/distributorInfo",
           qs.stringify({
-            enterpriseId: this.enterpriseCode
+            loginPhone:this.$getcookie('LOGIN_PHONE'),
+            pageSize:2
           })
         )
         .then(res => {
-          this.fullscreenLoading = false;
-          console.log(res.data.data);
           if (res.data.code == 200) {
-            this.person = JSON.parse(res.data.data).enterprise;
-            this.stock = JSON.parse(res.data.data).stock;
-            this.allotment = JSON.parse(res.data.data).allotment;
+            this.buyOrder = JSON.parse(res.data.data).buyOrder;
+            this.soldOrder = JSON.parse(res.data.data).soldOrder;
             console.log(JSON.parse(res.data.data));
-            if (this.allotment.releaseStatus == 1) {
-              this.allotment.releaseStatus = "待配售";
-            } else if (this.allotment.releaseStatus == 2) {
-              this.allotment.releaseStatus = "已配售";
-            } else if (this.allotment.releaseStatus == 5) {
-              this.allotment.releaseStatus = "已发行";
-            } else if (this.allotment.releaseStatus == 7) {
-              this.allotment.releaseStatus = "已结束";
-            } else if (this.allotment.releaseStatus == 6) {
-              this.allotment.releaseStatus = "待结算";
-            }
+            this.distributorName=JSON.parse(res.data.data).distributorName
+            this.loginAccount=JSON.parse(res.data.data).loginAccount
+            this.availableFunds=JSON.parse(res.data.data).availableFunds
+            this.capitalBalance=JSON.parse(res.data.data).capitalBalance
           } else {
             this.open(res.data.data.message);
           }
         })
         .catch(err => {
-          this.fullscreenLoading = false;
           this.open(err);
         });
     },

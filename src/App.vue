@@ -10,7 +10,7 @@
             <div class="fl" v-if="this.$store.state.dialog.cookie==true">
               <span>您好！</span>
               <span>{{phone}}</span>
-              <a class="a3" href="javascript:;" @click="delCookie('JSESSIONID')">退出</a>
+              <a class="a3" href="javascript:;" @click="delCookie('LOGIN_PHONE')">退出</a>
             </div>
             <div class="fl" v-else>
               <span>欢迎来到茶企通!</span>
@@ -18,8 +18,8 @@
               <a class="a2" href="register:;" @click="$router.openPage('/register')">注册</a>
             </div>
             <div class="fr" v-if="this.$store.state.dialog.cookie==true">
-              <a href="#" @click="$router.openPage('/myCenter/home')">个人中心</a>
-              <a href="#" @click="$router.openPage('/myCenter/message')">我的消息</a>
+              <a href="#" @click="$router.openPage(url)">个人中心</a>
+              <a href="#" @click="$router.openPage(messageUrl)">我的消息</a>
             </div>
             <div class="fr" v-else>
               <a href="#" @click="$router.openPage('/')">首页</a>
@@ -56,10 +56,12 @@
             <div v-if="this.$store.state.dialog.toLogin==true" class="fl menu-box">
               <ul class="fl nav">
                 <li :class="{active:this.$store.state.index.isShow==0}" ><a @click="$router.openPage('/');addClass(0)">首页</a></li>
-                <li :class="{active:this.$store.state.index.isShow==1}"><a @click="$router.openPage('/teaMallShop');addClass(1)">品牌商城</a></li>
-                <li :class="{active:this.$store.state.index.isShow==2}"><a @click="$router.openPage('/teaMallRush');addClass(2)">新茶抢购</a></li>
+                <li :class="{active:this.$store.state.index.isShow==1}"><a @click="$router.openPage('/teaMallRush');addClass(1)">新茶抢购</a></li>
+                <li :class="{active:this.$store.state.index.isShow==2}"><a @click="$router.openPage('/teaMallShop');addClass(2)">品牌商城</a></li>
+                <!-- <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">自由集市</a></li> -->
+                <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/');addClass(4)">招商加盟</a></li>
                 <!-- <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li> -->
-                <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/teaMallTeaExperts');addClass(4)">茶评专家</a></li>
+                <!-- <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/teaMallTeaExperts');addClass(4)">茶评专家</a></li> -->
               </ul>
             </div>
           </div>
@@ -70,7 +72,7 @@
     <el-row>
       <el-col :span="24">
         <router-view
-        v-loading.fullscreen.lock="this.$store.state.index.loading"
+        v-loading="this.$store.state.index.loading"
         v-if="isRouterAlive"></router-view>
       </el-col>
       <!-- <transition name="bounce" enter-active-class="fadeInDown" leave-active-class=""> -->
@@ -119,6 +121,7 @@
 </template>
 
 <script>
+import qs from 'qs'
   export default {
     name: 'App',
     provide() {
@@ -138,7 +141,9 @@
         isCollapse: false,
         phone: this.$store.state.dialog.phone,
         isRouterAlive: true,
-        isShow:0
+        isShow:0,
+        url:this.$getcookie("changeUrl"),
+        messageUrl:this.$getcookie("messageUrl")
       }
     },
     methods: {                
@@ -164,15 +169,16 @@
         location.reload()
       },
       //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
-      getCookie(name) {
-        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if (arr = document.cookie.match(reg)) {
-          return true;
-          // return (arr[2]);
-        } else {
-          return false
-        }
-      },
+      getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+    }
+    return "";
+},
       reload() {
         this.isRouterAlive = false;
         this.$nextTick(function() {
@@ -181,10 +187,9 @@
       }
     },
     mounted() {
-        // document.querySelector('.scrollTop').style.bottom = this.toBottom;
+
     },
     created() {
-      // console.log('kkkkk'+this.toLogin);
     }
   }
 </script>

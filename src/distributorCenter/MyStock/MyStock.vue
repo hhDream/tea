@@ -1,48 +1,47 @@
 <template>
-<div v-loading.fullscreen.lock="fullscreenLoading">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+<div>
+<el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
+  <el-breadcrumb-item :to="{ path: '/distributorCenter/banlance' }">企业中心</el-breadcrumb-item>
+  <el-breadcrumb-item>提货管理</el-breadcrumb-item>
+  <el-breadcrumb-item>我的库存</el-breadcrumb-item>
+</el-breadcrumb>
+    <el-form :inline="true" class="demo-form-inline">
     <el-form-item label="商品代码：">
-        <el-input v-model="formInline.user" placeholder="商品代码"></el-input>
+        <el-input v-model="goodsCode" placeholder="商品代码"></el-input>
     </el-form-item>
     <el-form-item label="商品名称：">
-        <el-input v-model="formInline.user" placeholder="商品名称"></el-input>
+        <el-input v-model="goodsName" placeholder="商品名称"></el-input>
     </el-form-item>
     <el-form-item>
-        <el-button icon="el-icon-search" circle></el-button>
+        <el-button icon="el-icon-search" @click="getData" circle></el-button>
     </el-form-item>
     <el-form-item>
-        <el-button type="default">重置</el-button>
+        <el-button type="default" @click="goodsCode=goodsName=''">重置</el-button>
     </el-form-item>
     </el-form>
-    <el-table :data="stock" border style="width: 100%" slot="empty">
-        <el-table-column prop="goodsCode" show-overflow-tooltip align="center" label="商品代码">
-        <template slot-scope="scope">
-            <span>12345678</span>
-        </template>
+    <el-table :data="tableData" border style="width: 100%" slot="empty">
+        <el-table-column prop="goodscode" show-overflow-tooltip align="center" label="商品代码">
         </el-table-column>
-        <el-table-column prop="goodsName" show-overflow-tooltip align="center" label="商品名称">
-        <template slot-scope="scope"> 
-            <span>下关普洱茶</span><br>
-        </template>
+        <el-table-column prop="goodsname" show-overflow-tooltip align="center" label="商品名称">
         </el-table-column>
-        <el-table-column prop="shelRetentionCount" show-overflow-tooltip align="center" label="持有数量" width="120">
+        <el-table-column prop="stockcount" show-overflow-tooltip align="center" label="持有数量" width="120">
         <template slot-scope="scope">
-            <span>100</span>
+            <span>{{scope.row.stockcount?scope.row.stockcount:0}}{{scope.row.transactionSpecification3}}</span>
         </template>
         </el-table-column>
         <el-table-column prop="releaseCountTotal" show-overflow-tooltip align="center" label="已提货数量" width="120">
         <template slot-scope="scope">
-            <span>100</span>
+            <span>{{scope.row.param4?scope.row.param4:0}}{{scope.row.transactionSpecification3}}</span>
         </template>
         </el-table-column>
         <el-table-column prop="CountTotal" show-overflow-tooltip align="center" label="上架数量"  width="120">
         <template slot-scope="scope">
-            <span>150</span>
+            <span>{{scope.row.param3?scope.row.param3:0}}{{scope.row.transactionSpecification3}}</span>
         </template>
         </el-table-column>
-        <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="冻结数量"  width="120">
+        <el-table-column prop="param3" show-overflow-tooltip align="center" label="冻结数量"  width="120">
         <template slot-scope="scope">
-            <span>150</span>
+            <span>{{scope.row.param3?scope.row.param3:0}}{{scope.row.transactionSpecification3}}</span>
         </template>
         </el-table-column>
         <el-table-column prop="takeTeaCount" align="center" label="操作" width="180">
@@ -111,17 +110,24 @@ export default {
     getData() {
       this.axios
         .post(
-          this.http + "/interface/pc/personal/pcEnterprise/myStore",
+          this.http + "/interface/pc/distributor/pcTeaStore/myHolderStock",
           qs.stringify({
-            releaseEnterpriseId: this.enterpriseCode,
+            loginPhone: this.$getcookie('LOGIN_PHONE'),
             currentPage: this.currentPage,
-            showCount: this.showCount,
+            pageSize: this.showCount,
             goodsName: this.goodsName,
             goodsCode: this.goodsCode
           })
         )
         .then(res => {
-          this.tableData = JSON.parse(res.data.data).data;
+          console.log(res);
+          if (res.data.code!=200) {
+          this.tableData = [];
+          this.total = 0;
+          this.currentPage =1;
+          return false;
+          }
+          this.tableData = JSON.parse(res.data.data).list;
           this.total = JSON.parse(res.data.data).total;
           console.log(JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
@@ -144,25 +150,17 @@ export default {
     }
   },
   created() {
-    // this.getData()
+    this.getData()
   },
   data() {
     return {
       tableData: [],
       http: this.$store.state.dialog.http,
-      enterpriseCode: this.$store.state.dialog.enterpriseCode,
       currentPage: 1,
       showCount: 10,
       goodsName: "",
       goodsCode: "",
       total: 0,
-      activeName: "first",
-      formInline: {
-        user: "",
-        region: ""
-      },
-      fullscreenLoading: "",
-      stock: [{}],
       centerDialogVisible: false,
       specifications: ""
     };

@@ -28,27 +28,29 @@
                             <div v-if='index%2==0'  class="row">
                                 <div class="col-sm-6">
                                     <div class="img text-right">
-                                        <a><img  @click="$router.openPage('/teaMallProduct')" src="../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png" style="width:495px;height:460px;"></a>
+                                        <a v-if="item.effective!=3"><img @click="$router.openPage('/teaMallProduct',{id:item.releaseCode})" :src="item.appSmallPicture" style="width:495px;height:460px;"></a>
+                                        <a v-else><img @click="$router.openPage('/teaMallProduct',{id:item.goodscode})" :src="item.appSmallPicture" style="width:495px;height:460px;"></a>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="info">
                                         <div class="tit">
                                             <div class="a" style="width:250px;">
-                                                <h5>{{item.title}}</h5>
-                                                <p>商品规格 12套/件,1盒/套,72克/盒</p>
+                                                <h5>{{item.goodsName}}</h5>
+                                                <p>商品规格 {{item.benchmarkingUnitCount2/item.benchmarkingUnitCount3}}{{item.transactionSpecification3}}/{{item.transactionSpecification2}},1{{item.transactionSpecification1}}/{{item.benchmarkingUnitCount1/item.benchmarkingUnitCount2}}{{item.transactionSpecification2}},{{item.benchmarkingUnitCount1}}{{item.benchmarkingUnit1}}/{{item.transactionSpecification1}}</p>
                                             </div>
-                                            <div class="b"><i>¥</i><b>260.00/盒</b></div>
+                                            <div class="b"  v-if="item.effective!=3"><i>¥</i><b>{{item.releasePrice}}/{{item.benchmarkingUnit3}}</b></div>
+                                            <div class="b"  v-else><i>¥</i><b>?</b></div>
                                         </div>
                                         <div class="property">
-                                            <p><span>品牌 <b>津乔普洱</b></span><span>产地 <b>云南勐库地区</b></span><span>生产年份 <b>2017</b></span></p>
-                                            <p class="p"><span>抢购总量：<b>100盒</b> / 剩余库存：<b>89盒</b></span></p>
-                                            <div class="schedule">
-                                                <p><em style="width: 11.00%;"></em><i>11.00%</i></p>
+                                            <p><span>品牌 <b>{{item.brand}}</b></span><span>产地<b>{{item.placeOrigin}}</b></span><span>生产年份 <b>{{item.productYear}}</b></span></p>
+                                            <p class="p" v-if="item.effective!=3"><span>抢购总量：<b>{{item.rushBuyCountTotal}}{{item.benchmarkingUnit3}}</b> / 剩余库存：<b>{{item.rushBuyCountTotal-item.soldCount}}{{item.benchmarkingUnit3}}</b></span></p>
+                                            <div class="schedule"  v-if="item.effective!=3">
+                                                <p><em :style="{width: Math.ceil(+item.soldCount / +item.rushBuyCountTotal)+'%'}"></em><i>{{isNaN(Math.ceil(+item.soldCount / +item.rushBuyCountTotal))?0:Math.ceil(+item.soldCount / +item.rushBuyCountTotal)}}.00%</i></p>
                                             </div>
                                         </div>
                                         <div class="buttons">
-                                            <p class="clock"><span>已结束</span></p><button type="button" class="btn btn-primary-end">已结束</button></div>
+                                            <p class="clock"><span>{{item.effective==1?'正在发行':item.effective==2?'即将发行':item.effective==3?'展示期':item.effective==4?'已经结束':'出错了'}}</span></p><button @click="$router.openPage('/teaMallProduct',{id:item.releaseCode})"  type="button" :disabled="item.effective==1?false:true" :class="{'btn':true, 'btn-danger':true, 'btn-primary-end':item.effective==1?false:true}">{{item.effective==1?'正在发行':item.effective==2?'即将发行':item.effective==3?'展示期':item.effective==4?'已经结束':'出错了'}}</button></div>
                                     </div>
                                 </div>
                             </div>
@@ -57,25 +59,25 @@
                                     <div class="info text-left">
                                         <div class="tit">
                                             <div class="a" style="width:250px;">
-                                                <h5>{{item.title}}</h5>
+                                                <h5>{{item.goodsName}}</h5>
                                                 <p>商品规格 20套/件,1盒/套,84克/盒</p>
                                             </div>
-                                            <div class="b"><i>¥</i><b>288.00/盒</b></div>
+                                            <div class="b"><i>¥</i><b>{{item.releasePrice}}/{{item.benchmarkingUnit3}}</b></div>
                                         </div>
                                         <div class="property">
-                                            <p><span>品牌 <b>茶企通</b></span><span>产地 <b>云南</b></span><span>生产年份 <b>2017</b></span></p>
-                                            <p class="p"><span>抢购总量：<b>100盒</b> / 剩余库存：<b>96盒</b></span></p>
+                                            <p><span>品牌 <b>{{item.brand}}</b></span><span>产地 <b>{{item.placeOrigin}}</b></span><span>生产年份 <b>{{item.productYear}}</b></span></p>
+                                            <p class="p"><span>抢购总量：<b>{{item.rushBuyCountTotal}}{{item.benchmarkingUnit3}}</b> / 剩余库存：<b>{{item.rushBuyCountTotal-item.soldCount}}{{item.benchmarkingUnit3}}</b></span></p>
                                             <div class="schedule">
-                                                <p><em style="width: 4.00%;"></em><i>4.00%</i></p>
+                                                <p><em :style="{width: Math.ceil(+item.soldCount / +item.rushBuyCountTotal)+'%'}"></em><i>{{isNaN(Math.ceil(+item.soldCount / +item.rushBuyCountTotal))?0:Math.ceil(+item.soldCount / +item.rushBuyCountTotal)}}.00%</i></p>
                                             </div>
                                         </div>
-                                        <div class="buttons">
-                                            <p class="clock"><span>已结束</span></p><button type="button" class="btn btn-primary-end">已结束</button></div>
+                                              <div class="buttons">
+                                            <p class="clock"><span>{{item.effective==1?'正在发行':item.effective==2?'即将发行':item.effective==3?'展示期':item.effective==4?'已经结束':'出错了'}}</span></p><button @click="$router.openPage('/teaMallProduct',{id:item.releaseCode})"  type="button" :disabled="item.effective==1?false:true" :class="{'btn':true, 'btn-danger':true, 'btn-primary-end':item.effective==1?false:true}">{{item.effective==1?'正在发行':item.effective==2?'即将发行':item.effective==3?'展示期':item.effective==4?'已经结束':'出错了'}}</button></div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="img text-left">
-                                        <a><img @click="$router.openPage('/teaMallProduct')" src="../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png" style="width:495px;height:460px;"></a>
+                                        <a><img @click="$router.openPage('/teaMallProduct',{id:item.resource==1?item.id:item.goodsId})" :src="item.appSmallPicture" style="width:495px;height:460px;"></a>
                                     </div>
                                 </div>
                             </div>
@@ -90,9 +92,12 @@
 </template>
 
 <script>
+import qs from 'qs';
     export default ({
         data(){
             return{
+                http:this.$store.state.dialog.http,
+                pageSize:5,
                 SpList:[
                     {
                         title:'一念间(伴手礼)',
@@ -105,7 +110,21 @@
                     }
                 ]
             }
-        }
+        },
+        methods:{
+            getRushList(){
+                this.axios.post(this.http+'/interface/pc/allotment/seckill',qs.stringify({
+                    pageSize:this.pageSize
+                })).then(res=>{
+                    this.SpList=JSON.parse(res.data.data);
+                    console.log(res.data);
+                    console.log(JSON.parse(res.data.data));
+                })
+            }
+        },
+        created() {
+            this.getRushList()
+        },
     })
 </script>
 <style lang = 'less' scoped>

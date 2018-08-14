@@ -11,20 +11,20 @@
                         <div class="article-list" id="aaa">
                             <dl v-for="(item,index) in noticeList" :key="index">
                                 <dt>
-                                            <em>
-                                                <img class="left_imgz" src="https://www.teaexs.com/pictures/notice/noticeImage_1726167776143.jpg" width="206px" height="126px">
-                                            </em>
-                                        </dt>
+                                    <em>
+                                        <img class="left_imgz" :src="item.cover" width="206px" height="126px">
+                                    </em>
+                                </dt>
                                 <dd>
                                     <span style="word-break:break-all;">
-                                                <a @click="$router.openPage('/teaMallNew');jumbNotice(index)">【2018新品抢购】{{item.name}}</a>
-                                                <em>2018-03-07 09:35:03</em>
-                                            </span>
-                                    <p style="word-break:break-all;"> 津乔茶业新品即将开抢，自3月6日起新用户可获赠108元现金券礼包。小粒茶首发抢购价：208 元/盒（抢购结束恢复市场零售价：260元/盒），红柑丸首发抢购价：128 元/盒（抢购结束恢复市场零售价：160元/盒）</p>
+                                        <a @click="$router.openPage('/teaMallNew',{id:item.id})">{{item.title}}</a>
+                                        <em>2018-03-07 09:35:03</em>
+                                    </span>
+                                    <p style="word-break:break-all;"> {{item.abstractContent}}</p>
                                 </dd>
                             </dl>
                         </div>
-                        <el-pagination style="margin-top:20px" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+                        <el-pagination style="margin-top:20px" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" :total='total' layout="total, sizes, prev, pager, next, jumper">
                         </el-pagination>
                         <div class="fenye">
                             <div class="page">
@@ -43,31 +43,45 @@
 </template>
 
 <script>
+import qs from 'qs'
     export default ({
         data() {
             return {
+                total:1,
                 currentPage: 1,
+                http:this.$store.state.dialog.http,
+                pageSize:5,
                 noticeList: [{
-                        name: "一念间·小粒茶和红柑丸",
+                        title: "正在加载",
                     },
-                    {
-                        name: "一念间·红柑丸",
-                    },
-                    {
-                        name: "一念间·红柑丸和小李茶",
-                    }
+                    
                 ]
             }
         },
         methods: {
-            handleSizeChange() {
+            handleSizeChange(val) {
+                this.pageSize=val;
+                this.getNewsList();
             },
-            handleCurrentChange() {
+            handleCurrentChange(val) {
+                this.currentPage=val;
+                this.getNewsList();
             },
-            jumbNotice(a) {
-                this.$store.commit('changeNewId', a)//修改store中newId
-            },
-        }
+            getNewsList() {
+                this.axios.post(this.http + '/interface/pc/bulltin/list', qs.stringify({
+                    currentPage: this.currentPage,
+                    bulletinType: 3,
+                    pageSize: this.pageSize
+                })).then(res => {
+                    console.log(res.data);
+                    this.noticeList = JSON.parse(res.data.data).bulltinList
+                    this.total=JSON.parse(res.data.data).total
+                })
+            }
+        },
+        created() {
+            this.getNewsList()
+        },
     })
 </script>
 <style lang = 'less' scoped>

@@ -33,7 +33,7 @@
       </el-table-column>
       <el-table-column align="center" prop="shelRetentionCount" sortable label="持有数量" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} 粒</span>
+          <span>{{ scope.row.shelRetentionCount?scope.row.shelRetentionCount:'0'}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="releaseCountTotal" label="抢购数量">

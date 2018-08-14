@@ -1,5 +1,5 @@
 <template>
-   <div>
+   <div class="st_body">
        <el-row>
            <el-col :span='24'>*不设定运费模板，所有提货的快递物流费用将按默认运费模板包邮，由卖家自行承担快递物流费用</el-col>
        </el-row>
@@ -120,39 +120,41 @@ export default {
 </script>
 
 <style lang="less">
-.st_deafult {
-  background: #e9e9e9;
-  height: 50px;
-  line-height: 50px;
-  box-sizing: border-box;
-  padding-left: 20px;
-}
-.st_setting {
-  background: #e9e9e9;
-  height: 50px;
-  line-height: 50px;
-  box-sizing: border-box;
-  padding-right: 30px;
-  text-align: right;
-  color: #0166bb;
-}
-.el-table td,
-.el-table th {
-  padding: 13px 10px;
-}
-.el-col-6 {
-  margin-top: 30px;
-  text-align: right;
-  padding-right: 20px;
-}
-.el-col-13 {
-  margin-top: 20px;
-}
-.el-col-2 {
-  margin-top: 30px;
-  padding-left: 20px;
-}
-.el-dialog--center .el-dialog__body {
-  padding-top: 0px;
+.st_body {
+  .st_deafult {
+    background: #e9e9e9;
+    height: 50px;
+    line-height: 50px;
+    box-sizing: border-box;
+    padding-left: 20px;
+  }
+  .st_setting {
+    background: #e9e9e9;
+    height: 50px;
+    line-height: 50px;
+    box-sizing: border-box;
+    padding-right: 30px;
+    text-align: right;
+    color: #0166bb;
+  }
+  .el-table td,
+  .el-table th {
+    padding: 13px 10px;
+  }
+  .el-col-6 {
+    margin-top: 30px;
+    text-align: right;
+    padding-right: 20px;
+  }
+  .el-col-13 {
+    margin-top: 20px;
+  }
+  .el-col-2 {
+    margin-top: 30px;
+    padding-left: 20px;
+  }
+  .el-dialog--center .el-dialog__body {
+    padding-top: 0px;
+  }
 }
 </style>

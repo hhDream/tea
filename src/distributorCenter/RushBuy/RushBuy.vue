@@ -1,11 +1,16 @@
 <template>
-<div v-loading.fullscreen.lock="fullscreenLoading">
+<div>
+  <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
+  <el-breadcrumb-item :to="{ path: '/distributorCenter/banlance' }">企业中心</el-breadcrumb-item>
+  <el-breadcrumb-item >新茶申购</el-breadcrumb-item>
+  <el-breadcrumb-item>抢购通知</el-breadcrumb-item>
+</el-breadcrumb>
   <el-row class="myCenter" :gutter="20">
     <el-col :span="12" style="padding-right: 10px;padding-left:0">
       <div class="grid-content bg-purple">
         <div class="rb_title">我的资产</div>
         <div>可用余额:</div>
-        <div class="rb_money">￥0.95</div>
+        <div class="rb_money">￥{{allData.availableFunds}}</div>
         <el-button class="rb_button">充值</el-button>
         <div class="rb_place">为了不影响您参与新茶抢购，请确保您的账户可用余额足够支付货款！</div>
       </div>
@@ -14,72 +19,57 @@
       <div class="grid-content bg-purple">
         <div class="fl" id="indicatorContainer">
           <div class="time-graph">
-            <el-progress id="time-graph-canvas" color="#85d824" type="circle" :percentage="100" :width="152" :show-text="false"></el-progress>
+            <el-progress id="time-graph-canvas" color="#85d824" type="circle" :percentage="bfb" :width="152" :show-text="false"></el-progress>
           </div>
           <div class="sum">
             <p>账户余额
               <i>(元)</i>
             </p>
-            <h5 id="my_balance">{{person.capitalBalance}}</h5>
+            <h5 id="my_balance">{{allData.capitalBalance}}</h5>
           </div>
         </div>
         <div class="fl usable">
           <p class="p1">
             <em></em>可用余额
-            <span id="my_balance_useable"> {{person.capitalBalance}}元</span>
+            <span id="my_balance_useable"> {{allData.availableFunds}}元</span>
           </p>
           <p class="p2">
             <em></em>冻结资金
-            <span id="my_balance_frozen"> 0.00</span>
+            <span id="my_balance_frozen"> {{allData.capitalBalance-allData.availableFunds}}元</span>
           </p>
         </div>
       </div>
     </el-col>
   </el-row>
-  <el-table :data="stock" border style="width: 100%;margin-top:30px" slot="empty">
+  <el-table :data="allData.list" border style="width: 100%;margin-top:30px" slot="empty">
     <el-table-column prop="goodsCode" show-overflow-tooltip align="center" label="商品代码">
-    <template slot-scope="scope">
-        <span>CS2018030601</span>
-    </template>
     </el-table-column>
     <el-table-column prop="goodsName" show-overflow-tooltip align="center" label="商品名称">
+    </el-table-column>
+    <el-table-column prop="partakeAllomentCountTotal" show-overflow-tooltip align="center" label="抢购总量">
+    </el-table-column>
+    <el-table-column prop="releasePrice" show-overflow-tooltip align="center" label="抢购价格">
     <template slot-scope="scope">
-        <span class="sp_code">下关普洱茶</span>
+        <span>{{scope.row.releasePrice}}/{{scope.row.benchmarkingUnit3}}</span>
     </template>
     </el-table-column>
-    <el-table-column prop="shelRetentionCount" show-overflow-tooltip align="center" label="抢购总量">
+    <el-table-column prop="rationCount" show-overflow-tooltip align="center" label="配售到数量" width="100">
     <template slot-scope="scope">
-        <span>100片</span>
+        <span>{{scope.row.rationCount}}{{scope.row.benchmarkingUnit3}}</span>
     </template>
     </el-table-column>
-    <el-table-column prop="releaseCountTotal" show-overflow-tooltip align="center" label="抢购价格">
+    <el-table-column prop="bondAmount" show-overflow-tooltip align="center" label="预支付货款总额">
     <template slot-scope="scope">
-        <span>100/片</span>
+        <span>{{scope.row.bondAmount}}元</span>
     </template>
     </el-table-column>
-    <el-table-column prop="CountTotal" show-overflow-tooltip align="center" label="配售到数量" width="100">
-    <template slot-scope="scope">
-        <span>150片</span>
-    </template>
+    <el-table-column prop="releaseBeginTime" show-overflow-tooltip align="center" label="抢购开始时间">
     </el-table-column>
-    <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="预支付货款总额">
-    <template slot-scope="scope">
-        <span>15000</span>
-    </template>
+    <el-table-column prop="finalConfirmationTime" show-overflow-tooltip align="center" label="支付截止时间">
     </el-table-column>
-    <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="抢购开始时间">
+    <el-table-column prop="shlfRetentionCount" show-overflow-tooltip align="center" label="自留数量">
     <template slot-scope="scope">
-        <span>2018-03-02 12:12:12</span>
-    </template>
-    </el-table-column>
-    <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="支付截止时间">
-    <template slot-scope="scope">
-        <span>2018-03-02 12:12:12</span>
-    </template>
-    </el-table-column>
-    <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="自留数量">
-    <template slot-scope="scope">
-        <span>100</span>
+        <span>{{scope.row.shlfRetentionCount}}{{scope.row.benchmarkingUnit3}}</span>
     </template>
     </el-table-column>
 	<el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="操作" width="200">
@@ -127,32 +117,22 @@ export default {
   data() {
     return {
       warning_row: "warning_row",
-      enterpriseCode: this.$store.state.dialog.enterpriseCode,
-      http: this.$store.state.dialog.http,
       person: {},
       allotment: [],
-      stock: [],
-      fullscreenLoading: false,
+      allData: [],
       tableData: [],
       http: this.$store.state.dialog.http,
-      enterpriseCode: this.$store.state.dialog.enterpriseCode,
+      distributorCode:this.$getcookie('distributorCode'),
+      capitalBalance:'',
       currentPage: 1,
       showCount: 10,
-      goodsName: "",
-      goodsCode: "",
       total: 0,
-      activeName: "first",
-      formInline: {
-        user: "",
-        region: ""
-      },
       centerDialogVisible: false,
-      stu: ""
+      bfb: 0
     };
   },
   created() {
     this.getData();
-    console.log(this.$store.state.dialog);
   },
   methods: {
     handleClose(done) {
@@ -162,51 +142,28 @@ export default {
         })
         .catch(_ => {});
     },
-    releaseStatusFmt(row, column) {
-      return row.releaseStatus == 1
-        ? "待配售"
-        : row.releaseStatus == 2
-          ? "已配售"
-          : row.releaseStatus == 5
-            ? "已发行"
-            : row.releaseStatus == 6
-              ? "待结算"
-              : row.releaseStatus == 7 ? "已结束" : "";
-    },
     getData() {
-      this.fullscreenLoading = false;
       this.axios
         .post(
-          this.http + "/interface/pc/personal/pcEnterprise/enterpriseInfo",
+          this.http + "/interface/pc/distributor/pcAllotment/rushNotice",
           qs.stringify({
-            enterpriseId: this.enterpriseCode
+            distributorCode: this.distributorCode,
+            currentPage:this.currentPage,
+            pageSize:this.pageSize
           })
         )
         .then(res => {
-          this.fullscreenLoading = false;
-          console.log(res.data.data);
+          console.log( JSON.parse(res.data.data));
           if (res.data.code == 200) {
-            this.person = JSON.parse(res.data.data).enterprise;
-            this.stock = JSON.parse(res.data.data).stock;
-            this.allotment = JSON.parse(res.data.data).allotment;
-            console.log(JSON.parse(res.data.data));
-            if (this.allotment.releaseStatus == 1) {
-              this.allotment.releaseStatus = "待配售";
-            } else if (this.allotment.releaseStatus == 2) {
-              this.allotment.releaseStatus = "已配售";
-            } else if (this.allotment.releaseStatus == 5) {
-              this.allotment.releaseStatus = "已发行";
-            } else if (this.allotment.releaseStatus == 7) {
-              this.allotment.releaseStatus = "已结束";
-            } else if (this.allotment.releaseStatus == 6) {
-              this.allotment.releaseStatus = "待结算";
-            }
+            this.allData = JSON.parse(res.data.data);
+            this.total=JSON.parse(res.data.data).total;
+            this.currentPage=JSON.parse(res.data.data).currentPage;
+            this.bfb=+(+this.allData.capitalBalance-+this.allData.availableFunds)/+this.allData.capitalBalance
           } else {
             this.open(res.data.data.message);
           }
         })
         .catch(err => {
-          this.fullscreenLoading = false;
           this.open(err);
         });
     },
@@ -236,22 +193,11 @@ export default {
       location.reload();
     },
 
-    //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
-    getCookie(name) {
-      var arr,
-        reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-      if ((arr = document.cookie.match(reg))) {
-        return true;
-        // return (arr[2]);
-      } else {
-        return false;
-      }
-    },
     open(err) {
       this.$alert("网络错误请求失败!", "错误", {
         confirmButtonText: "确定",
         callback: action => {
-          this.delCookie("JSESSIONID");
+          this.delCookie("LOGIN_PHONE");
           this.$router.openPage("/login");
           this.$message({
             type: "info",
@@ -293,6 +239,7 @@ export default {
 .rb_place {
   font-size: 12px;
   color: #999;
+  margin-top: 10px;
 }
 .myCenter_right {
   border-left: 1px dashed #ececec;

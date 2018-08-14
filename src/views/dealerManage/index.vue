@@ -52,12 +52,15 @@
       <el-table-column prop="legalPersonIdentityCard" label="法人身份证" width="170">
       </el-table-column>
       <el-table-column prop="" label="是否对公账户"  width="130">
+        <template slot-scope="scope">
+          <span>是</span>
+        </template>
       </el-table-column>
       <el-table-column prop="phoneNumber" label="联系电话"  width="130">
       </el-table-column>
       <el-table-column prop="postalAddress" label="公司地址" width="200">
       </el-table-column>
-      <el-table-column prop="province" label="省份"  >
+      <el-table-column prop="province" label="省份">
       </el-table-column>
       <el-table-column prop="city" label="城市">
       </el-table-column>

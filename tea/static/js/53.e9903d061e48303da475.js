@@ -1,0 +1,1 @@
+webpackJsonp([53],{Rf88:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var r={render:function(){var e=this.$createElement;return(this._self._c||e)("h1",[this._v("我的消息")])},staticRenderFns:[]};var a=t("vSla")({name:"mine-page"},r,!1,function(e){t("xvJT")},null,null);n.default=a.exports},xvJT:function(e,n){}});

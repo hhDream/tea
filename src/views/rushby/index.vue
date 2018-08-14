@@ -219,7 +219,7 @@
       </el-table-column>
       <el-table-column  align="center" v-if="takeIt" fixed="right" label="操作">
       <template slot-scope="scope">
-        <el-button v-if="scope.row.comfirmStatus == 1" @click="innerVisible = true;editClick(scope.row)" type="text" size="small">
+        <el-button v-if="scope.row.comfirmStatus == 5 && scope.row.releaseStatus == 2" @click="innerVisible = true;editClick(scope.row)" type="text" size="small">
           修改</el-button>
       </template>
       </el-table-column>

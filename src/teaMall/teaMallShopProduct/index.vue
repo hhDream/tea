@@ -1,5 +1,5 @@
 <template>
-  <div style="background:#F6F6F6">
+  <div style="background:#F6F6F6" v-if="have">
     <el-row>
       <el-col class="main-cont-mall" style="min-width:1190px;margin:20px auto;float: none;background:#fff" :span="16">
         <div class="main-side">
@@ -7,7 +7,7 @@
             <el-breadcrumb style="margin-bottom:10px" separator-class="el-icon-arrow-right">
               <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
               <el-breadcrumb-item :to="{ path: '/teaMallShop' }">品牌商城</el-breadcrumb-item>
-              <el-breadcrumb-item>津乔普洱</el-breadcrumb-item>
+              <el-breadcrumb-item>{{product.goods.brand}}</el-breadcrumb-item>
               <el-breadcrumb-item>混合</el-breadcrumb-item>
               <el-breadcrumb-item>勐库地区</el-breadcrumb-item>
             </el-breadcrumb>
@@ -16,44 +16,44 @@
                 <div class="w290px fl">
                   <div class="product-picture-big big">
                     <el-carousel :arrow="'never'" :indicator-position="'none'" :autoplay="false" trigger="click" height="288px" ref="carousel">
-                      <el-carousel-item v-for="(item,index) in productList" :key="index">
-                        <img :src="item.src" style="width:288px" alt="">
+                      <el-carousel-item v-for="(item,index) in product.goods.pcLargePicture.split(',')" :key="index">
+                        <img :src="item" style="width:288px" alt="">
                       </el-carousel-item>
                     </el-carousel>
                   </div>
                   <div class="mt20px small">
-                    <a class="picture-arrow-left go_t" @click="id>0?id--:id=productList.length-1;setActiveItem(id)">&lt;</a>
+                    <a class="picture-arrow-left go_t" @click="id>0?id--:id=product.goods.pcLargePicture.split(',').length-1;setActiveItem(id)">&lt;</a>
                     <div class="product-picture-small">
                       <ul id="small" style="width: 245px;">
-                        <li v-for="(item,index) in productList" :class="{active:id==index}" :key="index">
+                        <li v-for="(item,index) in product.goods.pcLargePicture.split(',')" :class="{active:id==index}" :key="index">
                           <img @click="id=index;setActiveItem(index)" :src="item.src" alt="">
                         </li>
                       </ul>
                     </div>
-                    <a class="picture-arrow-right go_b" @click="id<productList.length-1?id++:id=0;setActiveItem(id)">&gt;</a>
+                    <a class="picture-arrow-right go_b" @click="id<product.goods.pcLargePicture.split(',').length-1?id++:id=0;setActiveItem(id)">&gt;</a>
                   </div>
                 </div>
                 <div class="productContent-parameter fl">
-                  <h2 id="productName">一念间(伴手礼)</h2>
+                  <h2 id="productName">{{product.alotments.goodsName}}</h2>
                   <div class="fs12px mt10px"></div>
                   <div class="bg-price mt10px">
                     <div>
                       <label>
-                    <span>零售指导价：</span>
-                  </label>
-                      <span class="c-red" id="guidePrice">260.00元/盒</span>
+                        <span>零售指导价：</span>
+                      </label>
+                      <span class="c-red" id="guidePrice">{{product.alotments.releasePrice }}元/{{product.alotments.transactionSpecification3 }}</span>
                     </div>
                   </div>
-                  <div class="mt20px" id="productSpecification">商品规格：12套/件,1盒/套,72克/盒</div>
+                  <div class="mt20px" id="productSpecification">商品规格：{{product.alotments.benchmarkingUnitCount3}}{{product.alotments.benchmarkingUnit3}}/{{product.alotments.transactionSpecification3 }}</div>
                   <div class="productContent-parameter-data mt20px">
                     <div>可买量：
-                      <span class="c-orange" id="saleNo">0盒</span>
+                      <span class="c-orange" id="saleNo">{{+product.alotments.param2- +product.alotments.param1}}{{product.alotments.transactionSpecification3 }}</span>
                     </div>
                     <div>求购量：
-                      <span class="c-orange" id="buyNo">0盒</span>
+                      <span class="c-orange" id="buyNo">0{{product.alotments.transactionSpecification3 }}</span>
                     </div>
                     <div class="br-none">成交量：
-                      <span class="c-orange" id="historySaleCount">11盒</span>
+                      <span class="c-orange" id="historySaleCount">{{product.alotments.param3}}{{product.alotments.transactionSpecification3 }}</span>
                     </div>
                   </div>
                   <div class="clearfix"></div>
@@ -70,10 +70,7 @@
               <div class="clearfix"></div>
             </div>
             <div id="myChart" class="detail-priceTrend mt20px"></div>
-
-            <el-tabs v-model="activeName2" style="margin-right: 16px;margin-top:20px;max-width:1118px" type="border-card">
-
-
+            <el-tabs v-model="activeName2" style="margin-top:20px;max-width:1118px" type="border-card">
               <el-tab-pane label="报价窗口" name="first">
                 <el-row>
                   <el-col :span="7">
@@ -84,23 +81,23 @@
                     </el-select>
                   </el-col>
                   <el-col :span="17">
-                    <el-input style="display:inline-block;width:100px" size="mini" v-model="start"></el-input>~
-                    <el-input style="display:inline-block;width:100px" size="mini" v-model="end"></el-input>
-                    <el-button size="mini" style="margin-left:50px" icon="el-icon-search" circle></el-button>
+                    <el-input style="display:inline-block;width:100px" size="mini" v-model="lowPrice"></el-input>~
+                    <el-input style="display:inline-block;width:100px" size="mini" v-model="topPrice"></el-input>
+                    <el-button size="mini" style="margin-left:50px" @click="getTable()" icon="el-icon-search" circle></el-button>
                   </el-col>
                 </el-row>
-                <el-table :data="tableData" style="width: 100%">
-                  <el-table-column prop="date" label="序号" width="180">
+                <el-table :data="tableData" @sort-change="sortChange" style="width: 100%">
+                  <el-table-column prop="id" label="序号" width="180">
                   </el-table-column>
-                  <el-table-column prop="number" sortable label="数量" width="180">
+                  <el-table-column prop="param4" sortable='custom' label="数量" width="180">
                   </el-table-column>
-                  <el-table-column prop="specification" label="规格">
+                  <el-table-column prop="param3" label="规格">
                   </el-table-column>
-                  <el-table-column prop="univalence" sortable label="单价(元/规格)">
+                  <el-table-column prop="goodsPrice"  sortable='custom' label="单价(元)">
                   </el-table-column>
                   <el-table-column label="操作">
-                    <template  slot-scope="scope">
-                      <el-button @click="handleClick(scope.row)" type="text">立即购买</el-button>
+                    <template slot-scope="scope">
+                          <el-button @click="handleClick(scope.row)" type="text">立即购买</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -109,7 +106,7 @@
                       @size-change="handleSizeChange"
                       @current-change="handleCurrentChange"
                       :current-page="currentPage"
-                      :page-sizes="[10, 20, 30, 40]"
+                      :page-sizes="[5, 10, 15, 20]"
                       :page-size="pageSize"
                       layout="total, sizes, prev, pager, next, jumper"
                       :total="3">
@@ -120,16 +117,16 @@
                   <div class="info">
                     <div class="col-md-3">
                       <div>品牌：
-                        <span id="brandName">津乔普洱</span>
+                        <span id="brandName">{{product.goods.brand}}</span>
                       </div>
                       <div>商品毛重：
-                        <span id="unitNum"></span>
+                        <span id="unitNum">{{product.alotments.benchmarkingUnitCount3}}{{product.alotments.benchmarkingUnit3}}</span>
                       </div>
                       <div id="co14ChineseName">外包装：
-                        <span id="col4">盒</span>
+                        <span id="col4">{{product.goods.outerPacking}}</span>
                       </div>
                       <div id="col8ChineseName">储存建议：
-                        <span id="col8">干燥除湿</span>
+                        <span id="col8">{{product.goods.storageSuggest}}</span>
                       </div>
                     </div>
                     <div class="col-md-3">
@@ -137,10 +134,10 @@
                         <span id="productCode">YNJ2018030502</span>
                       </div>
                       <div id="col1ChineseName">配送频次：
-                        <span id="col1">津乔普洱</span>
+                        <span id="col1">{{product.goods.brand}}</span>
                       </div>
                       <div id="col5ChineseName">内包装：
-                        <span id="col5">锡纸</span>
+                        <span id="col5">{{product.goods.internalPacking }}</span>
                       </div>
                       <div id="col9ChineseName">
                         <span id="col9"></span>
@@ -148,13 +145,13 @@
                     </div>
                     <div class="col-md-3">
                       <div>年份：
-                        <span id="makeDate">2017</span>
+                        <span id="makeDate">{{product.goods.productYear}}</span>
                       </div>
                       <div id="col2ChineseName">生产日期：
-                        <span id="col2">2017年12月</span>
+                        <span id="col2">{{product.goods.productYear}}</span>
                       </div>
                       <div id="col6ChineseName">食品添加剂：
-                        <span id="col6">无</span>
+                        <span id="col6">{{product.goods.foodAdditives}}</span>
                       </div>
                       <div id="col10ChineseName">
                         <span id="col10"></span>
@@ -162,17 +159,17 @@
                     </div>
                     <div class="col-md-3">
                       <div>工艺：
-                        <span id="craft">发酵工艺</span>
+                        <span id="craft">{{product.goods.technology}}</span>
                       </div>
                       <div id="col3ChineseName">产品产地：
-                        <span id="col3">云南勐库地区</span>
+                        <span id="col3">{{product.goods.placeOrigin}}</span>
                       </div>
                       <div id="col7ChineseName">保质期：
-                        <span id="col7">999999999天</span>
+                        <span id="col7">{{product.goods.qualityPeriod }}天</span>
                       </div>
                     </div>
                   </div>
-                      <img style="margin: 0 auto;display: block;" src="../../assets/images/130e546b-d4bf-4360-bc4a-ff2cad0c22e2.jpg">
+                      <img v-for="(item,index) in product.goods.pcDetailPicture.split(',')" :key="index" style="margin: 0 auto;display: block;margin-top:120px;width:100%" :src="product.goods.pcDetailPicture.split(',')[index]">
                 </div>
               </el-tab-pane>
               <el-tab-pane label="茶品点评" name="third">
@@ -233,84 +230,78 @@
 </template>
 
 <script>
+  import qs from 'qs';
   export default ({
     data() {
       return {
-        dialogVisible:false,
-        activeName2:'first',
+        dialogVisible: false,
+        activeName2: 'first',
+        have:false,
         num: 0,
         id: 1,
-        start:"",//价格区间
-        end:"",
-        row:'',
-        value:'',//规格容器
-        ruleForm:{
-          number:''
+        start: "", //价格区间
+        end: "",
+        row: '',
+        value: '', //规格容器
+        ruleForm: {
+          number: ''
         },
-        rules:{
-          number: [
-            { required: true, message: '请输入购买数量',type:'number', trigger: 'blur' }
-          ],
+        product:{
         },
-        options:[
-          {value: '1',label: '片'},
-          {value: '2',label: '粒'},
-          {value: '3',label: '盒'},
+        rules: {
+          number: [{
+            required: true,
+            message: '请输入购买数量',
+            type: 'number',
+            trigger: 'blur'
+          }],
+        },
+        options: [{
+            value: '3',
+            label: '片'
+          },
+          {
+            value: '2',
+            label: '粒'
+          },
+          {
+            value: '1',
+            label: '盒'
+          },
         ],
         tableData: [{
-            date: '2016-05-02',
-            number: '110',
-            specification: '片',
-            univalence: '120',
-          },{
-            date: '2016-05-02',
-            number: '150',
-            specification: '片',
-            univalence: '130',
-          },{
-            date: '2016-05-02',
-            number: '120',
-            specification: '片',
-            univalence: '140',
+          date: '2016-05-02',
+          number: '110',
+          specification: '片',
+          univalence: '120',
+        }],
+        currentPage: 1,
+        pageSize: 5,
+        http: this.$store.state.dialog.http,
+        data: {
+          title: null,
+          xAxisTitle: "",
+          yAxisTitle: "价格(元/盒)",
+          xAxis: ["6.12", "6.13", "6.14", "6.15", "6.16", "6.17", "6.18", "6.19", "6.20", "6.21", "6.22", "6.23", "6.24", "6.25", "6.26", "6.27", "6.28", "6.29", "6.30", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10"],
+          items: [{
+            "name": "历史成交均价",
+            "data": ["238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238"],
+            "type": "line"
+          }, {
+            "name": "零售指导价",
+            "data": ["288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288"],
+            "type": "line"
           }],
-        productList: [{
-            src: require("../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png")
-          },
-          {
-            src: require("../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png")
-          },
-          {
-            src: require("../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png")
-          },
-          {
-            src: require("../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png")
-          },
-          {
-            src: require("../../assets/images/c8d587de-d95b-4805-ac75-cbbc59427661.png")
-          },
-        ],
-        currentPage:1,
-        pageSize:10,
-        data:{
-              title: null,
-              xAxisTitle: "",
-              yAxisTitle: "价格(元/盒)",
-              xAxis: ["6.12", "6.13", "6.14", "6.15", "6.16", "6.17", "6.18", "6.19", "6.20", "6.21", "6.22", "6.23", "6.24", "6.25", "6.26", "6.27", "6.28", "6.29", "6.30", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10"],
-              items: [{
-                  "name": "历史成交均价",
-                  "data": ["238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238"],
-                  "type": "line"
-              }, {
-                  "name": "零售指导价",
-                  "data": ["288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288"],
-                  "type": "line"
-              }]
-          }
+        },
+        sort:1,
+        topPrice:'',
+        lowPrice:'',
+
       }
     },
     methods: {
-      message(){
-         this.$confirm('您还未登录, 是否登陆?', '提示', {
+      message() {
+        this.$confirm('您还未登录, 是否登陆?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -320,32 +311,110 @@
           this.$message({
             type: 'info',
             message: '已取消'
-          });          
+          });
         });
       },
-      handleCurrentChange(val){
-        this.currentPage=val
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getTable();
+
       },
-      handleSizeChange(val){
-        this.pageSize=val
+      handleSizeChange(val) {
+        this.pageSize = val;
+        this.getTable();
       },
-      handleClick(row){
-        if(this.$store.state.dialog.cookie!=true){
+      sortChange(val){
+        console.log(val);
+        if (val.prop=='param4') {
+          this.sort=val.order=="descending"?2:1;
+          this.getTable2()
+        }else{
+          this.sort=val.order=="descending"?2:1;
+          this.getTable()
+        }
+        
+      },
+      handleClick(row) {
+        if (this.$store.state.dialog.cookie != true) {
           this.message();
           return false;
         }
-        this.row=row;
+        this.row = row;
         console.log(this.row);
-        this.dialogVisible=true;
+        this.dialogVisible = true;
+      },
+      getProduct() {
+        this.axios.post(this.http + '/interface/pc/allotment/soldInformationTop', qs.stringify({
+          goodsCode: this.$route.query.id,//商品编码
+          releaseCode:this.$route.query.releaseCode,
+          phone:this.$store.state.dialog.phone,
+          
+        })).then(res => {
+          this.product = JSON.parse(res.data.data)
+          console.log(JSON.parse(res.data.data));
+          if(this.product.goods.pcDetailPicture==null){
+            this.product.goods.pcDetailPicture= "../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png"
+          }
+          if (this.product.goods.pcLargePicture==null) {
+            this.product.goods.pcLargePicture="../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png"            
+          }
+          if (this.product.goods.pcSmallPicture==null) {
+            this.product.goods.pcSmallPicture="../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png"           
+          }
+          console.log(this.product.goods.pcDetailPicture.split(','));
+          this.have=true;
+
+        }).then(()=>{
+          this.drawLine()
+        }).then(()=>{
+          this.getTable()
+        })
+      },
+      getTable(){
+        this.axios.post(this.http + '/interface/pc/allotment/soldInformation', qs.stringify({
+          goodsCode: this.$route.query.id,//商品编码
+          priceSort:this.sort,//1升2降
+          releaseCode:this.$route.query.releaseCode,
+          // countSort:1,
+          specificationSonId:this.value,
+          currentPage:this.currentPage,
+          lowPrice:this.lowPrice,
+          topPrice:this.topPrice,
+          pageSize:this.pageSize,
+          phone:this.$store.state.dialog.phone
+        })).then(res => {
+          this.tableData = JSON.parse(res.data.data).onTheShelves
+          console.log(JSON.parse(res.data.data));
+          this.total=JSON.parse(res.data.data).totalPage;
+          this.currentPage=JSON.parse(res.data.data).currentPage;
+        })
+      },
+      getTable2(){
+        this.axios.post(this.http + '/interface/pc/allotment/soldInformation', qs.stringify({
+          goodsCode: this.$route.query.id,//商品编码
+          // priceSort:this.sort,//1升2降
+          releaseCode:this.$route.query.releaseCode,
+          countSort:this.sort,
+          specificationSonId:this.value,
+          currentPage:this.currentPage,
+          lowPrice:this.lowPrice,
+          topPrice:this.topPrice,
+          pageSize:this.pageSize,
+          phone:this.$store.state.dialog.phone
+        })).then(res => {
+          this.tableData = JSON.parse(res.data.data).onTheShelves
+          console.log(JSON.parse(res.data.data));
+          this.total=JSON.parse(res.data.data).totalPage;
+          this.currentPage=JSON.parse(res.data.data).currentPage;
+        })
       },
       setActiveItem(i) {
         this.$refs.carousel.setActiveItem(i)
       },
       drawLine() {
-                // 基于准备好的dom，初始化echarts实例
+        // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart'))
-
-                // 绘制图表
+        // 绘制图表
         myChart.setOption({
           tooltip: {
             trigger: 'axis',
@@ -371,44 +440,38 @@
           },
           series: []
         });
-
-
-          let data=this.data
-          var legendData=new Array(data.items.length);
-				for(var i=0;i<data.items.length;i++){
-					legendData.push(data.items[i].name);
-				}
-				
-				myChart.setOption({
-					title: {
-				        text: data.title,
-				        x:'left'
-				    },
-			        xAxis: {
-			            data: data.xAxis
-			        },
-			        yAxis: {
-			        	name: data.yAxisTitle
-			        },
-			        legend: {
-			            data:legendData,
-			            x: 'right'
-			        },
-			        series: data.items
-			    });
-        
-
-
+        let data = this.data
+        var legendData = new Array(data.items.length);
+        for (var i = 0; i < data.items.length; i++) {
+          legendData.push(data.items[i].name);
+        }
+        myChart.setOption({
+          title: {
+            text: data.title,
+            x: 'left'
+          },
+          xAxis: {
+            data: data.xAxis
+          },
+          yAxis: {
+            name: data.yAxisTitle
+          },
+          legend: {
+            data: legendData,
+            x: 'right'
+          },
+          series: data.items
+        });
       }
     },
     mounted() {
-      this.drawLine()
+      this.getProduct()
     },
   })
 </script>
 <style lang = 'less' scoped>
   @import '../../assets/shopProduct.css';
- .el-tabs__header{
+  .el-tabs__header {
     margin: 0!important;
   }
 </style>

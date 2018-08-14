@@ -1,17 +1,17 @@
 <template>
 <div v-loading.fullscreen.lock="fullscreenLoading">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+    <el-form :inline="true" class="demo-form-inline">
     <el-form-item label="提货单号：">
-        <el-input v-model="formInline.user" placeholder="提货单号"></el-input>
+        <el-input v-model="takeTeaOrderCode" placeholder="提货单号"></el-input>
     </el-form-item>
-    <el-form-item label="茶企提货单号：">
+    <!-- <el-form-item label="茶企提货单号：">
         <el-input v-model="formInline.user" placeholder="茶企提货单号"></el-input>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="商品名称：">
-        <el-input v-model="formInline.user" placeholder="商品名称"></el-input>
+        <el-input v-model="goodsName" placeholder="商品名称"></el-input>
     </el-form-item>
     <el-form-item label="物流单号：">
-        <el-input v-model="formInline.user" placeholder="物流单号"></el-input>
+        <el-input v-model="enterLogisticsOrderId" placeholder="物流单号"></el-input>
     </el-form-item>
     <el-form-item label="申请时间：">
         <el-date-picker
@@ -19,20 +19,17 @@
       type="daterange"
       start-placeholder="开始日期"
       end-placeholder="结束日期"
-      :default-time="['00:00:00', '23:59:59']">
+      value-format="yyyy-MM-dd" format="yyyy 年 MM 月 dd 日" >
     </el-date-picker>
     </el-form-item> 
     <el-form-item label="当前状态：">
-        <el-select v-model="formInline.region" placeholder="当前状态：">
-        <el-option label="待付款" value="shanghai"></el-option>
-        <el-option label="已付款" value="beijing"></el-option>
-        <el-option label="出库中" value="nanjing"></el-option>
-        <el-option label="已发货" value="anhui"></el-option>
-        <el-option label="已到店" value="anhui"></el-option>
-        <el-option label="确认取货" value="anhui"></el-option>
-        <el-option label="待取货" value="anhui"></el-option>
-        <el-option label="待收货" value="anhui"></el-option>
-        <el-option label="已取消" value="anhui"></el-option>
+        <el-select v-model="status" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
         </el-select>
     </el-form-item>
     <el-form-item>
@@ -42,61 +39,55 @@
         <el-button type="default">重置</el-button>
     </el-form-item>
     </el-form>
-    <el-tabs v-model="activeName">
-        <el-tab-pane label="我的提货" name="first"></el-tab-pane>
-        <el-tab-pane label="买家提货" name="second"></el-tab-pane>
+    <el-tabs v-model="type">
+        <el-tab-pane label="我的提货" name="1"></el-tab-pane>
+        <el-tab-pane label="买家提货" name="2"></el-tab-pane>
     </el-tabs>
-    <el-table :data="stock" border style="width: 100%" slot="empty">
-        <el-table-column prop="goodsCode" show-overflow-tooltip align="center" label="提货单号"  width="180">
-        <template slot-scope="scope">
-            <span>123456789012345678</span>
-        </template>
+    <el-table :data="tableData" border @sort-change="mysort" style="width: 100%" slot="empty">
+        <el-table-column prop="takeTeaOrderCode" show-overflow-tooltip align="center" label="提货单号">
         </el-table-column>
-        <el-table-column prop="goodsName" show-overflow-tooltip align="center" label="商品货号">
-        <template slot-scope="scope">
-            <span>f1234567890</span><br>
-        </template>
+        <el-table-column prop="goodsCode" show-overflow-tooltip align="center" label="商品货号">
         </el-table-column>
-        <el-table-column prop="shelRetentionCount" show-overflow-tooltip align="center" label="商品名称">
-        <template slot-scope="scope">
-            <span>下关普洱茶</span>
-        </template>
+        <el-table-column prop="coodsName" show-overflow-tooltip align="center" label="商品名称">
         </el-table-column>     
-        <el-table-column prop="releaseCountTotal" show-overflow-tooltip align="center" label="提货数量">
+        <el-table-column prop="takeTeaCount" show-overflow-tooltip sortable='custom' align="center" label="提货数量">
         <template slot-scope="scope">
-            <span>{{scope.row.releaseCountTotal}}</span>
+            <span>{{scope.row.takeTeaCount}}</span>
         </template>
         </el-table-column>
-        <el-table-column prop="CountTotal" show-overflow-tooltip sortable align="center" label="申请时间" width="120">
-        <template slot-scope="scope">
-            <span>2018-03-02 12:12:12</span>
-        </template>
+        <el-table-column prop="applyTime" show-overflow-tooltip  align="center" label="申请时间">
         </el-table-column>
-        <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="茶企">
-        <template slot-scope="scope">
-            <span>茶企001</span>
-        </template>
+        <el-table-column prop="enterpriseName" show-overflow-tooltip align="center" label="茶企">
         </el-table-column>
         <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="提货方式">
         <template slot-scope="scope">
-            <span>快递</span>
+            <span v-if='takeTeaType==1'>快递</span>
+            <span v-else>自提</span>
         </template>
         </el-table-column>
-        <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="仓储费">
+        <el-table-column prop="warehousingFee" show-overflow-tooltip align="center" label="仓储费">
         <template slot-scope="scope">
-            <span>100</span>
+            <span>{{scope.row.warehousingFee}}元</span>
         </template>
         </el-table-column>
         <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="当前状态">
         <template slot-scope="scope">
-            <span>待取货</span>
+            <span v-if='status==1'>已申请</span>
+            <span v-if='status==2'>出库中</span>
+            <span v-if='status==3'>已发货</span>
+            <span v-if='status==4'>已到店</span>
+            <span v-if='status==5'>待取货</span>
+            <span v-if='status==6'>待收货</span>
+            <span v-if='status==7'>已取货</span>
+            <span v-if='status==8'>待支付</span>
+            <span v-if='status==9'>已取消</span>
         </template>
         </el-table-column>
-        <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="茶企提货单号" width="180">
+        <!-- <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="茶企提货单号" width="180">
         <template slot-scope="scope">
             <span>123456789012345678</span>
         </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" fixed="right" label="操作" width="180">
         <template slot-scope="scope">
             <span><a @click="dialogVisible = !dialogVisible">物流信息</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;确认到店</span>
@@ -144,16 +135,25 @@ export default {
     getData() {
       this.axios
         .post(
-          this.http + "/interface/pc/personal/pcEnterprise/myStore",
+          this.http + "/interface/pc/distributor/pcTeaStore/myTeaOrder",
           qs.stringify({
-            releaseEnterpriseId: this.enterpriseCode,
+            distributorId: this.distributorId,
             currentPage: this.currentPage,
-            showCount: this.showCount,
+            phone:this.phone,
+            pageSize: this.pageSize,
             goodsName: this.goodsName,
-            goodsCode: this.goodsCode
+            goodsCode: this.goodsCode,
+            countSort:this.countSort,
+            takeTeaOrderCode:this.takeTeaOrderCode,
+            enterLogisticsOrderId:this.enterLogisticsOrderId,
+            status:this.status,
+            startTime:this.value13[0],
+            endTime:this.value13[1],
+            type:this.type
           })
         )
         .then(res => {
+          console.log(JSON.parse(res.data.data));
           this.tableData = JSON.parse(res.data.data).data;
           this.total = JSON.parse(res.data.data).total;
           console.log(JSON.parse(res.data.data));
@@ -172,30 +172,71 @@ export default {
       this.currentPage = data;
       this.getData();
     },
+      mysort(val){
+        console.log(val);
+        if (val.order=='ascending') {
+          this.countSort=1
+        this.getData()
+
+        }else{
+          this.countSort=2
+        this.getData()
+
+        }
+      },
     search() {
       this.getData();
     }
   },
   created() {
-    // this.getData()
+    this.getData()
   },
   data() {
     return {
       tableData: [],
       http: this.$store.state.dialog.http,
-      enterpriseCode: this.$store.state.dialog.enterpriseCode,
+      distributorId: this.$getcookie('distributorCode'),
+      phone:this.$getcookie('LOGIN_PHONE'),
       currentPage: 1,
-      showCount: 10,
+      pageSize: 10,
       goodsName: "",
       goodsCode: "",
       total: 1,
-      activeName: "first",
-      formInline: {
-        user: "",
-        region: ""
-      },
+      countSort:'',
+      takeTeaOrderCode:'',//提货单号
+      enterLogisticsOrderId:'',
+      status:'',
       value13: "",
+      type:'1',
       fullscreenLoading: "",
+      options: [{
+          value: '1',
+          label: '已申请'
+        }, {
+          value: '2',
+          label: '出库中'
+        }, {
+          value: '3',
+          label: '已发货'
+        }, {
+          value: '4',
+          label: '已到店'
+        }, {
+          value: '5',
+          label: '待取货'
+        }, {
+          value: '6',
+          label: '待收货'
+        }, {
+          value: '7',
+          label: '已取货'
+        }, {
+          value: '8',
+          label: '待支付'
+        }, {
+          value: '9',
+          label: '已取消'
+        }],
       stock: [
         { releaseCountTotal: 1 },
         { releaseCountTotal: 2 },

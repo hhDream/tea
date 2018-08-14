@@ -6,9 +6,9 @@ import _ from 'lodash' //这个工具可以降低js对数组的操作
 Router.prototype.openPage = function(link, query) {
     this.push({ //向后面添加
         path: link,
-        // query: _.assignIn({
-        //     time: new Date().getTime()
-        // }, query || {})
+        query: _.assignIn({
+            time: new Date().getTime()
+        }, query || {})
     })
 }
 
@@ -594,7 +594,6 @@ function getCookie(cname) {
 // 跳转后返回顶部
 router.afterEach((to, from, next) => {
         window.scrollTo(0, 0);
-        // store.commit('changeLoading', false); //加载loading
     })
     // 全局路由守卫
 router.beforeEach((to, from, next) => {
@@ -602,9 +601,9 @@ router.beforeEach((to, from, next) => {
     // to: Route: 即将要进入的目标 路由对象
     // from: Route: 当前导航正要离开的路由
     // next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
-
     const nextRoute = ['home', 'takegoodsDetail', 'rushby', 'myInventory', 'myAccount', 'management', 'getRetailPrices', 'dealerTransaction', 'dealerManage', 'billQuery', 'message', 'editMoneyPsw', 'editPwd'];
-    if (getCookie('JSESSIONID')) {
+    // const nextRoute = [];
+    if (getCookie('LOGIN_PHONE')) {
         store.commit('changeCookie', true);
     } else {
         store.commit('changeCookie', false);
@@ -619,7 +618,6 @@ router.beforeEach((to, from, next) => {
     } else {
         store.commit('changePhone', "");
     }
-    // store.commit('changeLoading', true); //加载loading
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
     const teaMallArr = ['teaMallMoreNotice', 'teaMallNotice', 'teaMallNew', 'teaMallNews', 'teaMallPayMent', 'register']
     const userCenter = ['myUserCenter', 'takeDetail', 'userStock', 'userAddress', 'userInfo', 'userPwd', 'bankCard', 'coupon', 'increaseAptitudes', 'orderSearch', 'userHome', 'userInfo', 'buyListDetail', 'purchaseOrder', 'sellOrder', 'userPwd']
@@ -635,27 +633,38 @@ router.beforeEach((to, from, next) => {
         store.commit('changeIsShow', 0)
     }
     if (to.name == 'teaMallRush') {
-        store.commit('changeIsShow', 2)
-    }
-    if (to.name == 'teaMallShop') {
         store.commit('changeIsShow', 1)
     }
+    if (to.name == 'teaMallShop') {
+        store.commit('changeIsShow', 2)
+    }
     // 未登录状态；当路由到nextRoute指定页时，跳转至login
-    if (nextRoute.indexOf(to.name) >= 0) {
+    if (nextRoute.indexOf(to.name) >= 0 || teaMallArr.indexOf(to.name) >= 0 || distributorCenter.indexOf(to.name) >= 0 || userCenter.indexOf(to.name) >= 0) {
         if (!isLogin) {
             router.push({
-                    name: 'login'
-                })
-                // location.href = ''
+                name: 'login'
+            })
         }
     }
     // 已登录状态；当路由到login时，跳转至home 
     if (to.name === 'login') {
         store.commit('changeIsLogin', false);
         if (isLogin) {
-            router.push({
-                name: 'home'
-            });
+            var c = getCookie('STATUS')
+            if (c == 1) {
+                router.push({
+                    name: "userHome"
+                });
+            } else if (c == 2) {
+                router.push({
+                    name: "banlance"
+                });
+            } else if (c == 3) {
+                router.push({
+                    name: "home"
+                });
+            }
+
         }
     } else {
         store.commit('changeIsLogin', true);

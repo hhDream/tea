@@ -32,12 +32,12 @@
       </el-table-column>
       <el-table-column prop="releasePrice" label="抢购价格" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.releasePrice?scope.row.releasePrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</span>
+          <span>{{ scope.row.releasePrice?scope.row.releasePrice:'0'}} 元/{{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="nowPrice" label="当前零售指导价(元)" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.nowPrice?scope.row.nowPrice:'0'}} 元/{{scope.row.benchmarkingUnit}}</span>
+          <span>{{ scope.row.nowPrice?scope.row.nowPrice:'0'}} 元/{{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="setTime" label="设置时间" >

@@ -3,6 +3,7 @@
     margin: 10px 0 0;
     background-color: #fff;
     padding: 15px;
+    width: 100%;
 }
 
 .location {
@@ -123,7 +124,7 @@
 .info .store {
     clear: both;
     margin: 25px 15px;
-    width: 210px;
+    width: 250px;
 }
 
 .info .store p {
@@ -248,10 +249,6 @@
 
 
 /*幻灯片*/
-
-.detail-slide {
-    padding: 10px;
-}
 
 .detail-slide .big {
     display: table;

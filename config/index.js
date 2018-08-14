@@ -13,7 +13,8 @@ module.exports = {
         proxyTable: {
             '/apis': {
                 // 测试环境
-                target: 'http://mertest.chinapnr.com/npay/merchantRequest',
+                target: 'http://192.168.0.157:8080/tea',
+                // target: 'https://ent.teaexs.com/platform',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/apis': ''
@@ -21,7 +22,7 @@ module.exports = {
             }
         },
         // Various Dev Server settings
-        host: 'localhost', // can be overwritten by process.env.HOST
+        host: '192.168.0.128', // can be overwritten by process.env.HOST
         port: 3000, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: false,
         errorOverlay: true,
@@ -46,8 +47,8 @@ module.exports = {
 
     build: {
         env: require('./prod.env'),
-        index: path.resolve(__dirname, '../dist/index.html'),
-        assetsRoot: path.resolve(__dirname, '../dist'),
+        index: path.resolve(__dirname, '../tea/index.html'),
+        assetsRoot: path.resolve(__dirname, '../tea'),
         assetsSubDirectory: 'static',
         assetsPublicPath: './',
         productionSourceMap: false,
