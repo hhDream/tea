@@ -3,7 +3,7 @@
         <div style="min-width:1190px;margin:0 auto;float: none;">
             <el-carousel height="350px">
                 <el-carousel-item v-for="(item,index) in bannerList" :key="index">
-                    <a href="" :style="{ 'background': 'url(' + item.src + ') center top no-repeat','display':'block','width':'100%','height':'100%' }"></a>
+                    <a href="" :style="{ 'background': 'url(' + item.url + ') center top no-repeat','display':'block','width':'100%','height':'100%' }"></a>
                 </el-carousel-item>
             </el-carousel>
         </div>
@@ -29,13 +29,13 @@
                 <el-carousel trigger="click" :autoplay="false" arrow='always'>
                     <el-carousel-item v-for="(item,index) in SPbannerList" :key="index">
                         <a href="#" @click="$router.openPage('/teaMallRush');">
-                            <img style="width:100%" :src="item.src" alt="">
+                            <img style="width:100%" :src="item.url" alt="">
                         </a>
                     </el-carousel-item>
                 </el-carousel>
                 <div style="margin-bottom:80px;">
                     <div class="notice-information clearfix">
-                        <div id="newsImg" class="fl img"><img src="../../assets/images/noticeImage_0941058468127.jpg"></div>
+                        <div id="newsImg" class="fl img"><img :src="firstImg"></div>
                         <div class="fr list">
                             <div class="title">
                                 <div class="tit"><span>新闻</span>中心</div>
@@ -366,430 +366,662 @@
 </template>
 
 <script>
-    import qs from 'qs';
-    export default ({
-        data() {
-            return {
-                dialogVisible: false,
-                newsList: [{
-                    abstractContent: "照耀",
-                    author: "admin",
-                    bulletinType: "SYSINFO",
-                    cover: "https://ent.teaexs.com/picture/3abeaa42a93b447dab44b960ab94bd23.png",
-                    id: 62,
-                    isHasBeenRead: null,
-                    label: "标签",
-                    lastUpdateTime: null,
-                    param1: null,
-                    param2: null,
-                    param3: null,
-                    param4: null,
-                    param5: null,
-                    releaseTime: "2018-07-26 19:07:44",
-                    source: "MINIWECHAT,APP",
-                    status: null,
-                    title: "测试"
-                }],
-                teaText: {
-                    title: '下关沱茶',
-                    text: '云南下关沱茶（集团）股份有限公司位于风景秀丽、气候宜人的大理市下关，苍山洱海优良的生态环境，大理地区悠久精湛的制茶技艺，为下关沱茶的优良品质提供了得天独厚的条件。 下关沱茶集团公司产品是以下关沱茶、饼茶、砖茶等各种紧压茶为主的云南普洱茶，也包括部分绿茶、特种茶、袋泡茶等共200多个品种。 下关沱茶集团拥有8项桂冠：农业产业化国家级重点龙头企业、国家扶贫龙头企业、全国民族特需商品定点生产企业、国家边销茶原料储备企业、国家茶叶加工技术研发分中心、中华老字号、下关沱茶制作技艺入选国务院公布的第三批非物质文化遗产名录、“下关”商标认定为“中国驰名商标”。'
-                },
-                interval: '',
-                merchantList: [{
-                    src: require('../../assets/images/brand-head1-img01.jpg'),
-                    title: '下关沱茶',
-                    text: '云南下关沱茶（集团）股份有限公司位于风景秀丽、气候宜人的大理市下关，苍山洱海优良的生态环境，大理地区悠久精湛的制茶技艺，为下关沱茶的优良品质提供了得天独厚的条件。 下关沱茶集团公司产品是以下关沱茶、饼茶、砖茶等各种紧压茶为主的云南普洱茶，也包括部分绿茶、特种茶、袋泡茶等共200多个品种。 下关沱茶集团拥有8项桂冠：农业产业化国家级重点龙头企业、国家扶贫龙头企业、全国民族特需商品定点生产企业、国家边销茶原料储备企业、国家茶叶加工技术研发分中心、中华老字号、下关沱茶制作技艺入选国务院公布的第三批非物质文化遗产名录、“下关”商标认定为“中国驰名商标”。'
-                }, {
-                    src: require('../../assets/images/brand-head2-img01.jpg'),
-                    title: '臻味号',
-                    text: '在花开四季的云南，在地处热带的西双版纳，在常有云雾升起的高山、群山之间，有傣人、布朗人、拉祜人、爱尼人的家园、几百年来，他们仰俯大地，以茶为生，守望着历史悠久的古树茶园。臻味号和这片土地结缘，和守望土地的人们结缘。臻味号以虔诚之心，扎根这片土地；阅读这片土地；拣选最好的古树茶，以古法精心加工，利于越陈越香。尊重土地、尊重传统的人、尊重原生古茶。真味、真实、真地道。'
-                }, {
-                    src: require('../../assets/images/brand-head3-img02.jpg'),
-                    title: '老同志',
-                    text: '云南海湾茶业有限公司于2002年成立，位于昆明国家经济技术开发区，建筑面积5200平方米。作为与国内外客户的贸易合作桥梁，它不仅是海湾茶业的销售窗口，而且是茶叶研究、开发的中心。 云南海湾茶业不仅重视生产技术，还聚集了一大批专业的市场营销人员，公司自2002年成立，2003年取得进出口经营权以来，每年的普洱茶出口量在800吨左右,位居云南普洱茶出口的前列，为亚洲出口，欧美出口，专业市场内销，大众市场营销等提供优质的普洱茶产品，满足市场需求，为客户创造价值。'
-                }, {
-                    src: require('../../assets/images/brand-head4-img01.jpg'),
-                    title: '岁月知味',
-                    text: '岁月知味茶业由资深茶人郑少烘先生创办于2005年,公司一直以“纯正易武茶”的传承者为己任，尊重人文历史和自然法则，弘扬古法制茶工艺，以“匠心与品质”为企业主旨，经过十年沉积，已成为易武茶区经营规模及老茶存量皆具说服力的代言企业，并拥有易武千亩古茶园有机认证。岁月知味用了很多时间去读懂易武，从2005年生产出第一款【易武正山古树】始，到2008年细分出易武各村寨小产区，再到2010年建立易武四大古树茶基地，并在2012年获得有机认证至今，公司所生产的每一款产品都是心血的结晶和品质的见证。'
-                }, {
-                    src: require('../../assets/images/brand-head6-img03.jpg'),
-                    title: '六大茶山',
-                    text: '云南六大茶山茶业有限公司于2002年在昆明成立，是一家专业生产和销售精品系列普洱茶的茶叶企业。公司在凤庆、勐海两个云南茶叶主产地建有完全符合食品生产标准的现代化茶厂，拥有位于西双版纳勐海县的贺开16200亩有机古茶原料基地及位于临沧凤庆县的岔河10000多亩有机茶园原料基地，年生产能力50000吨，并在全国二十多个省（市、自治区）与1000余家机构（个人）建立了合作伙伴关系。公司主要生产和销售以普洱茶为主的各种茶叶珍品：包括六大茶山野生茶系列的饼茶、砖茶、沱茶、竹筒茶，以及上等的各级有机生态茶系列品。公司生产的精品系列普洱茶不仅得到国内同行的好评，而且受到海外茶人的认可和赞誉，近年来在各种茶叶评奖活动中公司产品多次获奖，“六大茶山”正成为普洱茶的强势品牌。'
-                }],
-                bannerList: [{
-                    src: require('../../assets/images/banner1.jpeg')
-                }, {
-                    src: require('../../assets/images/banner2.jpeg')
-                }],
-                SPbannerList: [{
-                    src: require('../../assets/images/SPbanner1.png')
-                }, {
-                    src: require('../../assets/images/SPbanner2.png')
-                }],
-                JSbannerList: [{
-                    src: require('../../assets/images/brand-head1-img01.jpg')
-                }, {
-                    src: require('../../assets/images/brand-head1-img02.jpg')
-                }, {
-                    src: require('../../assets/images/brand-head1-img03.jpg')
-                }],
-                prizeList: [{
-                        name: '【新品上市】一念间·小粒茶和红柑丸'
-                    },
-                    {
-                        name: '一念间·小粒茶'
-                    },
-                    {
-                        name: '【新品上市】一念间·小粒茶和红柑丸'
-                    },
-                    {
-                        name: '一念间·小粒茶'
-                    },
-                    {
-                        name: '【新品上市】一念间·小粒茶和红柑丸'
-                    }
-                ],
-                activeIndex: 0,
-                http: this.$store.state.dialog.http
-            }
+import qs from "qs";
+export default {
+  data() {
+    return {
+      firstImg:"",
+      dialogVisible: false,
+      newsList: [
+        // {
+        //   abstractContent: "照耀",
+        //   author: "admin",
+        //   bulletinType: "SYSINFO",
+        //   cover:
+        //     "https://ent.teaexs.com/picture/3abeaa42a93b447dab44b960ab94bd23.png",
+        //   id: 62,
+        //   isHasBeenRead: null,
+        //   label: "标签",
+        //   lastUpdateTime: null,
+        //   param1: null,
+        //   param2: null,
+        //   param3: null,
+        //   param4: null,
+        //   param5: null,
+        //   releaseTime: "2018-07-26 19:07:44",
+        //   source: "MINIWECHAT,APP",
+        //   status: null,
+        //   title: "测试"
+        // }
+      ],
+      teaText: {
+        title: "下关沱茶",
+        text:
+          "云南下关沱茶（集团）股份有限公司位于风景秀丽、气候宜人的大理市下关，苍山洱海优良的生态环境，大理地区悠久精湛的制茶技艺，为下关沱茶的优良品质提供了得天独厚的条件。 下关沱茶集团公司产品是以下关沱茶、饼茶、砖茶等各种紧压茶为主的云南普洱茶，也包括部分绿茶、特种茶、袋泡茶等共200多个品种。 下关沱茶集团拥有8项桂冠：农业产业化国家级重点龙头企业、国家扶贫龙头企业、全国民族特需商品定点生产企业、国家边销茶原料储备企业、国家茶叶加工技术研发分中心、中华老字号、下关沱茶制作技艺入选国务院公布的第三批非物质文化遗产名录、“下关”商标认定为“中国驰名商标”。"
+      },
+      interval: "",
+      // merchantList: [
+      //   {
+      //     src: require("../../assets/images/brand-head1-img01.jpg"),
+      //     title: "下关沱茶",
+      //     text:
+      //       "云南下关沱茶（集团）股份有限公司位于风景秀丽、气候宜人的大理市下关，苍山洱海优良的生态环境，大理地区悠久精湛的制茶技艺，为下关沱茶的优良品质提供了得天独厚的条件。 下关沱茶集团公司产品是以下关沱茶、饼茶、砖茶等各种紧压茶为主的云南普洱茶，也包括部分绿茶、特种茶、袋泡茶等共200多个品种。 下关沱茶集团拥有8项桂冠：农业产业化国家级重点龙头企业、国家扶贫龙头企业、全国民族特需商品定点生产企业、国家边销茶原料储备企业、国家茶叶加工技术研发分中心、中华老字号、下关沱茶制作技艺入选国务院公布的第三批非物质文化遗产名录、“下关”商标认定为“中国驰名商标”。"
+      //   },
+      //   {
+      //     src: require("../../assets/images/brand-head2-img01.jpg"),
+      //     title: "臻味号",
+      //     text:
+      //       "在花开四季的云南，在地处热带的西双版纳，在常有云雾升起的高山、群山之间，有傣人、布朗人、拉祜人、爱尼人的家园、几百年来，他们仰俯大地，以茶为生，守望着历史悠久的古树茶园。臻味号和这片土地结缘，和守望土地的人们结缘。臻味号以虔诚之心，扎根这片土地；阅读这片土地；拣选最好的古树茶，以古法精心加工，利于越陈越香。尊重土地、尊重传统的人、尊重原生古茶。真味、真实、真地道。"
+      //   },
+      //   {
+      //     src: require("../../assets/images/brand-head3-img02.jpg"),
+      //     title: "老同志",
+      //     text:
+      //       "云南海湾茶业有限公司于2002年成立，位于昆明国家经济技术开发区，建筑面积5200平方米。作为与国内外客户的贸易合作桥梁，它不仅是海湾茶业的销售窗口，而且是茶叶研究、开发的中心。 云南海湾茶业不仅重视生产技术，还聚集了一大批专业的市场营销人员，公司自2002年成立，2003年取得进出口经营权以来，每年的普洱茶出口量在800吨左右,位居云南普洱茶出口的前列，为亚洲出口，欧美出口，专业市场内销，大众市场营销等提供优质的普洱茶产品，满足市场需求，为客户创造价值。"
+      //   },
+      //   {
+      //     src: require("../../assets/images/brand-head4-img01.jpg"),
+      //     title: "岁月知味",
+      //     text:
+      //       "岁月知味茶业由资深茶人郑少烘先生创办于2005年,公司一直以“纯正易武茶”的传承者为己任，尊重人文历史和自然法则，弘扬古法制茶工艺，以“匠心与品质”为企业主旨，经过十年沉积，已成为易武茶区经营规模及老茶存量皆具说服力的代言企业，并拥有易武千亩古茶园有机认证。岁月知味用了很多时间去读懂易武，从2005年生产出第一款【易武正山古树】始，到2008年细分出易武各村寨小产区，再到2010年建立易武四大古树茶基地，并在2012年获得有机认证至今，公司所生产的每一款产品都是心血的结晶和品质的见证。"
+      //   },
+      //   {
+      //     src: require("../../assets/images/brand-head6-img03.jpg"),
+      //     title: "六大茶山",
+      //     text:
+      //       "云南六大茶山茶业有限公司于2002年在昆明成立，是一家专业生产和销售精品系列普洱茶的茶叶企业。公司在凤庆、勐海两个云南茶叶主产地建有完全符合食品生产标准的现代化茶厂，拥有位于西双版纳勐海县的贺开16200亩有机古茶原料基地及位于临沧凤庆县的岔河10000多亩有机茶园原料基地，年生产能力50000吨，并在全国二十多个省（市、自治区）与1000余家机构（个人）建立了合作伙伴关系。公司主要生产和销售以普洱茶为主的各种茶叶珍品：包括六大茶山野生茶系列的饼茶、砖茶、沱茶、竹筒茶，以及上等的各级有机生态茶系列品。公司生产的精品系列普洱茶不仅得到国内同行的好评，而且受到海外茶人的认可和赞誉，近年来在各种茶叶评奖活动中公司产品多次获奖，“六大茶山”正成为普洱茶的强势品牌。"
+      //   }
+      // ],
+      bannerList: [
+        {
+          src: 'https://mini.teaexs.com/picture/pcbanner1.jpg'
         },
-        computed: {
-            top() {
-                return -this.activeIndex * 50 + 'px';
-            }
+        {
+          src: 'https://mini.teaexs.com/picture/pcbanner2.jpg'
         },
-        mounted() {
-            this.intervalStart();
-            var $brand = $(".brand-image");
-            console.log($brand);
-            this.ani(); //首页底部动画
-            this.getList(); //公告列表
-            this.getNewsList(); //咨询列表
-        },
-        methods: {
-            ani() {
-                $(function() {
-                    var classname, index, active_index, code,
-                        $brand = $(".brand-image"),
-                        $tab_ul = $(".brand-image .tab-nav ul"),
-                        $tab_list_con = $(".brand-image .tab-list-con"),
-                        $active_l = $(".brand-image .active-l"),
-                        $active_m = $(".brand-image .active-m"),
-                        $active_r = $(".brand-image .active-r"),
-                        $loading = $(".brand-image .tab-list .loading"),
-                        length = $tab_ul.children("li").length;
-                    //初始化
-                    var init = ".brand-image .tab-nav li.active";
-                    $tab_ul.children("li").eq(0).addClass("active-3");
-                    $tab_ul.children("li").eq(1).addClass("active-2");
-                    $tab_ul.children("li").eq(2).addClass("active-1");
-                    $tab_ul.children("li").eq(3).addClass("active")
-                        .prepend("<em class='b-line'></em>");
-                    $tab_ul.children("li").eq(4).addClass("active-1");
-                    $tab_ul.children("li").eq(5).addClass("active-2");
-                    $tab_ul.children("li").eq(6).addClass("active-3");
-                    tab_list(init); ////头像上部添加内容
-                    //点击头像
-                    $tab_ul.on("click", "li:not(.active)", function() {
-                        code = "";
-                        index = $(this).index();
-                        active_index = $tab_ul.children("li.active").index();
-                        $tab_list_con.hide(); //头像上部内容隐藏
-                        $loading.fadeIn("fast"); //loading显示
-                        $(this).siblings(".active").find(".b-line").remove();
-                        $(this).removeClass().addClass("active").prepend("<em class='b-line'></em>");
-                        if (index > active_index) { //如果点击的是active后面
-                            $tab_ul.children("li:lt(" + (index - 3) + ")").removeClass(); //移除active左起3个li之前的class
-                            //重置active之前的3个li
-                            $tab_ul.children("li").eq(index - 1).removeClass().addClass("active-1");
-                            $tab_ul.children("li").eq(index - 2).removeClass().addClass("active-2");
-                            $tab_ul.children("li").eq(index - 3).removeClass().addClass("active-3");
-                            for (var i = 0; i < index - active_index; i++) { //需要后置的li标签
-                                code += "<li>" + $tab_ul.children("li").eq(i).html() + "</li>";
-                            };
-                            $tab_ul.children("li:gt(" + (index + 3) + ")").removeClass(); //移除active右起3个li之前的class
-                            $tab_ul.append(code); //前面的li后置
-                            //重置active之后的3个li
-                            $tab_ul.children("li").eq(index + 1).removeClass().addClass("active-1");
-                            $tab_ul.children("li").eq(index + 2).removeClass().addClass("active-2");
-                            $tab_ul.children("li").eq(index + 3).removeClass().addClass("active-3");
-                            $tab_ul.children("li:lt(" + (index - active_index) + ")").remove(); //移除最前面的指定数量li标签
-                        } else if (index < active_index) { //如果点击的是active前面
-                            $tab_ul.children("li:gt(" + (index + 3) + ")").removeClass(); //移除active右起3个li之后的class
-                            //重置active之后的3个li
-                            $tab_ul.children("li").eq(index + 1).removeClass().addClass("active-1");
-                            $tab_ul.children("li").eq(index + 2).removeClass().addClass("active-2");
-                            $tab_ul.children("li").eq(index + 3).removeClass().addClass("active-3");
-                            for (var i = length - 1 - (active_index - index) + 1; i < length; i++) { //需要前置的li标签
-                                code += "<li>" + $tab_ul.children("li").eq(i).html() + "</li>";
-                            };
-                            $tab_ul.children("li:gt(" + (length - 1 - (active_index - index)) + ")").remove(); //移除最后面的指定数量li标签
-                            $tab_ul.prepend(code); //后面的li前置
-                            //重置active之前的3个li
-                            $tab_ul.children("li").eq(0).removeClass().addClass("active-3");
-                            $tab_ul.children("li").eq(1).removeClass().addClass("active-2");
-                            $tab_ul.children("li").eq(2).removeClass().addClass("active-1");
-                        };
-                        tab_list(this); //头像上部内容变化
-                    });
-                    //点击头像上部内容右边
-                    var active_l_img, active_l_txts, active_m_img, active_m_txts, active_r_img, active_r_txts;
-                    $brand.on("click", ".active-r", function() {
-                        //存储内容
-                        code_save();
-                        //文字隐藏处理
-                        txts_hide();
-                        //右边动画
-                        $active_r.css("z-index", "1")
-                            .animate({
-                                width: "480px",
-                                height: "364px",
-                                marginTop: "0",
-                                top: "0",
-                                left: "50%",
-                                marginLeft: "-240px",
-                                opacity: "1"
-                            }, "fast");
-                        $active_r.find("img").animate({
-                            width: "480px",
-                            height: "364px"
-                        }, "fast");
-                        //中间动画
-                        $active_m.css("z-index", "auto")
-                            .animate({
-                                width: "329px",
-                                height: "232px",
-                                marginTop: "-116px",
-                                top: "50%",
-                                left: "0",
-                                marginLeft: "0",
-                                opacity: "0.65"
-                            }, "fast");
-                        $active_m.find("img").animate({
-                            width: "329px",
-                            height: "232px"
-                        }, "fast");
-                        //左边动画
-                        $active_l.css("z-index", "auto")
-                            .animate({
-                                width: "329px",
-                                height: "232px",
-                                marginTop: "-116px",
-                                top: "50%",
-                                left: "678px",
-                                marginLeft: "0",
-                                opacity: "0.65"
-                            }, "fast");
-                        $active_l.find("img").animate({
-                            width: "329px",
-                            height: "232px"
-                        }, "fast", function() {
-                            //动画完毕配置内容
-                            code_reset("active-r");
-                        });
-                    });
-                    //点击头像上部内容左边
-                    $brand.on("click", ".active-l", function() {
-                        //存储内容
-                        code_save();
-                        //文字隐藏处理
-                        txts_hide();
-                        //左边动画
-                        $active_l.css("z-index", "1")
-                            .animate({
-                                width: "480px",
-                                height: "364px",
-                                marginTop: "0",
-                                top: "0",
-                                left: "50%",
-                                marginLeft: "-240px",
-                                opacity: "1"
-                            }, "fast");
-                        $active_l.find("img").animate({
-                            width: "480px",
-                            height: "364px"
-                        }, "fast");
-                        //中间动画
-                        $active_m.css("z-index", "auto")
-                            .animate({
-                                width: "329px",
-                                height: "232px",
-                                marginTop: "-116px",
-                                top: "50%",
-                                left: "678px",
-                                marginLeft: "0",
-                                opacity: "0.65"
-                            }, "fast");
-                        $active_m.find("img").animate({
-                            width: "329px",
-                            height: "232px"
-                        }, "fast");
-                        //右边动画
-                        $active_r.css("z-index", "auto")
-                            .animate({
-                                width: "329px",
-                                height: "232px",
-                                marginTop: "-116px",
-                                top: "50%",
-                                left: "0",
-                                marginLeft: "0",
-                                opacity: "0.65"
-                            }, "fast");
-                        $active_r.find("img").animate({
-                            width: "329px",
-                            height: "232px"
-                        }, "fast", function() {
-                            //动画完毕配置内容
-                            code_reset("active-l");
-                        });
-                    });
-                    //定义函数
-                    function tab_list(obj) { //头像上部内容变化
-                        var img_code = $(obj).find(".img-m").html(),
-                            img_code_l = $(obj).find(".img-l").html(),
-                            img_code_r = $(obj).find(".img-r").html(),
-                            txts_code = $(obj).find(".txts").html();
-                        $active_l.children(".img").html(img_code_l);
-                        $active_m.children(".img").html(img_code);
-                        $active_r.children(".img").html(img_code_r);
-                        $active_m.children(".txts").html(txts_code);
-                        setTimeout(function() {
-                            $loading.hide(); //loading隐藏
-                            $tab_list_con.fadeIn("fast"); //头像上部内容显示
-                        }, 500);
-                    };
-                    function code_save() { //代码内容存储
-                        active_l_img = $active_l.children(".img").html();
-                        active_m_img = $active_m.children(".img").html();
-                        active_r_img = $active_r.children(".img").html();
-                        active_m_txts = $active_m.children(".txts").html();
-                    };
-                    function txts_hide() { //文字隐藏处理
-                        $active_m.children(".txts").fadeOut("fast");
-                    };
-                    function code_reset(obj) { //动画完毕配置内容
-                        $active_l.removeAttr("style");
-                        $active_l.find("img").removeAttr("style");
-                        $active_m.removeAttr("style");
-                        $active_m.find("img").removeAttr("style");
-                        $active_r.removeAttr("style");
-                        $active_r.find("img").removeAttr("style");
-                        if (obj == "active-r") {
-                            $active_l.children(".img").html(active_m_img);
-                            $active_m.children(".img").html(active_r_img);
-                            $active_r.children(".img").html(active_l_img);
-                        } else if (obj == "active-l") {
-                            $active_l.children(".img").html(active_r_img);
-                            $active_m.children(".img").html(active_l_img);
-                            $active_r.children(".img").html(active_m_img);
-                        };
-                        $active_m.children(".txts").fadeIn("slow");
-                    };
-                });
-            },
-            stopInterval() {
-                // console.log(this.interval);
-                clearInterval(this.interval)
-            },
-            intervalStart() {
-                this.interval = setInterval(_ => {
-                    if (this.activeIndex < this.prizeList.length - 1) {
-                        this.activeIndex += 1;
-                    } else {
-                        this.activeIndex = 0;
-                    }
-                }, 2000);
-            },
-            getList() {
-                this.axios.post(this.http + '/interface/pc/bulltin/list', qs.stringify({
-                    currentPage: 1,
-                    bulletinType: 1,
-                    pageSize: 5
-                })).then(res => {
-                    console.log(JSON.parse(res.data.data));
-                    this.prizeList = JSON.parse(res.data.data).bulltinList;
-                })
-            },
-            getNewsList() {
-                this.axios.post(this.http + '/interface/pc/bulltin/list', qs.stringify({
-                    currentPage: 1,
-                    bulletinType: 3,
-                    pageSize: 5
-                })).then(res => {
-                    console.log(JSON.parse(res.data.data));
-                    this.newsList = JSON.parse(res.data.data).bulltinList
-                })
-            }
+        {
+          src: 'https://mini.teaexs.com/picture/pcbanner3.jpg'
         }
-    })
+      ],
+      SPbannerList: [
+        {
+          src: require("../../assets/images/sp1.png")
+        },
+        {
+          src: require("../../assets/images/sp2.png")
+        }
+      ],
+      JSbannerList: [
+        {
+          src: require("../../assets/images/brand-head1-img01.jpg")
+        },
+        {
+          src: require("../../assets/images/brand-head1-img02.jpg")
+        },
+        {
+          src: require("../../assets/images/brand-head1-img03.jpg")
+        }
+      ],
+      prizeList: [
+        {
+          name: "【新品上市】一念间·小粒茶和红柑丸"
+        },
+        {
+          name: "一念间·小粒茶"
+        },
+        {
+          name: "【新品上市】一念间·小粒茶和红柑丸"
+        },
+        {
+          name: "一念间·小粒茶"
+        },
+        {
+          name: "【新品上市】一念间·小粒茶和红柑丸"
+        }
+      ],
+      activeIndex: 0,
+      http: this.$store.state.dialog.http
+    };
+  },
+  computed: {
+    top() {
+      return -this.activeIndex * 50 + "px";
+    }
+  },
+  mounted() {
+    this.intervalStart();
+    var $brand = $(".brand-image");
+    this.ani(); //首页底部动画
+    this.getList(); //公告列表
+    this.getNewsList(); //咨询列表
+    this.getPicture();
+  },
+  methods: {
+    getPicture() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/startpage/getStartPagePictures",
+          qs.stringify({
+            source: "PCSHOPPINGMALL",
+            displayArea: "STARTPAGE"
+          })
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+            this.firstImg = res.data.data[0].url;
+          }
+        });
+        this.axios
+        .post(
+          this.http + "/interface/pc/startpage/getStartPagePictures",
+          qs.stringify({
+            source: "PCSHOPPINGMALL",
+            displayArea: "INDEXPAGE"
+          })
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+            this.SPbannerList = res.data.data;
+          }
+        });
+        this.axios
+        .post(
+          this.http + "/interface/pc/startpage/getStartPagePictures",
+          qs.stringify({
+            source: "PCSHOPPINGMALL",
+            displayArea: "HOMEPAGE"
+          })
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+            this.bannerList = res.data.data;
+          }
+        });
+    },
+    ani() {
+      $(function() {
+        var classname,
+          index,
+          active_index,
+          code,
+          $brand = $(".brand-image"),
+          $tab_ul = $(".brand-image .tab-nav ul"),
+          $tab_list_con = $(".brand-image .tab-list-con"),
+          $active_l = $(".brand-image .active-l"),
+          $active_m = $(".brand-image .active-m"),
+          $active_r = $(".brand-image .active-r"),
+          $loading = $(".brand-image .tab-list .loading"),
+          length = $tab_ul.children("li").length;
+        //初始化
+        var init = ".brand-image .tab-nav li.active";
+        $tab_ul
+          .children("li")
+          .eq(0)
+          .addClass("active-3");
+        $tab_ul
+          .children("li")
+          .eq(1)
+          .addClass("active-2");
+        $tab_ul
+          .children("li")
+          .eq(2)
+          .addClass("active-1");
+        $tab_ul
+          .children("li")
+          .eq(3)
+          .addClass("active")
+          .prepend("<em class='b-line'></em>");
+        $tab_ul
+          .children("li")
+          .eq(4)
+          .addClass("active-1");
+        $tab_ul
+          .children("li")
+          .eq(5)
+          .addClass("active-2");
+        $tab_ul
+          .children("li")
+          .eq(6)
+          .addClass("active-3");
+        tab_list(init); ////头像上部添加内容
+        //点击头像
+        $tab_ul.on("click", "li:not(.active)", function() {
+          code = "";
+          index = $(this).index();
+          active_index = $tab_ul.children("li.active").index();
+          $tab_list_con.hide(); //头像上部内容隐藏
+          $loading.fadeIn("fast"); //loading显示
+          $(this)
+            .siblings(".active")
+            .find(".b-line")
+            .remove();
+          $(this)
+            .removeClass()
+            .addClass("active")
+            .prepend("<em class='b-line'></em>");
+          if (index > active_index) {
+            //如果点击的是active后面
+            $tab_ul.children("li:lt(" + (index - 3) + ")").removeClass(); //移除active左起3个li之前的class
+            //重置active之前的3个li
+            $tab_ul
+              .children("li")
+              .eq(index - 1)
+              .removeClass()
+              .addClass("active-1");
+            $tab_ul
+              .children("li")
+              .eq(index - 2)
+              .removeClass()
+              .addClass("active-2");
+            $tab_ul
+              .children("li")
+              .eq(index - 3)
+              .removeClass()
+              .addClass("active-3");
+            for (var i = 0; i < index - active_index; i++) {
+              //需要后置的li标签
+              code +=
+                "<li>" +
+                $tab_ul
+                  .children("li")
+                  .eq(i)
+                  .html() +
+                "</li>";
+            }
+            $tab_ul.children("li:gt(" + (index + 3) + ")").removeClass(); //移除active右起3个li之前的class
+            $tab_ul.append(code); //前面的li后置
+            //重置active之后的3个li
+            $tab_ul
+              .children("li")
+              .eq(index + 1)
+              .removeClass()
+              .addClass("active-1");
+            $tab_ul
+              .children("li")
+              .eq(index + 2)
+              .removeClass()
+              .addClass("active-2");
+            $tab_ul
+              .children("li")
+              .eq(index + 3)
+              .removeClass()
+              .addClass("active-3");
+            $tab_ul.children("li:lt(" + (index - active_index) + ")").remove(); //移除最前面的指定数量li标签
+          } else if (index < active_index) {
+            //如果点击的是active前面
+            $tab_ul.children("li:gt(" + (index + 3) + ")").removeClass(); //移除active右起3个li之后的class
+            //重置active之后的3个li
+            $tab_ul
+              .children("li")
+              .eq(index + 1)
+              .removeClass()
+              .addClass("active-1");
+            $tab_ul
+              .children("li")
+              .eq(index + 2)
+              .removeClass()
+              .addClass("active-2");
+            $tab_ul
+              .children("li")
+              .eq(index + 3)
+              .removeClass()
+              .addClass("active-3");
+            for (
+              var i = length - 1 - (active_index - index) + 1;
+              i < length;
+              i++
+            ) {
+              //需要前置的li标签
+              code +=
+                "<li>" +
+                $tab_ul
+                  .children("li")
+                  .eq(i)
+                  .html() +
+                "</li>";
+            }
+            $tab_ul
+              .children("li:gt(" + (length - 1 - (active_index - index)) + ")")
+              .remove(); //移除最后面的指定数量li标签
+            $tab_ul.prepend(code); //后面的li前置
+            //重置active之前的3个li
+            $tab_ul
+              .children("li")
+              .eq(0)
+              .removeClass()
+              .addClass("active-3");
+            $tab_ul
+              .children("li")
+              .eq(1)
+              .removeClass()
+              .addClass("active-2");
+            $tab_ul
+              .children("li")
+              .eq(2)
+              .removeClass()
+              .addClass("active-1");
+          }
+          tab_list(this); //头像上部内容变化
+        });
+        //点击头像上部内容右边
+        var active_l_img,
+          active_l_txts,
+          active_m_img,
+          active_m_txts,
+          active_r_img,
+          active_r_txts;
+        $brand.on("click", ".active-r", function() {
+          //存储内容
+          code_save();
+          //文字隐藏处理
+          txts_hide();
+          //右边动画
+          $active_r.css("z-index", "1").animate(
+            {
+              width: "480px",
+              height: "364px",
+              marginTop: "0",
+              top: "0",
+              left: "50%",
+              marginLeft: "-240px",
+              opacity: "1"
+            },
+            "fast"
+          );
+          $active_r.find("img").animate(
+            {
+              width: "480px",
+              height: "364px"
+            },
+            "fast"
+          );
+          //中间动画
+          $active_m.css("z-index", "auto").animate(
+            {
+              width: "329px",
+              height: "232px",
+              marginTop: "-116px",
+              top: "50%",
+              left: "0",
+              marginLeft: "0",
+              opacity: "0.65"
+            },
+            "fast"
+          );
+          $active_m.find("img").animate(
+            {
+              width: "329px",
+              height: "232px"
+            },
+            "fast"
+          );
+          //左边动画
+          $active_l.css("z-index", "auto").animate(
+            {
+              width: "329px",
+              height: "232px",
+              marginTop: "-116px",
+              top: "50%",
+              left: "678px",
+              marginLeft: "0",
+              opacity: "0.65"
+            },
+            "fast"
+          );
+          $active_l.find("img").animate(
+            {
+              width: "329px",
+              height: "232px"
+            },
+            "fast",
+            function() {
+              //动画完毕配置内容
+              code_reset("active-r");
+            }
+          );
+        });
+        //点击头像上部内容左边
+        $brand.on("click", ".active-l", function() {
+          //存储内容
+          code_save();
+          //文字隐藏处理
+          txts_hide();
+          //左边动画
+          $active_l.css("z-index", "1").animate(
+            {
+              width: "480px",
+              height: "364px",
+              marginTop: "0",
+              top: "0",
+              left: "50%",
+              marginLeft: "-240px",
+              opacity: "1"
+            },
+            "fast"
+          );
+          $active_l.find("img").animate(
+            {
+              width: "480px",
+              height: "364px"
+            },
+            "fast"
+          );
+          //中间动画
+          $active_m.css("z-index", "auto").animate(
+            {
+              width: "329px",
+              height: "232px",
+              marginTop: "-116px",
+              top: "50%",
+              left: "678px",
+              marginLeft: "0",
+              opacity: "0.65"
+            },
+            "fast"
+          );
+          $active_m.find("img").animate(
+            {
+              width: "329px",
+              height: "232px"
+            },
+            "fast"
+          );
+          //右边动画
+          $active_r.css("z-index", "auto").animate(
+            {
+              width: "329px",
+              height: "232px",
+              marginTop: "-116px",
+              top: "50%",
+              left: "0",
+              marginLeft: "0",
+              opacity: "0.65"
+            },
+            "fast"
+          );
+          $active_r.find("img").animate(
+            {
+              width: "329px",
+              height: "232px"
+            },
+            "fast",
+            function() {
+              //动画完毕配置内容
+              code_reset("active-l");
+            }
+          );
+        });
+        //定义函数
+        function tab_list(obj) {
+          //头像上部内容变化
+          var img_code = $(obj)
+              .find(".img-m")
+              .html(),
+            img_code_l = $(obj)
+              .find(".img-l")
+              .html(),
+            img_code_r = $(obj)
+              .find(".img-r")
+              .html(),
+            txts_code = $(obj)
+              .find(".txts")
+              .html();
+          $active_l.children(".img").html(img_code_l);
+          $active_m.children(".img").html(img_code);
+          $active_r.children(".img").html(img_code_r);
+          $active_m.children(".txts").html(txts_code);
+          setTimeout(function() {
+            $loading.hide(); //loading隐藏
+            $tab_list_con.fadeIn("fast"); //头像上部内容显示
+          }, 500);
+        }
+        function code_save() {
+          //代码内容存储
+          active_l_img = $active_l.children(".img").html();
+          active_m_img = $active_m.children(".img").html();
+          active_r_img = $active_r.children(".img").html();
+          active_m_txts = $active_m.children(".txts").html();
+        }
+        function txts_hide() {
+          //文字隐藏处理
+          $active_m.children(".txts").fadeOut("fast");
+        }
+        function code_reset(obj) {
+          //动画完毕配置内容
+          $active_l.removeAttr("style");
+          $active_l.find("img").removeAttr("style");
+          $active_m.removeAttr("style");
+          $active_m.find("img").removeAttr("style");
+          $active_r.removeAttr("style");
+          $active_r.find("img").removeAttr("style");
+          if (obj == "active-r") {
+            $active_l.children(".img").html(active_m_img);
+            $active_m.children(".img").html(active_r_img);
+            $active_r.children(".img").html(active_l_img);
+          } else if (obj == "active-l") {
+            $active_l.children(".img").html(active_r_img);
+            $active_m.children(".img").html(active_l_img);
+            $active_r.children(".img").html(active_m_img);
+          }
+          $active_m.children(".txts").fadeIn("slow");
+        }
+      });
+    },
+    stopInterval() {
+      clearInterval(this.interval);
+    },
+    intervalStart() {
+      this.interval = setInterval(_ => {
+        if (this.activeIndex < this.prizeList.length - 1) {
+          this.activeIndex += 1;
+        } else {
+          this.activeIndex = 0;
+        }
+      }, 2000);
+    },
+    getList() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/bulltin/list",
+          qs.stringify({
+            currentPage: 1,
+            bulletinType: 1,
+            pageSize: 5
+          })
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+            this.prizeList = JSON.parse(res.data.data).bulltinList;
+          }
+        });
+    },
+    getNewsList() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/bulltin/list",
+          qs.stringify({
+            currentPage: 1,
+            bulletinType: 3,
+            pageSize: 5
+          })
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+            this.newsList = JSON.parse(res.data.data).bulltinList;
+          }
+        });
+    }
+  }
+};
 </script>
 <style lang = 'less'>
-    @import '../../assets/index.css';
-    .scroll-wrap {
-        width: 100%;
-        height: 50px;
-        /* text-align: center; */
-        /* border: 1px solid blue; */
-        overflow: hidden;
+@import "../../assets/index.css";
+.scroll-wrap {
+  width: 100%;
+  height: 50px;
+  /* text-align: center; */
+  /* border: 1px solid blue; */
+  overflow: hidden;
+}
+.scroll-content {
+  position: relative;
+  transition: top 0.5s;
+  li {
+    line-height: 50px;
+    /* text-align: left; */
+    font-size: 16px;
+    a {
+      color: #666;
+      &:hover {
+        color: red;
+      }
     }
-    .scroll-content {
-        position: relative;
-        transition: top 0.5s;
-        li {
-            line-height: 50px;
-            /* text-align: left; */
-            font-size: 16px;
-            a {
-                color: #666;
-                &:hover {
-                    color: red;
-                }
-            }
-        }
-    }
-    .text_my {
-        font-size: 13px;
-        color: #999;
-        padding: 2px;
-        line-height: 17px;
-        text-indent: 2em;
-        /* text-overflow: ellipsis; */
-        /* -o-text-overflow: ellipsis; */
-        overflow: hidden;
-        display: block;
-        max-height: 53px;
-        /* -webkit-line-clamp: 3; */
-        margin-bottom: 10px;
-        position: relative;
-        /* -webkit-box-orient: vertical; */
-    }
-    .text_my::after {
-        content: "...";
-        font-weight: bold;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding: 0 20px;
-        background: url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png) repeat-y;
-    }
-    .bottom {
-        margin-top: 13px;
-        line-height: 12px;
-    }
-    .button {
-        padding: 0;
-        float: right;
-    }
-    .image {
-        width: 100%;
-        display: block;
-    }
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-    .clearfix:after {
-        clear: both
-    }
+  }
+}
+.text_my {
+  font-size: 13px;
+  color: #999;
+  padding: 2px;
+  line-height: 17px;
+  text-indent: 2em;
+  /* text-overflow: ellipsis; */
+  /* -o-text-overflow: ellipsis; */
+  overflow: hidden;
+  display: block;
+  max-height: 53px;
+  /* -webkit-line-clamp: 3; */
+  margin-bottom: 10px;
+  position: relative;
+  /* -webkit-box-orient: vertical; */
+}
+.text_my::after {
+  content: "...";
+  font-weight: bold;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0 20px;
+  background: url(http://newimg88.b0.upaiyun.com/newimg88/2014/09/ellipsis_bg.png)
+    repeat-y;
+}
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+}
+.button {
+  padding: 0;
+  float: right;
+}
+.image {
+  width: 100%;
+  display: block;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
 </style>

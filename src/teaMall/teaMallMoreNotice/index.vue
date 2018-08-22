@@ -74,9 +74,10 @@ import qs from 'qs';
                     bulletinType: 1,
                     pageSize: this.pageSize
                 })).then(res => {
-                    console.log(JSON.parse(res.data.data));
-                    this.noticeList = JSON.parse(res.data.data).bulltinList;
-                    this.total=JSON.parse(res.data.data).total
+                    if(res.data.code == 200){
+                        this.noticeList = JSON.parse(res.data.data).bulltinList;
+                        this.total=JSON.parse(res.data.data).total;
+                    }
                 })
             }
         }

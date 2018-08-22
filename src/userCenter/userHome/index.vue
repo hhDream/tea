@@ -9,7 +9,7 @@
             <img src="../../assets/images/user-head.jpg">
           </div>
           <div class="fr txt">
-            <h3>{{person.enterpriseName}}</h3>
+            <h3>{{person.customerName}}</h3>
             <p id="producerNo">
               <i>会员账号</i>{{person.loginAccount}}
             </p>
@@ -46,11 +46,11 @@
         <div class="fl usable">
           <p class="p1">
             <em></em>可用余额
-            <span id="my_balance_useable"> {{person.capitalBalance}}元</span>
+            <span id="my_balance_useable">{{person.availableFunds}}元</span>
           </p>
           <p class="p2">
             <em></em>冻结资金
-            <span id="my_balance_frozen"> 0.00</span>
+            <span id="my_balance_frozen">{{person.capitalBalance - person.availableFunds}}</span>
           </p>
         </div>
         <div class="fr buttons">
@@ -68,39 +68,43 @@
           <a class="fr" @click="$router.openPage('/myCenter/myInventory')">更多&gt;</a>
         </h4>
         <el-table :data="bill" border style="width: 100%" slot="empty">
-          <el-table-column prop="orderNum" label="订单编号"  width="120">
+          <el-table-column prop="orderCode" label="订单编号"  width="120" align="center">
           </el-table-column>
-          <el-table-column prop="goodsInfo" label="商品信息"  width="240">
+          <el-table-column prop="goodsInfo" label="商品信息" align="center" width="240">
             <template slot-scope="scope">
               <div class="sp_info">
                 <div class="sp_cover">
-                  <img src="https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=32b52bc5f51f4134f43a0d2c4476feaf/b999a9014c086e06893e896d0a087bf40ad1cb06.jpg">
+                  <img :src="scope.row.pcSmallPicture">
                 </div>
                 <div class="sp_content">
-                  <span>{{scope.row.goodsInfo}}</span><br>
-                  <span class="sp_code">商品代码：CS2018030601</span>
+                  <span>{{scope.row.goodsName}}</span><br>
+                  <span class="sp_code">商品代码：{{scope.row.goodsCode}}</span>
                 </div>
               </div>
             </template>
           </el-table-column>
           <el-table-column resizable show-overflow-tooltip align="center" prop="orderTime" label="下单时间" width="120">
             </el-table-column>
-          <el-table-column prop="seller" label="卖家"  width="150">
+          <el-table-column prop="soldName" label="卖家"  width="150" align="center">
           </el-table-column>
-          <el-table-column prop="countTotal" label="商品数量"  width="100">
+          <el-table-column prop="buyGoodsCount" label="商品数量"  width="100" align="center">
+          </el-table-column>
+          <el-table-column prop="actualAmountPayment" label="实付款" align="center">
+          </el-table-column>
+          <el-table-column prop="orderType" label="订单类型" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.countTotal?scope.row.countTotal:'0'}} {{scope.row.unit}}</span>
+              <span>{{ scope.row.orderType==1?'秒杀订单':'商城交易'}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="payment" label="实付款"  >
-          </el-table-column>
-          <el-table-column prop="orderType" label="订单类型"  >
-          </el-table-column>
-          <el-table-column prop="currentState" label="当前状态"  >
-          </el-table-column>
-          <el-table-column prop="action" label="操作"  >
+          <el-table-column prop="currentState" label="当前状态" align="center">
             <template slot-scope="scope">
-              <el-button @click="$router.openPage('/buyListDetail')" type="text">{{ scope.row.action}}</el-button>
+              <span>{{ scope.row.status==1?'待支付':scope.row.status==2?'已支付':'已取消'}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="action" label="操作" align="center" fixed='right'>
+            <template slot-scope="scope">
+              <span v-if="scope.row.status==1" style="color:#66b1ff;cursor:pointer">立即支付</span><br>
+              <span v-if="scope.row.status==1" style="color:#66b1ff;cursor:pointer">取消订单</span>
             </template>
           </el-table-column>
         </el-table>
@@ -120,113 +124,48 @@
         enterpriseCode: this.$store.state.dialog.enterpriseCode,
         http: this.$store.state.dialog.http,
         person: {
-          "enterpriseName": "某某某",
-          "loginAccount": "10010",
-          "capitalBalance": "200",
+          "name": "",
+          "loginAccount": this.getCookie("LOGIN_ACCOUNT"),
+          "capitalBalance": "0",
+          'availableFunds':'0',
         },
         allotment: [],
         stock: [],
-        bill: [{
-            "orderNum": "201807031618141262057",
-            "goodsInfo": "商品信息1",
-            "orderTime": "2018-07-03 16:18:15",
-            "seller": "广东广州芳村新华裕市场旗舰店",
-            "countTotal": "100",
-            "unit": "盒",
-            "payment": "2000.0元",
-            "orderType": "商城交易",
-            "currentState": "交易取消",
-            "action": "订单详情",
-          },{
-            "orderNum": "201807031618141262058",
-            "goodsInfo": "商品信息2",
-            "orderTime": "2018-07-04 16:18:15",
-            "seller": "广东广州芳村新华裕市场旗舰店22",
-            "countTotal": "10",
-            "unit": "千克",
-            "payment": "1000.0元",
-            "orderType": "商城交易",
-            "currentState": "交易取消",
-            "action": "订单详情",
-          }],
+        bill: [],
         fullscreenLoading:false
       }
     },
     created() {
-      // this.getData();
-      console.log(this.$store.state.dialog);
+      this.getData();
     },
-    // methods: {
-    //   releaseStatusFmt(row, column) {
-    //     return row.releaseStatus == 1 ? "待配售" : row.releaseStatus == 2 ? "已配售" : row.releaseStatus == 5 ? "已发行" : row.releaseStatus == 6 ? "待结算" : row.releaseStatus == 7 ? "已结束" : "";
-    //   },
-    //   getData() {
-    //     this.fullscreenLoading=true;
-    //     this.axios.post(this.http + "/interface/pc/personal/pcEnterprise/enterpriseInfo", qs.stringify({
-    //       enterpriseId: this.enterpriseCode
-    //     })).then(res => {
-    //       this.fullscreenLoading=false;
-    //       console.log(res.data.data)
-    //       if(res.data.code==200){
-    //           this.person = JSON.parse(res.data.data).enterprise;
-    //           this.stock = JSON.parse(res.data.data).stock;
-    //           this.allotment = JSON.parse(res.data.data).allotment;
-    //           console.log(JSON.parse(res.data.data));
-    //           if (this.allotment.releaseStatus == 1) {
-    //             this.allotment.releaseStatus = "待配售"
-    //           } else if (this.allotment.releaseStatus == 2) {
-    //             this.allotment.releaseStatus = "已配售"
-    //           } else if (this.allotment.releaseStatus == 5) {
-    //             this.allotment.releaseStatus = "已发行"
-    //           } else if (this.allotment.releaseStatus == 7) {
-    //             this.allotment.releaseStatus = "已结束"
-    //           } else if (this.allotment.releaseStatus == 6) {
-    //             this.allotment.releaseStatus = "待结算"
-    //           }
-    //       }else{
-    //         this.open(res.data.data.message)
-    //       }
-
-    //     }).catch(err => {
-    //       this.fullscreenLoading=false;
-    //       this.open(err)
-    //     })
-    //   },
-      
-    //   //删除cookie
-    //   delCookie(name) {
-    //       var exp = new Date();
-    //       exp.setTime(exp.getTime() - 1);
-    //       var cval = this.getCookie(name);
-    //       if (cval != null) document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-    //       this.$router.openPage('/login')
-    //       location.reload()
-    //   },
-      
-    //   //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
-    //   getCookie(name) {
-    //       var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    //       if (arr = document.cookie.match(reg)) {
-    //           return true;
-    //           // return (arr[2]);
-    //       } else {
-    //           return false
-    //       }
-    //   },
-    //   open(err) {
-    //     this.$alert('网络错误请求失败!', '错误', {
-    //       confirmButtonText: '确定',
-    //       callback: action => {
-    //         this.delCookie('JSESSIONID')
-    //         this.$router.openPage('/login') 
-    //         this.$message({
-    //           type: 'info',
-    //           message: `错误原因: ${ err }`
-    //         });
-    //       }
-    //     });
-    //   }
-    // }
+    methods: {
+      getData() {
+        this.fullscreenLoading=true;
+        this.axios.post(this.http + "/interface/pc/customer/pcCustomer/customerPersonlInfo", qs.stringify({
+          loginPhone: this.getCookie('LOGIN_PHONE'),
+          pageSize:2
+        })).then(res => {
+          this.fullscreenLoading=false;
+          if(res.data.code == 200){
+            console.log(JSON.parse(res.data.data).buyOrder)
+            this.person.name = JSON.parse(res.data.data).customerName;
+            this.person.loginAccount = JSON.parse(res.data.data).loginAccount;
+            this.person.availableFunds = JSON.parse(res.data.data).availableFunds;
+            this.person.capitalBalance = JSON.parse(res.data.data).capitalBalance;
+            this.bill = JSON.parse(res.data.data).buyOrder;
+          }
+        })
+      },
+      //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
+      getCookie(name) {
+          var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+          if (arr = document.cookie.match(reg)) {
+              return (arr[2]);
+          } else {
+              return false
+          }
+      },
+    }
   }
 </script>
 
@@ -252,6 +191,7 @@
   .fr {
     float: right;
     display: inline-block;
+    color: #66b1ff;
   }
   .txt {
     margin: 5px 0 0 10px;
@@ -327,7 +267,7 @@
   .table-box h4 a {
     font-size: 14px;
     font-weight: normal;
-    color: #0166bb;
+    color: #66b1ff;
     padding: 0 10px;
   }
   .el-icon-menu:before {

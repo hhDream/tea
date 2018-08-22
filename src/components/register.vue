@@ -7,15 +7,6 @@
                     <el-form-item label="手机号" prop="phone">
                         <el-input v-model="ruleForm.phone"></el-input>
                     </el-form-item>
-                    <el-form-item label="设置登录密码" prop="password">
-                        <el-input v-model="ruleForm.password"></el-input>
-                    </el-form-item>
-                    <el-form-item label="确认登陆密码" prop="password2">
-                        <el-input v-model="ruleForm.password2"></el-input>
-                    </el-form-item>
-                    <el-form-item label="推荐人手机号码" prop="otherPhone">
-                        <el-input v-model="ruleForm.otherPhone"></el-input>
-                    </el-form-item>
                     <el-form-item label="验证码" prop="imageCode">
                         <el-row>
                             <el-col :span='11'>
@@ -24,7 +15,7 @@
                             <el-col :span='7'>
                             <span class="img-validate-code">
                                 <el-tooltip class="item" effect="dark" content="点图片重新获取验证码" placement="right">
-                                <img id="codeimg" @click="changeCode()" :src="imgCodeUrl">
+                                <img id="codeimg" @click="changeCode()" :src="'data:image/jpg;base64,'+imgCodeUrl">
                                 </el-tooltip>
                             </span>
                             </el-col>
@@ -201,110 +192,140 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-        http: this.$store.state.dialog.http,
-
-                imgCodeUrl: "",
-                buttonName: "发送短信",
-                isDisabled: false,
-                dialogVisible:false,
-                ruleForm: {
-                    phone: '',
-                    type: '',
-                    phoneCode: '',
-                    imageCode: '',
-                    otherPhone:'',
-                    password:'',
-                    password2:'',
-                },
-                rules: {
-                    phone: [{
-                            required: true,
-                            message: '请输入手机号码',
-                            trigger: 'blur'
-                        },
-                        {
-                            min: 11,
-                            message: '请输入11位手机号',
-                            trigger: 'blur'
-                        }
-                    ],
-                    type: [{
-                        required: true,
-                        message: '请阅读并同意该协议!',
-                        trigger: 'change'
-                    }]
-                }
-            };
-        },
-        methods: {
-            sendMsg() {
-                let me = this;
-                me.isDisabled = true;
-                let interval = window.setInterval(function() {
-                    me.buttonName = me.time + '秒后重新发送';
-                    --me.time;
-                    if (me.time < 0) {
-                        me.buttonName = "重新发送";
-                        me.time = 10;
-                        me.isDisabled = false;
-                        window.clearInterval(interval);
-                    }
-                }, 1000);
-            },
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        alert('submit!');
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            changeCode() {
-                this.imgCodeUrl = this.http + '/code.do?t=' + new Date().getTime()
-            },
-            getPhoneCode() {
-                this.sendMsg()
-                this.axios.post(this.http + '/interface/pc/personal/pcEnterprise/sendCode', qs.stringify({
-                    phone: this.phone
-                })).then(res => {
-                    console.log(res);
-                })
-            },
-            handleClose(a){
-                this.dialogVisible=false;
-            }
-        },
-        created() {
-            this.changeCode()
-        },
+import qs from "qs";
+export default {
+  data() {
+    return {
+      http: this.$store.state.dialog.http,
+      imgCodeUrl: "",
+      buttonName: "发送短信",
+      isDisabled: false,
+      dialogVisible: false,
+      time: 60,
+      ruleForm: {
+        phone: "",
+        type: "",
+        phoneCode: "",
+        imageCode: ""
+      },
+      rules: {
+        phone: [
+          {
+            required: true,
+            message: "请输入手机号码",
+            trigger: "blur"
+          },
+          {
+            min: 11,
+            message: "请输入11位手机号",
+            trigger: "blur"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "请阅读并同意该协议!",
+            trigger: "change"
+          }
+        ]
+      }
+    };
+  },
+  methods: {
+    sendMsg() {
+      let me = this;
+      me.isDisabled = true;
+      let interval = window.setInterval(function() {
+        me.buttonName = me.time + "秒后重新发送";
+        --me.time;
+        if (me.time < 0) {
+          me.buttonName = "重新发送";
+          me.time = 10;
+          me.isDisabled = false;
+          window.clearInterval(interval);
+        }
+      }, 1000);
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.axios.post(this.http + "/interface/pc/login/register",
+            qs.stringify({
+                phone: this.ruleForm.phone,
+                pictureCode: this.ruleForm.imageCode,
+                code: this.ruleForm.phoneCode
+              }))
+              .then(res => {
+                  if(res.data.code == 200){
+                      this.$router.openPage('/login');
+                  }
+              });
+        } else {
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    changeCode() {
+      this.axios
+        .post(this.http + "/interface/pc/login/pictureCode")
+        .then(res => {
+          if (res.data.code == 200) {
+            this.imgCodeUrl = JSON.parse(res.data.data).code;
+          }
+        });
+    },
+    getPhoneCode() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/login/sendRegisterMessage",
+          qs.stringify({
+            phone: this.ruleForm.phone,
+            pictureCode: this.ruleForm.imageCode
+          })
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+            this.sendMsg();
+          }
+        });
+    },
+    handleClose(a) {
+      this.dialogVisible = false;
     }
+  },
+  created() {
+    this.changeCode();
+  }
+};
 </script>
 <style lang = 'less' scoped>
-    .register {
-        .el-input {
-            width: 300px;
-        }
-    }
-    .ruleForm {
-        margin: 50px auto;
-        width: 550px;
-    }
-    .top_tip {
-        font-size: 25px;
-        font-weight: 600;
-        margin-left: 115px;
-    }
-      .get_btn {
-    text-align: right;
+.register {
+  .el-input {
+    width: 300px;
   }
- #codeimg { width: 100px; height: 40px; border-radius: 5px; float: right; } .get_btn { text-align: right; }
-
+}
+.ruleForm {
+  margin: 50px auto;
+  width: 550px;
+}
+.top_tip {
+  font-size: 25px;
+  font-weight: 600;
+  margin-left: 115px;
+}
+.get_btn {
+  text-align: right;
+}
+#codeimg {
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  float: right;
+}
+.get_btn {
+  text-align: right;
+}
 </style>

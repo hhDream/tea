@@ -1,8 +1,8 @@
 <template>
     <div>
     <el-breadcrumb style='padding:24px 0' separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/myCenter/home' }">企业中心</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/myCenter/home' }">我的账号</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/distributorCenter' }">企业中心</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/distributorCenter/enterpriseInfo' }">我的账号</el-breadcrumb-item>
         <el-breadcrumb-item>我的地址</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="title">提货门店</div>
@@ -11,7 +11,7 @@
             <b>所属门店：默认提货门店</b>
         </el-col>
         <el-col :span="24">门店名称：{{alldata.distributorName}}</el-col>
-        <el-col :span="24">所在地区：{{alldata.province}} {{alldata.city}} {{alldata.region}}</el-col>
+        <el-col :span="24">所在地区：{{alldata.province}}{{alldata.city}}{{alldata.region}}</el-col>
         <el-col :span="24">详细地址：{{alldata.postalAddress}}</el-col>
         <el-col :span="24">联系人：{{alldata.distributorName}}</el-col>
         <el-col :span="24">联系电话：{{alldata.loginPhone}}</el-col>
@@ -36,7 +36,6 @@ export default {
                 loginPhone:this.phone
             })).then(res=>{
                 this.alldata=JSON.parse(res.data.data);
-                console.log(JSON.parse(res.data.data));
             })
         }
     },

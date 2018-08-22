@@ -75,7 +75,7 @@
 	<el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="操作" width="200">
     <template slot-scope="scope" style="color">
         <a @click="centerDialogVisible=!centerDialogVisible">设置自留数量</a>
-        <a @click="$router.openPage('/teaMallProduct')">抢购商品详情</a>
+        <a @click="$router.openPage('/teaMallProduct',{id:scope.row.allotmentId,goodsId:scope.row.goodsId})">抢购商品详情</a>
     </template>
     </el-table-column>
   </el-table>
@@ -149,16 +149,16 @@ export default {
           qs.stringify({
             distributorCode: this.distributorCode,
             currentPage:this.currentPage,
-            pageSize:this.pageSize
+            pageSize:this.showCount
           })
         )
         .then(res => {
-          console.log( JSON.parse(res.data.data));
           if (res.data.code == 200) {
             this.allData = JSON.parse(res.data.data);
             this.total=JSON.parse(res.data.data).total;
             this.currentPage=JSON.parse(res.data.data).currentPage;
-            this.bfb=+(+this.allData.capitalBalance-+this.allData.availableFunds)/+this.allData.capitalBalance
+            this.bfb=+(+this.allData.capitalBalance-+this.allData.availableFunds)/+this.allData.capitalBalance;
+            console.log(this.allData)
           } else {
             this.open(res.data.data.message);
           }
@@ -168,10 +168,8 @@ export default {
         });
     },
     handleClick(row) {
-      console.log(row);
     },
     handleSizeChange(data) {
-      console.log(data);
       this.showCount = data;
       this.getData();
     },
@@ -181,6 +179,15 @@ export default {
     },
     search() {
       this.getData();
+    },
+    getCookie(name) {
+      var arr,
+        reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if ((arr = document.cookie.match(reg))) {
+        return arr[2];
+      } else {
+        return false;
+      }
     },
     //删除cookie
     delCookie(name) {
@@ -192,7 +199,6 @@ export default {
       this.$router.openPage("/login");
       location.reload();
     },
-
     open(err) {
       this.$alert("网络错误请求失败!", "错误", {
         confirmButtonText: "确定",

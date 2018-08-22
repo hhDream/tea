@@ -2,11 +2,11 @@
 <div v-loading.fullscreen.lock="fullscreenLoading">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item label="订单编号：">
-        <el-input v-model="formInline.user" placeholder="订单编号"></el-input>
+        <el-input v-model="takeTeaOrderCode" placeholder="订单编号"></el-input>
     </el-form-item>
     <el-form-item label="申请时间：">
         <el-date-picker
-      v-model="value13"
+      v-model="startTime"
       type="daterange"
       start-placeholder="开始日期"
       end-placeholder="结束日期"
@@ -14,30 +14,29 @@
     </el-date-picker>
     </el-form-item> 
     <el-form-item label="当前状态：">
-        <el-select v-model="formInline.region" placeholder="当前状态">
-        <el-option label="全部" value="shanghai"></el-option>
-        <el-option label="已开票" value="beijing"></el-option>
-        <el-option label="未开票" value="nanjing"></el-option>
+        <el-select v-model="status" placeholder="当前状态">
+        <el-option label="全部" value="0"></el-option>
+        <el-option label="已开票" value="2"></el-option>
+        <el-option label="未开票" value="1"></el-option>
         </el-select>
     </el-form-item>
     <el-form-item label="交易类型：">
-        <el-select v-model="formInline.region" placeholder="交易类型">
-        <el-option label="商城交易" value="shanghai"></el-option>
-        <el-option label="新茶抢购" value="beijing"></el-option>
-        <el-option label="补开发票" value="nanjing"></el-option>
+        <el-select v-model="orderType" placeholder="交易类型">
+        <el-option label="商城交易" value="2"></el-option>
+        <el-option label="新茶抢购" value="1"></el-option>
         </el-select>
     </el-form-item>
     <el-form-item>
-        <el-button icon="el-icon-search" circle></el-button>
+        <el-button icon="el-icon-search" @click="search()" circle></el-button>
     </el-form-item>
     <el-form-item>
-        <el-button type="default">重置</el-button>
+        <el-button type="default" @click="reset()">重置</el-button>
     </el-form-item>
     </el-form>
     <el-tabs v-model="activeName">
-        <el-tab-pane label="全部" name="first"></el-tab-pane>
-        <el-tab-pane label="已开票" name="second"></el-tab-pane>
-        <el-tab-pane label="未开票" name="third"></el-tab-pane>
+        <el-tab-pane label="全部" name="0"></el-tab-pane>
+        <el-tab-pane label="已开票" name="2"></el-tab-pane>
+        <el-tab-pane label="未开票" name="1"></el-tab-pane>
     </el-tabs>
     <el-table :data="tableData" border style="width: 100%" slot="empty">
         <el-table-column prop="goodsCode" show-overflow-tooltip align="center" label="订单编号">
@@ -157,63 +156,14 @@
 <script>
 import qs from "qs";
 export default {
-  methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
-    getData() {
-      this.axios
-        .post(
-          this.http + "/interface/pc/personal/pcEnterprise/myStore",
-          qs.stringify({
-            releaseEnterpriseId: this.enterpriseCode,
-            currentPage: this.currentPage,
-            showCount: this.showCount,
-            goodsName: this.goodsName,
-            goodsCode: this.goodsCode
-          })
-        )
-        .then(res => {
-          this.tableData = JSON.parse(res.data.data).data;
-          this.total = JSON.parse(res.data.data).total;
-          console.log(JSON.parse(res.data.data));
-          this.currentPage = JSON.parse(res.data.data).currentPage;
-        });
-    },
-    handleClick(row) {
-      console.log(row);
-    },
-    handleSizeChange(data) {
-      console.log(data);
-      this.showCount = data;
-      this.getData();
-    },
-    handleCurrentChange(data) {
-      this.currentPage = data;
-      this.getData();
-    },
-    search() {
-      this.getData();
-    }
-  },
-  created() {
-    this.getData();
-  },
   data() {
     return {
       tableData: [],
       http: this.$store.state.dialog.http,
-      enterpriseCode: this.$store.state.dialog.enterpriseCode,
       currentPage: 1,
       showCount: 10,
-      goodsName: "",
-      goodsCode: "",
       total: 0,
-      activeName: "first",
+      activeName: "0",
       formInline: {
         user: "",
         region: ""
@@ -238,6 +188,93 @@ export default {
       ],
       fullscreenLoading: false
     };
+  },
+  methods: {
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
+    getData() {
+      var date_value1 = "";
+      var date_value2 = "";
+      if (this.startTime.length != 0) {
+        var date1 = new Date(this.startTime[0]);
+        var date2 = new Date(this.startTime[1]);
+        date_value1 =
+          date1.getFullYear() +
+          "-" +
+          (date1.getMonth() + 1 < 10
+            ? "0" + (date1.getMonth() + 1)
+            : date1.getMonth() + 1) +
+          "-" +
+          (date1.getDate() < 10 ? "0" + date1.getDate() : date1.getDate()) +
+          " " +
+          "00:00:00";
+        date_value2 =
+          date2.getFullYear() +
+          "-" +
+          (date2.getMonth() + 1 < 10
+            ? "0" + (date2.getMonth() + 1)
+            : date2.getMonth() + 1) +
+          "-" +
+          (date2.getDate() < 10 ? "0" + date2.getDate() : date2.getDate()) +
+          " " +
+          date2.getHours() +
+          ":" +
+          date2.getMinutes() +
+          ":" +
+          date2.getSeconds();
+      }
+      this.axios
+        .post(
+          this.http + "/interface/pc/distributor/pcBank/showInvoice",
+          qs.stringify({
+            distributorCode: this.getCookie("distributorCode"),
+            currentPage: this.currentPage,
+            pageSize: this.showCount,
+            status: this.status,
+            startTime: date_value1,
+            endTime: date_value2,
+            takeTeaOrderCode: this.takeTeaOrderCode,
+            orderType: this.orderType,
+            type: 2
+          })
+        )
+        .then(res => {
+          this.tableData = JSON.parse(res.data.data).list;
+          this.total = JSON.parse(res.data.data).total;
+          this.currentPage = JSON.parse(res.data.data).currentPage;
+        });
+    },
+    handleClick(row) {
+    },
+    handleSizeChange(data) {
+      this.showCount = data;
+      this.getData();
+    },
+    handleCurrentChange(data) {
+      this.currentPage = data;
+      this.getData();
+    },
+    search() {
+      this.getData();
+    },
+    getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+      }
+      return "";
+    }
+  },
+  created() {
+    this.getData();
   }
 };
 </script>

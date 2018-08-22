@@ -114,10 +114,9 @@ export default {
     changeCode() {
       this.axios
         .post(
-          this.http + "/interface/pcLogin/pictureCode"
+          this.http + "/interface/pc/login/pictureCode"
         )
         .then(res => {
-          console.log(res);
           this.imgCodeUrl = JSON.parse(res.data.data).code; 
         });
     },
@@ -134,14 +133,13 @@ export default {
       me.isDisabled = true;
       this.axios
         .post(
-          this.http + "/interface/pcLogin/sendCode",
+          this.http + "/interface/pc/login/sendCode",
           qs.stringify({
             phone: this.ruleForm.phone,
             pictureCode:this.ruleForm.imageCode
           })
         )
         .then(res => {
-          console.log(res);
           if(res.data.code == 200){
             let interval = window.setInterval(function() {
               me.buttonName = me.time + "秒后重新发送";
@@ -164,7 +162,6 @@ export default {
         if (valid) {
           this.login();
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -173,7 +170,7 @@ export default {
       this.fullscreenLoading = true;
       this.axios
         .post(
-          this.http + "/interface/pcLogin/enterpriseLogin",
+          this.http + "/interface/pc/login/enterpriseLogin",
           qs.stringify({
             phone: this.ruleForm.phone,
             code: this.ruleForm.phoneCode,
@@ -182,51 +179,60 @@ export default {
         )
         .then(res => {
           if (res.data.code == 200) {
+            // 经销商编号
             this.setCookie(
               "distributorCode",
-              JSON.parse(res.data.data).distributorCode,
+              JSON.parse(res.data.data).roleCode,
               1
             );
+            // 茶企编号
             this.setCookie(
               "ENTER_ID",
               JSON.parse(res.data.data).roleCode,
               1
             );
+            // 客户账号
+            this.setCookie(
+              "LOGIN_ACCOUNT",
+              JSON.parse(res.data.data).loginAccount,
+              1
+            );
+            // 用户电话
             this.setCookie(
               "LOGIN_PHONE",
               JSON.parse(res.data.data).loginPhone,
               1
             );
+            // 用户身份
             this.setCookie(
               "STATUS",
               JSON.parse(res.data.data).role,
               1
             );
             // role  1客户 2经销商 3茶企
-            // loginAccount 登录账号 客户可能没名字
-            // this.$store.commit('changePhone',this.ruleForm.phone);
-            // this.$store.commit('changeEnterpriseCode', JSON.parse(res.data.data).enterpriseId);
             if (JSON.parse(res.data.data).role==1) {
-              this.setCookie('changeUrl','/myUserCenter/userHome',1)
+              this.setCookie('changeUrl','/myUserCenter/userHome',1);
               this.$router.openPage('/myUserCenter/userHome',1);
-              this.setCookie('messageUrl','/distributorCenter/message')
+              this.setCookie('messageUrl','/myUserCenter/message');
+              // this.$router.openPage('/');
             }else if (JSON.parse(res.data.data).role==2) {
-              this.setCookie('messageUrl','/myUserCenter/message',1)
-              this.setCookie('changeUrl','/distributorCenter/banlance',1)
+              this.setCookie('messageUrl','/distributorCenter/message',1);
+              this.setCookie('changeUrl','/distributorCenter/banlance',1);
               this.$router.openPage('/distributorCenter/banlance');
+              // this.$router.openPage('/');
             }else if (JSON.parse(res.data.data).role==3) {
-              this.setCookie('changeUrl','/myCenter/home',1)
-              this.setCookie('messageUrl','/myCenter/message',1)
-              this.$router.openPage('/distributorCenter/banlance');
+              this.setCookie('changeUrl','/myCenter/home',1);
+              this.setCookie('messageUrl','/myCenter/message',1);
+              this.$router.openPage('/myCenter/home');
             }
-
             location.reload();
           } else {
             this.fullscreenLoading = false;
             this.$message("登陆失败:" + res.data.message);
           }
         })
-    }, //设置cookie   name为cookie的名字，value是值，expiredays为过期时间（天数）
+    }, 
+    //设置cookie   name为cookie的名字，value是值，expiredays为过期时间（天数）
     setCookie(name, value, expiredays) {
       var exdate = new Date();
       exdate.setDate(exdate.getDate() + expiredays);
@@ -236,9 +242,6 @@ export default {
         escape(value) +
         (expiredays == null ? "" : ";expires=" + exdate.toGMTString());
     }
-  },
-  created() {
-    console.log(this.$getcookie("STATUS"),"999999999999999");
   },
   mounted() {
     this.changeCode()

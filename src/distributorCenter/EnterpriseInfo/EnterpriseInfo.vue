@@ -8,14 +8,15 @@
         <el-col :span="24">统一社会信用代码：{{alldata.unifiedSocialCreditCode}}</el-col>
         <el-col :span="24">法人名称：{{alldata.legalPersonName}}</el-col>
         <el-col :span="24" style="margin:10px 0">
-            <el-form :inline="true"  class="demo-form-inline">
+            法人身份证：{{alldata.legalPersonIdentityCard}}
+            <!-- <el-form :inline="true"  class="demo-form-inline">
                 <el-form-item label="法人身份证：">
                     <el-input disabled="disabled" v-model="alldata.legalPersonIdentityCard"  placeholder="请输入身份"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button disabled="disabled" type="danger">修改</el-button>
                 </el-form-item>
-            </el-form> 
+            </el-form>  -->
         </el-col>
         <el-col :span="24">注册手机：{{alldata.loginPhone}}</el-col>
         <el-col :span="24">所属茶企：{{alldata.enterpriseName}}</el-col>
@@ -43,8 +44,10 @@ export default {
             this.axios.post(this.http+'/interface/pc/distributor/pcDistributor/companyInfo',qs.stringify({
                 distributorCode:this.distributorCode
             })).then(res=>{
-                this.alldata=JSON.parse(res.data.data);
-                console.log(JSON.parse(res.data.data));
+                if(res.data.code == 200){
+                    console.log(JSON.parse(res.data.data))
+                    this.alldata=JSON.parse(res.data.data);
+                }
             })
         }
     }

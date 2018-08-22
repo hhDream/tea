@@ -83,7 +83,9 @@
         </el-table-column>
         <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" fixed="right" label="当前状态" width="100">
         <template slot-scope="scope">
-            <span>抢购中</span>
+            <span v-if="scope.row.saleState == 3|| scope.row.releaseStatus == 6 ||scope.row.releaseStatus == 7">发售结束</span>
+            <span v-else-if="scope.row.releaseStatus == 5">发售中</span>
+            <span v-else>待发售</span>
         </template>
         </el-table-column>
     </el-table>
@@ -157,88 +159,97 @@
 </template>
 
 <script>
-  import qs from 'qs'
-  export default {
-    methods: {
-      getData() {
-        this.axios.post(this.http + "/interface/pc/distributor/pcAllotment/myAllotment", qs.stringify({
-          distributorCode: this.$getcookie('distributorCode'),
-          currentPage: this.currentPage,
-          pageSize: this.showCount,
-          goodsName: this.goodsName,
-          goodsCode: this.goodsCode,
-          type:this.type
-        })).then(res => {
-            if (res.data.code!=200) {
-          this.tableData =[];
-          this.total =0;
-          this.currentPage = 1;
-          return false
-            }
+import qs from "qs";
+export default {
+  data() {
+    return {
+      tableData: [],
+      http: this.$store.state.dialog.http,
+      currentPage: 1,
+      showCount: 10,
+      goodsName: "",
+      goodsCode: "",
+      total: 0,
+      type: "1",
+      stock: ""
+    };
+  },
+  methods: {
+    getData() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/distributor/pcAllotment/myAllotment",
+          qs.stringify({
+            distributorCode: this.$getcookie("distributorCode"),
+            currentPage: this.currentPage,
+            pageSize: this.showCount,
+            goodsName: this.goodsName,
+            goodsCode: this.goodsCode,
+            type: this.type
+          })
+        )
+        .then(res => {
+          if (res.data.code != 200) {
+            this.tableData = [];
+            this.total = 0;
+            this.currentPage = 1;
+            return false;
+          }
           this.tableData = JSON.parse(res.data.data).list;
           this.total = JSON.parse(res.data.data).total;
-          console.log( JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
-        })
-      },
-      handleClick(row) {
-        console.log(row);
-      },
-      handleSizeChange(data) {
-        console.log(data);
-        this.showCount = data;
-        this.getData()
-      },
-      handleCurrentChange(data) {
-        this.currentPage = data;
-        this.getData()
-      },
-      search() {
-        this.getData()
-      },
-      myType(val){
-          this.type=val.name;
-          this.getData()
+        });
+    },
+    handleClick(row) {},
+    handleSizeChange(data) {
+      this.showCount = data;
+      this.getData();
+    },
+    handleCurrentChange(data) {
+      this.currentPage = data;
+      this.getData();
+    },
+    search() {
+      this.getData();
+    },
+    myType(val) {
+      this.type = val.name;
+      this.getData();
+    },
+    getCookie(name) {
+      var arr,
+        reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if ((arr = document.cookie.match(reg))) {
+        return arr[2];
+      } else {
+        return false;
       }
-    },
-    mounted() {
-      this.getData()
-    },
-    data() {
-      return {
-        tableData: [],
-        http: this.$store.state.dialog.http,
-        currentPage: 1,
-        showCount: 10,
-        goodsName: "",
-        goodsCode: "",
-        total:0,
-        type:'1',
-        stock:""
-      }
-    },
+    }
+  },
+  mounted() {
+    this.getData();
   }
+};
 </script>
 
 <style lang='less' scoped>
-
-.sp_info{
+.sp_info {
   display: flex;
 }
-.sp_cover{
+.sp_cover {
   width: 30%;
   height: 80%;
-  >img{
+  > img {
     display: block;
     width: 45px;
     height: 45px;
     margin-top: 4px;
   }
 }
-.sp_content{
+.sp_content {
   width: 70%;
   text-align: left;
-  .sp_code{
+  .sp_code {
     font-size: 12px;
     color: #999;
   }

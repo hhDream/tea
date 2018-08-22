@@ -15,7 +15,7 @@
             <div class="fl" v-else>
               <span>欢迎来到茶企通!</span>
               <a class="a3" href="javascript:;" @click="$router.openPage('/login');">登陆</a>
-              <a class="a2" href="register:;" @click="$router.openPage('/register')">注册</a>
+              <a class="a2" href="javascript:;" @click="$router.openPage('/register')">注册</a>
             </div>
             <div class="fr" v-if="this.$store.state.dialog.cookie==true">
               <a href="#" @click="$router.openPage(url)">个人中心</a>
@@ -45,9 +45,9 @@
                 </a>
               </div>
               <div class="input">
-                <input type="text" placeholder="普洱茶" id="searchText">
+                <input type="text" placeholder="普洱茶" v-model="teaName" id="searchText">
               </div>
-              <button type="button" onclick="doSearch()"></button>
+              <button type="button" @click="doSearch()"></button>
             </div>
             <div class="fr phone-box" v-if="this.$store.state.dialog.toLogin==true">
               <p>24小时全国服务热线</p>
@@ -57,9 +57,9 @@
               <ul class="fl nav">
                 <li :class="{active:this.$store.state.index.isShow==0}" ><a @click="$router.openPage('/');addClass(0)">首页</a></li>
                 <li :class="{active:this.$store.state.index.isShow==1}"><a @click="$router.openPage('/teaMallRush');addClass(1)">新茶抢购</a></li>
-                <li :class="{active:this.$store.state.index.isShow==2}"><a @click="$router.openPage('/teaMallShop');addClass(2)">品牌商城</a></li>
-                <!-- <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">自由集市</a></li> -->
-                <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/');addClass(4)">招商加盟</a></li>
+                <li :class="{active:this.$store.state.index.isShow==2}"><a @click="$router.openPage('/teaMallShop');addClass(2)">自由集市</a></li>
+                <!-- <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">品牌商城</a></li> -->
+                <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/joinUs');addClass(4)">招商加盟</a></li>
                 <!-- <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li> -->
                 <!-- <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/teaMallTeaExperts');addClass(4)">茶评专家</a></li> -->
               </ul>
@@ -115,139 +115,161 @@
         </div>
       </el-col>
     </el-row>
-<!-- <div class="scrollTop" @click="toTop">
-</div> -->
+<div class="coupon">
+  <div class="textIn">领券购物</div> 
+</div>
   </div>
 </template>
 
 <script>
-import qs from 'qs'
-  export default {
-    name: 'App',
-    provide() {
-      return {
-        reload: this.reload
-      }
-    },            
-    props: {
-                toBottom: {
-                    type: Number,
-                    default: 0
-                }
-            },
-    data() {
-      return {
-        transitionName: 'slide-fade',
-        isCollapse: false,
-        phone: this.$store.state.dialog.phone,
-        isRouterAlive: true,
-        isShow:0,
-        url:this.$getcookie("changeUrl"),
-        messageUrl:this.$getcookie("messageUrl")
+import qs from "qs";
+export default {
+  name: "App",
+  provide() {
+    return {
+      reload: this.reload
+    };
+  },
+  props: {
+    toBottom: {
+      type: Number,
+      default: 0
+    }
+  },
+  data() {
+    return {
+      http:this.$store.state.dialog.http,
+      teaName:'',
+      transitionName: "slide-fade",
+      isCollapse: false,
+      phone: this.$store.state.dialog.phone,
+      isRouterAlive: true,
+      isShow: 0,
+      url: this.$getcookie("changeUrl"),
+      messageUrl: this.$getcookie("messageUrl")
+    };
+  },
+  methods: {
+    doSearch(){
+      if(this.$route.path == '/teaMallShop'){
+        var path = location.href;
+        if(path.indexOf("?") != -1){
+            path = path.split("?")[0];
+        }
+        location.href = path + '?brand=' + this.teaName;
+        this.reload()
+      }else{
+        this.$router.openPage('/teaMallShop',{brand:this.teaName})
       }
     },
-    methods: {                
-      toTop() {
-        document.documentElement.scrollTop = document.body.scrollTop = 0;
-                },
-      addClass(i){
-        this.$store.commit('changeIsShow',i)
-      },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      //删除cookie
-      delCookie(name) {
-        var exp = new Date();
-        exp.setTime(exp.getTime() - 1);
-        var cval = this.getCookie(name);
-        if (cval != null) document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-        this.$router.openPage('/login')
-        location.reload()
-      },
-      //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
-      getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
+    addClass(i) {
+      this.$store.commit("changeIsShow", i);
+    },
+    //删除cookie
+    delCookie(name) {
+      var exp = new Date();
+      exp.setTime(exp.getTime() - 1);
+      var cval = this.getCookie(name);
+      if (cval != null)
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+      this.$router.openPage("/login");
+      location.reload();
+    },
+    //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
+    getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1);
+        while (c.charAt(0) == " ") c = c.substring(1);
         if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
-    }
-    return "";
-},
-      reload() {
-        this.isRouterAlive = false;
-        this.$nextTick(function() {
-          this.isRouterAlive = true
-        })
       }
+      return "";
     },
-    mounted() {
-
-    },
-    created() {
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(function() {
+        this.isRouterAlive = true;
+      });
     }
-  }
+  },
+  mounted() {},
+  created() {}
+};
 </script>
 
 <style lang="less">
-  @import "./assets/teamall.css";
-  @import "./assets/styleIndex.css";
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
-  }
-  #app{
-    transition: all 1s linear
-  }
- .scrollTop{
-   width: 75px;
-   height: 75px;
-   position: fixed;
- }
-  a:hover {
+@import "./assets/teamall.css";
+@import "./assets/styleIndex.css";
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+#app {
+  transition: all 1s linear;
+}
+.coupon {
+    position: fixed;
+    display: block;
+    bottom: 50px;
+    right: 50px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    color: #fff;
     text-decoration: none;
-  }
-  .block {
-    margin: 10px 0!important;
-    text-align: right;
-  }
-  .content {
-    margin: 0 auto;
+    cursor: pointer;
+    margin-top: 1px;
+    background-color: #666;
+    background-color: rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    font-size: 12px;
+}
+a:hover {
+  text-decoration: none;
+}
+.block {
+  margin: 10px 0 !important;
+  text-align: right;
+}
+.content {
+  margin: 0 auto;
+  width: 100%;
+  color: #646464;
+  font-size: 13px;
+  line-height: 30px;
+  padding: 20px 0;
+  // margin-left: 320px;
+  min-height: 498px;
+  img {
     width: 100%;
-    color: #646464;
-    font-size: 13px;
-    line-height: 30px;
-    padding: 20px 0;
-    // margin-left: 320px;
-        min-height: 498px;
-        img{
-          width: 100%;
-        }
+  }
+}
+.textIn{
+  line-height: 12px;
+    width: 24px;
+    height: 28px;
+    margin: 6px auto;
+}
+.font_bold {
+  font-weight: bold;
+}
+.wrap {
+  background-color: #fff;
+}
+.search-box button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  padding: 0;
+  border: 0 none;
+  background: #db4b29 url("./assets/search.png") no-repeat center center;
+}
 
-  }
-  .font_bold {
-    font-weight: bold;
-  }
-  .wrap {
-    background-color: #fff
-  }
-  .search-box button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 60px;
-    height: 100%;
-    padding: 0;
-    border: 0 none;
-    background: #db4b29 url('./assets/search.png') no-repeat center center;
-  }
-  
-    a:visited { 
-    text-decoration: none; 
-    }
+a:visited {
+  text-decoration: none;
+}
 </style>

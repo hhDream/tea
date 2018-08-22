@@ -7,7 +7,7 @@ Router.prototype.openPage = function(link, query) {
     this.push({ //向后面添加
         path: link,
         query: _.assignIn({
-            time: new Date().getTime()
+            // time: new Date().getTime()
         }, query || {})
     })
 }
@@ -235,6 +235,13 @@ const router = new Router({
             }
         },
         {
+            path: '/pay',
+            name: 'pay',
+            component(resolve) {
+                require(['@/components/pay.vue'], resolve)
+            }
+        },
+        {
             path: '/myUserCenter',
             name: 'myUserCenter',
             component(resolve) {
@@ -282,7 +289,13 @@ const router = new Router({
                         require(['@/userCenter/userOrder/sellOrder.vue'], resolve)
                     }
                 },
-
+                {
+                    path: 'takeTea',
+                    name: 'takeTea',
+                    component(resolve) {
+                        require(['@/userCenter/takeGoods/takeTea.vue'], resolve)
+                    }
+                },
                 {
                     path: 'userStock',
                     name: 'userStock',
@@ -568,6 +581,13 @@ const router = new Router({
                 require(['@/components/register.vue'], resolve)
             }
         },
+        {
+            path: '/joinUs',
+            name: 'joinUs',
+            component(resolve) {
+                require(['@/teaMall/joinUs/index.vue'], resolve)
+            }
+        },
     ]
 })
 
@@ -597,7 +617,6 @@ router.afterEach((to, from, next) => {
     })
     // 全局路由守卫
 router.beforeEach((to, from, next) => {
-    console.log(this, 'navigation-guards');
     // to: Route: 即将要进入的目标 路由对象
     // from: Route: 当前导航正要离开的路由
     // next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
@@ -619,16 +638,14 @@ router.beforeEach((to, from, next) => {
         store.commit('changePhone', "");
     }
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
-    const teaMallArr = ['teaMallMoreNotice', 'teaMallNotice', 'teaMallNew', 'teaMallNews', 'teaMallPayMent', 'register']
-    const userCenter = ['myUserCenter', 'takeDetail', 'userStock', 'userAddress', 'userInfo', 'userPwd', 'bankCard', 'coupon', 'increaseAptitudes', 'orderSearch', 'userHome', 'userInfo', 'buyListDetail', 'purchaseOrder', 'sellOrder', 'userPwd']
+    const teaMallArr = [ 'teaMallPayMent'];
+    const userCenter = ['myUserCenter', 'takeDetail', 'userStock', 'takeTea','userAddress', 'userInfo', 'userPwd', 'bankCard', 'coupon', 'increaseAptitudes', 'orderSearch', 'userHome', 'userInfo', 'buyListDetail', 'purchaseOrder', 'sellOrder', 'userPwd']
     const distributorCenter = ['banlance', 'billCheck', 'billDetail', 'buyList', 'buyListDetail', 'deliveryApplication', 'distributorAddress', 'distributorHome', 'enterpriseInfo', 'freightTemplate', 'increaseAptitude', 'invoiceManage', 'invoiceSetting', 'makeBill', 'myBank', 'myCoupon', 'myGoods', 'myRushBuy', 'myStock', 'password', 'rushBuy', 'saleList', 'shippingTemplates', 'takeGoodsDetail', 'vipInfo', 'vipTransaction']
     if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || teaMallArr.indexOf(to.name) >= 0 || distributorCenter.indexOf(to.name) >= 0 || userCenter.indexOf(to.name) >= 0) { //限定隐藏顶部搜索 
-        console.log(123);
         store.commit('changeToLogin', false);
     } else {
         store.commit('changeToLogin', true);
     }
-    console.log('即将去的路由', to.name, '我是对的吗', isLogin);
     if (to.name == 'teaMallIndex') {
         store.commit('changeIsShow', 0)
     }

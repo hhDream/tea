@@ -153,7 +153,6 @@
       submitForm(formName) {
         this.$refs[formName].validate(valid => {
           if (!valid) {
-            console.log(valid)
             this.$message('请按照提示修改字段');
             return false;
           } else {
@@ -173,7 +172,6 @@
         this.axios.post(this.http + '/interface/pc/personal/pcEnterprise/sendCode', qs.stringify({
           phone: this.phone
         })).then(res => {
-          console.log(res);
         })
       },
       editPassWord() {
@@ -194,7 +192,6 @@
               message: '修改失败!'
             });
           }
-          console.log(res);
         })
       },
       //清除cookie
@@ -215,7 +212,6 @@
           code: this.ruleForm2.phoneCode
         })).then(res => {
           if (res.data.code == 200) {
-            console.log(res.data);
             var ok = true;
             callback(ok)
             // this.editPassWord()

@@ -13,7 +13,7 @@
       </el-form-item>
       <el-form-item label="密码" prop="pass">
         <el-col :span='11'>
-          <el-tooltip class="item" effect="dark" content="请务必设置8位以上密码" placement="right">
+          <el-tooltip class="item" effect="dark" content="请设置6位数字密码" placement="right">
             <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
           </el-tooltip>
         </el-col>
@@ -58,8 +58,8 @@ import qs from "qs";
 export default {
   data() {
     var validatePass = (rule, value, callback) => {
-      if (value === "" || value.length < 8) {
-        callback(new Error("请输入8位以上密码"));
+      if (value === "" || value.length != 6 || !/^[0-9]{6}$/.test(value)) {
+        callback(new Error("请输入6位数字密码"));
       } else {
         if (
           this.ruleForm2.checkPass !== "" &&
@@ -90,17 +90,12 @@ export default {
       if (value === "") {
         callback(new Error("不能为空"));
         return false;
-      }
-      this.validateCode(function(ok) {
-        if (ok == false) {
-          callback(new Error("图形验证码或手机验证码错误"));
-          return false;
-        } else {
+      }else{
           callback();
-        }
-      });
+      }
     };
     return {
+      phoneState:true,
       buttonName: "发送短信",
       isDisabled: false,
       time: 60,
@@ -175,7 +170,6 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (!valid) {
-          console.log(valid);
           this.$message("请按照提示修改字段");
           return false;
         } else {
@@ -191,16 +185,23 @@ export default {
       this.imgCodeUrl = this.http + "/code.do?t=" + new Date().getTime();
     },
     getPhoneCode() {
-      this.sendMsg();
+      if(!this.phoneState){
+        return;
+      }
+      this.phoneState = false;
       this.axios
         .post(
-          this.http + "/interface/pc/personal/pcEnterprise/sendCode",
+          this.http + "/interface/pc/distributor/pcDistributor/sendCode",
           qs.stringify({
-            phone: this.phone
+            loginPhone: this.phone,
+            pictureCode:this.ruleForm2.imageCode
           })
         )
         .then(res => {
-          console.log(res);
+          if(res.data.code == 200){
+            this.phoneState = true;
+            this.sendMsg();
+          }
         });
     },
     editPassWord() {
@@ -209,24 +210,25 @@ export default {
           this.http + "/interface/pc/distributor/pcDistributor/editPassword",
           qs.stringify({
             loginPhone: this.phone,
-            loginPassword: this.ruleForm2.pass
+            code: this.ruleForm2.phoneCode,
+            pictureCode:this.ruleForm2.imageCode,
+            capitalCipher:this.ruleForm2.pass
           })
         )
         .then(res => {
           if (res.data.code == 200) {
-            this.clearCookie();
+            // this.clearCookie();
             this.$message({
               type: "success",
-              message: "即将跳回登陆页!"
+              message: "设置成功!"
             });
             location.reload();
           } else {
             this.$message({
               type: "info",
-              message: "修改失败!"
+              message: "设置失败!"
             });
           }
-          console.log(res);
         });
     },
     //清除cookie
@@ -243,45 +245,6 @@ export default {
         "=" +
         escape(value) +
         (expiredays == null ? "" : ";expires=" + exdate.toGMTString());
-    },
-    validateCode(callback) {
-      this.axios
-        .post(
-          this.http + "/interface/pc/personal/pcEnterprise/validateCode",
-          qs.stringify({
-            phone: this.phone,
-            pictureCode: this.ruleForm2.imageCode,
-            code: this.ruleForm2.phoneCode
-          })
-        )
-        .then(res => {
-          if (res.data.code == 200) {
-            console.log(res.data);
-            var ok = true;
-            callback(ok);
-            // this.editPassWord()
-          } else {
-            var ok = false;
-            callback(ok);
-          }
-        });
-    },
-    tips() {
-      this.$confirm("此操作将修改您的密码, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true
-      })
-        .then(() => {
-          this.validateCode();
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消修改"
-          });
-        });
     }
   }
 };

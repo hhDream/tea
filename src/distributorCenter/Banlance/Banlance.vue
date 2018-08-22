@@ -42,7 +42,7 @@
           </p>
           <p class="p2">
             <em></em>冻结资金
-            <span id="my_balance_frozen">0.00</span>
+            <span id="my_balance_frozen">{{ capitalBalance - availableFunds }}元</span>
           </p>
         </div>
         <div class="fr buttons">
@@ -79,7 +79,7 @@
           </el-table-column>
           <el-table-column prop="orderTime" show-overflow-tooltip align="center" label="下单时间" width="100">
           </el-table-column>
-          <el-table-column prop="enterpriseName" show-overflow-tooltip align="center" label="买家" width="100">
+          <el-table-column prop="buyerName" show-overflow-tooltip align="center" label="买家" width="100">
           </el-table-column>
           <el-table-column prop="buyGoodsCount" show-overflow-tooltip align="center" label="商品数量">
             <template slot-scope="scope">
@@ -103,7 +103,7 @@
           </el-table-column>
           <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="操作" width="100">
             <template slot-scope="scope">
-              <a  @click="$router.openPage('/buyListDetail')" style="color:#0166bb">订单详情</a>
+              <a  @click="$router.openPage('/buyListDetail',{id:scope.row.orderCode})" style="color:#0166bb">订单详情</a>
             </template>
           </el-table-column>
         </el-table>
@@ -135,7 +135,7 @@
           </el-table-column>
           <el-table-column prop="orderTime" show-overflow-tooltip align="center" label="下单时间" width="100">
           </el-table-column>
-          <el-table-column prop="enterpriseName" show-overflow-tooltip align="center" label="卖家" width="100">
+          <el-table-column prop="soldName" show-overflow-tooltip align="center" label="卖家" width="100">
           </el-table-column>
           <el-table-column prop="CountTotal" show-overflow-tooltip align="center" label="商品数量">
             <template slot-scope="scope">
@@ -159,7 +159,7 @@
           </el-table-column>
           <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="操作" width="100">
             <template slot-scope="scope">
-              <a  @click="$router.openPage('/buyListDetail')" style="color:#0166bb">订单详情</a>
+              <a  @click="$router.openPage('/buyListDetail',{id:scope.row.orderCode})" style="color:#0166bb">订单详情</a>
             </template>
           </el-table-column>
         </el-table>
@@ -192,7 +192,6 @@ export default {
   },
   created() {
     this.getData();
-    console.log(this.$store.state.dialog);
   },
   methods: {
     releaseStatusFmt(row, column) {
@@ -218,11 +217,10 @@ export default {
           if (res.data.code == 200) {
             this.buyOrder = JSON.parse(res.data.data).buyOrder;
             this.soldOrder = JSON.parse(res.data.data).soldOrder;
-            console.log(JSON.parse(res.data.data));
-            this.distributorName=JSON.parse(res.data.data).distributorName
-            this.loginAccount=JSON.parse(res.data.data).loginAccount
-            this.availableFunds=JSON.parse(res.data.data).availableFunds
-            this.capitalBalance=JSON.parse(res.data.data).capitalBalance
+            this.distributorName=JSON.parse(res.data.data).distributorName;
+            this.loginAccount=JSON.parse(res.data.data).loginAccount;
+            this.availableFunds=JSON.parse(res.data.data).availableFunds;
+            this.capitalBalance=JSON.parse(res.data.data).capitalBalance;
           } else {
             this.open(res.data.data.message);
           }
@@ -247,8 +245,7 @@ export default {
     getCookie(name) {
       var arr,reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
       if ((arr = document.cookie.match(reg))) {
-        return true;
-        // return (arr[2]);
+        return (arr[2]);
       } else {
         return false;
       }

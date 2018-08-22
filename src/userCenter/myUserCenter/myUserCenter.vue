@@ -10,10 +10,10 @@
                     <i class="el-icon-menu"></i>
                     <span slot="title" @click="$router.openPage('/myUserCenter/userHome')">个人中心</span>
                 </el-menu-item>
-                <el-menu-item index="1">
+                <!-- <el-menu-item index="1">
                     <i class="el-icon-tickets"></i>
                     <span slot="title" @click="$router.openPage('/myUserCenter/userHome')">会员首页</span>
-                </el-menu-item>
+                </el-menu-item> -->
                 <el-submenu index="2">
                 <template slot="title">
                     <i class="el-icon-phone-outline"></i>
@@ -23,7 +23,7 @@
                     <el-menu-item index="2-1" @click="$router.openPage('/myUserCenter/userInfo')">个人信息</el-menu-item>
                     <el-menu-item index="2-2" @click="$router.openPage('/myUserCenter/userPwd')">密码管理</el-menu-item>
                     <el-menu-item index="2-3" @click="$router.openPage('/myUserCenter/userAddress')">我的地址</el-menu-item>
-                    <!-- <el-menu-item index="2-4" @click="$router.openPage('/myUserCenter/userInfo')">我的消息</el-menu-item> -->
+                    <el-menu-item index="2-4" @click="$router.openPage('/myUserCenter/userInfo')">我的消息</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="3">

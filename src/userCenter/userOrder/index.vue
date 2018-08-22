@@ -286,7 +286,6 @@
           releaseBeginTime: this.releaseBeginTime,
           releaseStatus: this.value
         })).then(res => {
-          console.log(JSON.parse(res.data.data).data);
           this.tableData = JSON.parse(res.data.data).data;
           this.total = JSON.parse(res.data.data).total;
           this.currentPage = JSON.parse(res.data.data).currentPage;
@@ -331,7 +330,6 @@
           showCount: this.showCount2,
 
         })).then(res => {
-          console.log("元数据", res.data,JSON.parse(res.data.data));
           this.gridData = JSON.parse(res.data.data).pd;
           this.total2 = JSON.parse(res.data.data).total;
 
@@ -348,7 +346,6 @@
           distributorLevel: this.distributorLevel,
           comfirmStatus: this.comfirmStatus,
         })).then(res=>{
-          console.log("内部",JSON.parse(res.data.data));
           this.gridData = JSON.parse(res.data.data).pd;
         })
       },
@@ -358,7 +355,6 @@
           quotasType: this.quotasType,
           quotasNumber: this.quotasNumber
         })).then(res => {
-          console.log(res);
           if (res.data.code == 200) {
             this.$alert('修改成功!', '成功', {
               confirmButtonText: '确定',
@@ -374,13 +370,10 @@
         })
       },
       editClick(row) {
-        console.log(row.id);
         this.rowId = row.id;
       },
       handleClick(row) {
-        console.log("数据行", row);
         this.dialogTableVisible = true;
-        console.log(this.dialogTableVisible);
         if (row.releaseStatus != '5'&&row.releaseStatus != '6'&&row.releaseStatus != '7'&&row.rushBuyType!='1') {
           this.takeIt = true;
         }
@@ -392,7 +385,6 @@
         this.getInData(row)
       },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },
@@ -401,7 +393,6 @@
         this.getData()
       },
       handleSizeChange2(data) {
-        console.log(data);
         this.showCount2 = data;
         this.getInData(this.row)
 

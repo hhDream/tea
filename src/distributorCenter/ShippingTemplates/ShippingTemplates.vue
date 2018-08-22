@@ -5,79 +5,83 @@
        </el-row>
        <el-row style="margin-top:20px">
            <el-col :span='12' class="st_deafult"><b>默认运费模板(运费)</b></el-col>
-           <el-col :span='12' class="st_setting"><a>设为默认模板</a>&nbsp;&nbsp;&nbsp;<a @click="centerDialogVisible = !centerDialogVisible">修改</a>&nbsp;&nbsp;&nbsp;<a>删除</a></el-col>
+           <el-col :span='12' class="st_setting"><a @click="centerDialogVisible = !centerDialogVisible;editType=true">修改</a></el-col>
            <el-col :span='24'>
                <el-table :data="tableData2" style="width: 100%;">
-                    <el-table-column prop="date" width="180" label="运送方式" style="background:#e9e9e9;color">
+                    <el-table-column prop="sz" label="首重(KG)" align="center" width="180" style="background:#e9e9e9">
                     </el-table-column>
-                    <el-table-column prop="name" label="首重(KG)" width="180" style="background:#e9e9e9">
+                    <el-table-column prop="szje" label="运费(元)" align="center"  style="background:#e9e9e9">
                     </el-table-column>
-                    <el-table-column prop="address" label="运费(元)" style="background:#e9e9e9">
+                    <el-table-column prop="xz" label="续重(KG)"  align="center" style="background:#e9e9e9">
                     </el-table-column>
-                    <el-table-column prop="address" label="续重(KG)" style="background:#e9e9e9">
-                    </el-table-column>
-                    <el-table-column prop="address" label="运费(元)" style="background:#e9e9e9">
+                    <el-table-column prop="xzje" label="运费(元)"  align="center" style="background:#e9e9e9">
                     </el-table-column>
                 </el-table>
            </el-col>
        </el-row>
-       <el-row style="margin-top:20px">
-           <el-col :span='12' class="st_deafult"><b>默认运费模板(运费)</b></el-col>
-           <el-col :span='12' class="st_setting"><a>设为默认模板</a>&nbsp;&nbsp;&nbsp;<a @click="centerDialogVisible = !centerDialogVisible">修改</a>&nbsp;&nbsp;&nbsp;<a>删除</a></el-col>
-           <el-col :span='24'>
-               <el-table :data="tableData2" style="width: 100%;">
-                    <el-table-column prop="date" width="180" label="运送方式" style="background:#e9e9e9;color">
-                    </el-table-column>
-                    <el-table-column prop="name" label="首重(KG)" width="180" style="background:#e9e9e9">
-                    </el-table-column>
-                    <el-table-column prop="address" label="运费(元)" style="background:#e9e9e9">
-                    </el-table-column>
-                    <el-table-column prop="address" label="续重(KG)" style="background:#e9e9e9">
-                    </el-table-column>
-                    <el-table-column prop="address" label="运费(元)" style="background:#e9e9e9">
-                    </el-table-column>
-                </el-table>
-           </el-col>
-       </el-row>
-       <el-button type="danger" style="margin-top:20px" @click="centerDialogVisible = !centerDialogVisible">添加运费模板</el-button>
+       <el-button type="danger" v-if="tableData2==[]" style="margin-top:20px" @click="centerDialogVisible = !centerDialogVisible">添加运费模板</el-button>
        <el-dialog
+        @close='editType=false'
         :visible.sync="centerDialogVisible"
         title="设置运费模板"
         width="40%"
-        :before-close="handleClose" center>
-        <el-row>
-          <el-col :span="6">模板名称</el-col>
-          <el-col :span="13">
-            <el-input></el-input>
-          </el-col>
-          <el-col :span="6">运送方式</el-col>
-          <el-col :span="13">
-            <el-input>快递</el-input>
-          </el-col>
+        center>
+        <el-row v-if="!editType">
           <el-col :span="6">首重</el-col>
           <el-col :span="13">
-            <el-input></el-input>
+            <el-input type="number" v-model="sz"></el-input>
           </el-col>
           <el-col :span="2">
             KG
           </el-col>
-          <el-col :span="6">运费</el-col>
+          <el-col :span="6">首重运费</el-col>
           <el-col :span="13">
-            <el-input></el-input>
+            <el-input type="number" v-model="szje"></el-input>
           </el-col>
           <el-col :span="2">
             元
           </el-col>
           <el-col :span="6">续重</el-col>
           <el-col :span="13">
-            <el-input></el-input>
+            <el-input type="number" v-model="xz"></el-input>
           </el-col>
           <el-col :span="2">
             KG
           </el-col>
-          <el-col :span="6">运费</el-col>
+          <el-col :span="6">续重运费</el-col>
           <el-col :span="13">
-            <el-input></el-input>
+            <el-input type="number" v-model="xzje"></el-input>
+          </el-col>
+          <el-col :span="2">
+            元
+          </el-col>
+        </el-row>
+
+        <el-row v-else>
+          <el-col :span="6">首重</el-col>
+          <el-col :span="13">
+            <el-input type="number" v-model="tableData2[0].sz"></el-input>
+          </el-col>
+          <el-col :span="2">
+            KG
+          </el-col>
+          <el-col :span="6">首重运费</el-col>
+          <el-col :span="13">
+            <el-input type="number" v-model="tableData2[0].szje"></el-input>
+          </el-col>
+          <el-col :span="2">
+            元
+          </el-col>
+          <el-col :span="6">续重</el-col>
+          <el-col :span="13">
+            <el-input type="number" v-model="tableData2[0].xz"></el-input>
+          </el-col>
+          <el-col :span="2">
+            KG
+          </el-col>
+          <el-col :span="6">续重运费</el-col>
+          <el-col :span="13">
+            <el-input type="number" v-model="tableData2[0].xzje"></el-input>
           </el-col>
           <el-col :span="2">
             元
@@ -85,35 +89,69 @@
         </el-row>
         <span slot="footer" class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false">保存</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false">保存为默认运费模板</el-button>
+          <el-button v-if="editType" type="primary" @click="myExpressfee">保存</el-button>
+          <el-button v-else type="primary" @click="addExpressfee">保存</el-button>
         </span>
       </el-dialog>
     </div> 
 </template>
 
 <script>
+import qs from 'qs';
 export default {
   methods: {},
   data() {
     return {
-      tableData2: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "111"
-        }
-      ],
-      centerDialogVisible: false
+      http: this.$store.state.dialog.http,      
+      distributorCode:this.$getcookie('distributorCode'),
+      sz:'',
+      szje:'',
+      xz:'',
+      xzje:'',
+      tableData2:[],
+      centerDialogVisible: false,
+      editType:false
     };
   },
+  mounted() {
+    this.getData()
+  },
   methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
+    getData(){
+      this.axios.post(this.http+'/interface/pc/distributor/pcTeaStore/myExpressfee',qs.stringify({
+        distributorCode:this.distributorCode
+      })).then(res=>{
+        if (res.data.code!=200) {
+          this.tableData2=[{}]
+          return;
+        }
+        this.tableData2=[JSON.parse(res.data.data)]
+      })
+    },
+    addExpressfee(){
+      this.axios.post(this.http+'/interface/pc/distributor/pcTeaStore/addExpressfee',qs.stringify({
+        distributorCode:this.distributorCode,
+        sz:this.sz,
+        xz:this.xz,
+        szje:this.szje,
+        xzje:this.xzje
+      })).then(res=>{
+        this.centerDialogVisible = false;
+      })
+    },
+    myExpressfee(){
+      this.axios.post(this.http+'/interface/pc/distributor/pcTeaStore/editExpressfee',qs.stringify({
+        id:this.tableData2[0].id,
+        sz:this.tableData2[0].sz,
+        xz:this.tableData2[0].xz,
+        szje:this.tableData2[0].szje,
+        xzje:this.tableData2[0].xzje
+      })).then(res=>{
+        this.centerDialogVisible = false;
+       
+      }).then(()=>{
+         this.$nextTick()
+      })
     }
   }
 };

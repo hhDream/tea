@@ -106,7 +106,6 @@
           orderType: this.orderType,
           type: this.type
         })).then(res => {
-          console.log(res);
           if (res.data.code != 200) {
             this.tableData = [];
             this.total = 0;
@@ -115,12 +114,10 @@
           }
           this.tableData = JSON.parse(res.data.data).orderList;
           this.total = JSON.parse(res.data.data).total;
-          console.log(JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
         })
       },
       handleClick(row) {
-        console.log(row);
       },
       handleSizeChange(data) {
         this.showCount = data;
@@ -135,7 +132,6 @@
         this.getData()
       },
       mysort(val) {
-        console.log(val);
         if (val.order == 'ascending') {
           this.priceSort = 1
           this.getData()

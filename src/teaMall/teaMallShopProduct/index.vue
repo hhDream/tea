@@ -6,10 +6,10 @@
           <div class="main-cont" style="min-width:1119px">
             <el-breadcrumb style="margin-bottom:10px" separator-class="el-icon-arrow-right">
               <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-              <el-breadcrumb-item :to="{ path: '/teaMallShop' }">品牌商城</el-breadcrumb-item>
-              <el-breadcrumb-item>{{product.goods.brand}}</el-breadcrumb-item>
-              <el-breadcrumb-item>混合</el-breadcrumb-item>
-              <el-breadcrumb-item>勐库地区</el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: '/teaMallShop' }">自由集市</el-breadcrumb-item>
+              <el-breadcrumb-item>{{product.alotments.goodsName}}</el-breadcrumb-item>
+              <!-- <el-breadcrumb-item>混合</el-breadcrumb-item>
+              <el-breadcrumb-item>勐库地区</el-breadcrumb-item> -->
             </el-breadcrumb>
             <div class="detail-productContent">
               <div class="detail-productContent-l fl">
@@ -26,7 +26,7 @@
                     <div class="product-picture-small">
                       <ul id="small" style="width: 245px;">
                         <li v-for="(item,index) in product.goods.pcLargePicture.split(',')" :class="{active:id==index}" :key="index">
-                          <img @click="id=index;setActiveItem(index)" :src="item.src" alt="">
+                          <img @click="id=index;setActiveItem(index)" :src="item" alt="">
                         </li>
                       </ul>
                     </div>
@@ -44,10 +44,10 @@
                       <span class="c-red" id="guidePrice">{{product.alotments.releasePrice }}元/{{product.alotments.transactionSpecification3 }}</span>
                     </div>
                   </div>
-                  <div class="mt20px" id="productSpecification">商品规格：{{product.alotments.benchmarkingUnitCount3}}{{product.alotments.benchmarkingUnit3}}/{{product.alotments.transactionSpecification3 }}</div>
+                  <div class="mt20px" id="productSpecification">商品规格：{{product.specifications.benchmarkingUnitCount1/product.specifications.benchmarkingUnitCount2}}{{product.specifications.transactionSpecification2}}/{{product.specifications.transactionSpecification1}},{{product.specifications.benchmarkingUnitCount2/product.specifications.benchmarkingUnitCount3}}{{product.specifications.transactionSpecification3}}/{{product.specifications.transactionSpecification2}},{{product.specifications.benchmarkingUnitCount3}}{{product.specifications.benchmarkingUnit33}}/{{product.specifications.transactionSpecification3}}</div>
                   <div class="productContent-parameter-data mt20px">
                     <div>可买量：
-                      <span class="c-orange" id="saleNo">{{+product.alotments.param2- +product.alotments.param1}}{{product.alotments.transactionSpecification3 }}</span>
+                      <span class="c-orange" id="saleNo">{{+product.alotments.param2}}{{product.alotments.transactionSpecification3 }}</span>
                     </div>
                     <div>求购量：
                       <span class="c-orange" id="buyNo">0{{product.alotments.transactionSpecification3 }}</span>
@@ -165,7 +165,7 @@
                         <span id="col3">{{product.goods.placeOrigin}}</span>
                       </div>
                       <div id="col7ChineseName">保质期：
-                        <span id="col7">{{product.goods.qualityPeriod }}天</span>
+                        <span id="col7">{{product.goods.qualityPeriod }}年</span>
                       </div>
                     </div>
                   </div>
@@ -324,7 +324,6 @@
         this.getTable();
       },
       sortChange(val){
-        console.log(val);
         if (val.prop=='param4') {
           this.sort=val.order=="descending"?2:1;
           this.getTable2()
@@ -340,7 +339,6 @@
           return false;
         }
         this.row = row;
-        console.log(this.row);
         this.dialogVisible = true;
       },
       getProduct() {
@@ -350,8 +348,7 @@
           phone:this.$store.state.dialog.phone,
           
         })).then(res => {
-          this.product = JSON.parse(res.data.data)
-          console.log(JSON.parse(res.data.data));
+          this.product = JSON.parse(res.data.data);
           if(this.product.goods.pcDetailPicture==null){
             this.product.goods.pcDetailPicture= "../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png"
           }
@@ -361,7 +358,6 @@
           if (this.product.goods.pcSmallPicture==null) {
             this.product.goods.pcSmallPicture="../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png"           
           }
-          console.log(this.product.goods.pcDetailPicture.split(','));
           this.have=true;
 
         }).then(()=>{
@@ -384,7 +380,6 @@
           phone:this.$store.state.dialog.phone
         })).then(res => {
           this.tableData = JSON.parse(res.data.data).onTheShelves
-          console.log(JSON.parse(res.data.data));
           this.total=JSON.parse(res.data.data).totalPage;
           this.currentPage=JSON.parse(res.data.data).currentPage;
         })
@@ -403,7 +398,6 @@
           phone:this.$store.state.dialog.phone
         })).then(res => {
           this.tableData = JSON.parse(res.data.data).onTheShelves
-          console.log(JSON.parse(res.data.data));
           this.total=JSON.parse(res.data.data).totalPage;
           this.currentPage=JSON.parse(res.data.data).currentPage;
         })

@@ -75,15 +75,12 @@
         })).then(res => {
           this.tableData = JSON.parse(res.data.data).data;
           this.total = JSON.parse(res.data.data).total;
-          console.log( JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
         })
       },
       handleClick(row) {
-        console.log(row);
       },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },

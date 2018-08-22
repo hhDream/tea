@@ -1,31 +1,31 @@
 <template>
 <div v-loading.fullscreen.lock="fullscreenLoading">
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+    <el-form :inline="true" class="demo-form-inline">
     <el-form-item label="会员账号：">
-        <el-input v-model="formInline.user" placeholder="会员账号"></el-input>
+        <el-input v-model="customerAccount" placeholder="会员账号"></el-input>
     </el-form-item>
     <el-form-item label="会员名称：">
-        <el-input v-model="formInline.user" placeholder="会员名称"></el-input>
+        <el-input v-model="customerName" placeholder="会员名称"></el-input>
     </el-form-item>
     <el-form-item label="手机号码：">
-        <el-input v-model="formInline.user" placeholder="手机号码"></el-input>
+        <el-input v-model="customerRegisterPhone" placeholder="手机号码"></el-input>
     </el-form-item>
     <el-form-item>
-        <el-button icon="el-icon-search" circle></el-button>
+        <el-button icon="el-icon-search" @click="search()" circle></el-button>
     </el-form-item>
     <el-form-item>
-        <el-button type="default">重置</el-button>
+        <el-button type="default" @click="customerRegisterPhone=customerName=customerAccount=''">重置</el-button>
     </el-form-item>
     </el-form>
     <el-table :data="tableData"  border style="width: 100%" slot="empty">
         <el-table-column prop="goodsCode" show-overflow-tooltip align="center" label="会员账号"  width="150">
         <template slot-scope="scope">
-            <span>669904821432</span>
+            <span>{{ scope.row.customerAccount }}</span>
         </template>
         </el-table-column>
         <el-table-column prop="goodsName" align="center" label="会员名称" width="100">
         <template slot-scope="scope">
-            <span>周杰伦</span><br>
+            <span>{{ scope.row.customerName }}</span><br>
         </template>
         </el-table-column>
         <el-table-column prop="shelRetentionCount" show-overflow-tooltip align="center" label="性别"  width="100">
@@ -35,7 +35,7 @@
         </el-table-column>     
         <el-table-column prop="releaseCountTotal" show-overflow-tooltip align="center" label="手机号码" width="120">
         <template slot-scope="scope">
-            <span>18505175228</span>
+            <span>{{ scope.row.customerRegisterPhone }}</span>
         </template>
         </el-table-column>
         <el-table-column prop="CountTotal" show-overflow-tooltip align="center" label="电子邮箱">
@@ -45,7 +45,7 @@
         </el-table-column>
         <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="默认收货地址">
         <template slot-scope="scope">
-            <span>江东中路222号江东中路222号江东中路222号江东中路222号</span>
+            <span>{{ scope.row.detailAddress }}</span>
         </template>
         </el-table-column>
     </el-table>
@@ -60,26 +60,36 @@
 <script>
   import qs from 'qs'
   export default {
+    data() {
+      return {
+        tableData: [],
+        http: this.$store.state.dialog.http,
+        enterpriseCode: this.getCookie('distributorCode'),
+        currentPage: 1,
+        showCount: 10,
+        customerName:"",
+        customerRegisterPhone: "",
+        customerAccount: "",
+        total:0,
+        fullscreenLoading:false
+      }
+    },
     methods: {
       getData() {
-        this.axios.post(this.http + "/interface/pc/personal/pcEnterprise/myStore", qs.stringify({
-          releaseEnterpriseId: this.enterpriseCode,
+        this.axios.post(this.http + "/interface/pc/distributor/pcDistributor/myCustomer", qs.stringify({
+          distributorCode: this.enterpriseCode,
           currentPage: this.currentPage,
-          showCount: this.showCount,
-          goodsName: this.goodsName,
-          goodsCode: this.goodsCode,
+          pageSize: this.showCount,
+          customerRegisterPhone: this.customerRegisterPhone,
+          customerName: this.customerName,
+          customerAccount: this.customerAccount,
         })).then(res => {
-          this.tableData = JSON.parse(res.data.data).data;
+          this.tableData = JSON.parse(res.data.data).list;
           this.total = JSON.parse(res.data.data).total;
-          console.log( JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
         })
       },
-      handleClick(row) {
-        console.log(row);
-      },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },
@@ -90,29 +100,19 @@
       search() {
         this.getData()
       },
-      
+      getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(";");
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == " ") c = c.substring(1);
+          if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+        }
+        return "";
+      },
     },
     created() {
       this.getData()
-    },
-    data() {
-      return {
-        tableData: [],
-        http: this.$store.state.dialog.http,
-        enterpriseCode: this.$store.state.dialog.enterpriseCode,
-        currentPage: 1,
-        showCount: 10,
-        goodsName: "",
-        goodsCode: "",
-        total:0,
-        activeName:"first",
-        formInline: {
-          user: '',
-          region: ''
-        },
-        value13:"",
-        fullscreenLoading:false
-      }
     },
   }
 </script>

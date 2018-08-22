@@ -2,14 +2,14 @@
   <div>
     <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/myUserCenter/userHome' }">个人中心</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '' }">提货管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/myUserCenter/userStock' }">提货管理</el-breadcrumb-item>
       <el-breadcrumb-item>提货明细</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin-bottom: 20px;" :gutter="20">
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <span class="demonstration">提货单号</span>
-          <el-input v-model="takeOrderNum" clearable></el-input>
+          <el-input v-model="takeTeaOrderCode" clearable></el-input>
         </div>
       </el-col>
 
@@ -23,7 +23,7 @@
       <el-col :span="6">
         <div class="grid-content bg-purple">
           <span class="demonstration">当前状态</span>
-          <el-select v-model="value" placeholder="请选择">
+          <el-select v-model="state" placeholder="请选择">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -42,7 +42,6 @@
         <el-col :span="10" style="margin-left:10px">
           <el-button style="margin-top: 19px;" icon="el-icon-search" circle @click="search"></el-button>
           <el-button @click="takeOrderNum=goodsName=value=times=''">重置</el-button>
-          <el-button type="success" @click="getquotalist_getExcel">导出EXCEL</el-button>
         </el-col>
         
     </el-row>
@@ -50,31 +49,36 @@
     <el-table :data="tableData" border style="width: 100%">
       <!-- <el-table-column sortable  fixed prop="id" label="序号">
       </el-table-column> -->
-      <el-table-column prop="takeOrderNum" label="提货单号" width="200">
+      <el-table-column prop="takeTeaOrderCode" show-overflow-tooltip align="center" label="提货单号" width="200">
       </el-table-column>
-      <el-table-column prop="goodsName" label="商品名称">
+      <el-table-column prop="coodsName" show-overflow-tooltip align="center" label="商品名称">
       </el-table-column>
-      <el-table-column prop="takeNum" label="提货数量">
+      <el-table-column prop="takeTeaCount" show-overflow-tooltip align="center" label="提货数量">
+      </el-table-column>
+      <el-table-column prop="applyTime" show-overflow-tooltip align="center" label="申请时间" width="100">
+      </el-table-column>
+      <el-table-column prop="distributorName" show-overflow-tooltip align="center" label="门店">
+      </el-table-column>
+      <el-table-column prop="takeTeaType" show-overflow-tooltip align="center" label="提货方式">
         <template slot-scope="scope">
-          <span>{{ scope.row.takeNum?scope.row.takeNum:0}} {{scope.row.unit}}</span>
+            <span>{{ scope.row.takeTeaType == 1?'快递':'自提' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="applicationTime" label="申请时间" width="100">
+      <el-table-column prop="warehousingFee" show-overflow-tooltip align="center" label="仓储费">
       </el-table-column>
-      <el-table-column prop="store" label="门店">
+      <el-table-column prop="expressFee" show-overflow-tooltip align="center" label="快递费">
       </el-table-column>
-      <el-table-column prop="takePattern" label="提货方式">
+      <el-table-column prop="status" show-overflow-tooltip align="center" label="当前状态">
+        <template slot-scope="scope">
+            <span>{{ st[+scope.row.status] }}</span>
+        </template>
       </el-table-column>
-      <el-table-column prop="warehousingFee" label="仓储费">
-      </el-table-column>
-      <el-table-column prop="courierFee" label="快递费">
-      </el-table-column>
-      <el-table-column prop="currentState" label="当前状态">
-      </el-table-column>
-      <el-table-column prop="action" label="操作">
+      <el-table-column prop="action" show-overflow-tooltip align="center" label="操作">
+        <template slot-scope="scope">
+            <span>{{ scope.row.status == 6?'确认收货':'' }}</span>
+        </template>
       </el-table-column>
       </el-table>
-      
     <div class="block">
         <el-pagination 
         @size-change="handleSizeChange" 
@@ -85,175 +89,166 @@
         :total="total">
         </el-pagination>
     </div>
-
-
-
 </div>
 </template>
 
 <script>
-  import qs from 'qs'
-  export default {
-    inject:['reload'],
-    methods:{
-      search(){
-
+import qs from "qs";
+export default {
+  inject: ["reload"],
+  data() {
+    return {
+      fullscreenLoading: false,
+      state: "",
+      times: [],
+      takeTeaOrderCode: "",
+      goodsName: "",
+      http: this.$store.state.dialog.http,
+      total: 1,
+      currentPage: 1,
+      showCount: 10,
+      tableData: [
+      ],
+      options: [
+        {
+          value: "",
+          label: "全部"
+        },
+        {
+          value: "9",
+          label: "待付款"
+        },
+        {
+          value: "1",
+          label: "已申请"
+        },
+        {
+          value: "2",
+          label: "出库中"
+        },
+        {
+          value: "3",
+          label: "已发货"
+        },
+        {
+          value: "4",
+          label: "已到店"
+        },
+        {
+          value: "5",
+          label: "待收货"
+        },
+        {
+          value: "6",
+          label: "待取货"
+        },
+        {
+          value: "7",
+          label: "已完成"
+        },
+        {
+          value: "8",
+          label: "已取消"
+        }
+      ],
+      pickerOptions2: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            }
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            }
+          }
+        ]
       },
-      getquotalist_getExcel(){
-
-      },
-      handleClick(){},
-      handleSizeChange(){},
-      handleCurrentChange(){},
+      st:['','已申请','出库中','已发货','已到店','待取货','待收货','已取货','待支付','已取消']
+    };
+  },
+  methods: {
+    getData() {
+      this.fullscreenLoading = true;
+      this.axios
+        .post(
+          this.http + "/interface/pc/customer/pcTeaStore/myTeaOrder",
+          qs.stringify({
+            phone: this.getCookie("LOGIN_PHONE"),
+            pageSize: this.showCount,
+            currentPage: this.currentPage,
+            goodsCode: this.goodsCode,
+            goodsName: this.goodsName,
+            countSort: this.countSort,
+            takeTeaOrderCode: this.takeTeaOrderCode,
+            enterLogisticsOrderId: this.enterLogisticsOrderId,
+            state: this.state,
+            startTime: this.times[0],
+            endTime: this.times[1]
+          })
+        )
+        .then(res => {
+          this.fullscreenLoading = false;
+          if (res.data.code == 200) {
+            this.tableData = JSON.parse(res.data.data).list;
+            this.currentPage = JSON.parse(res.data.data).currentPage;
+            this.total = JSON.parse(res.data.data).total;
+          }else{
+            this.tableData = [];
+            this.currentPage = 1;
+            this.total = 0;
+          }
+        });
     },
-    data() {
-      return {
-        takeOrderNum: '',
-        goodsName: '',
-        value: '',
-        times: '',
-        releaseBeginTime: '',
-        http: this.$store.state.dialog.http,
-        enterpriseCode: this.$store.state.dialog.enterpriseCode,
-        total: 1,
-        currentPage: 1,
-        showCount: 10,
-        total2: 1,
-        currentPage2: 1,
-        showCount2: 10,
-        dialogTableVisible: false,
-        innerVisible: false,
-        distributorId: "",
-        distributorName: "",
-        distributorLevel: "",
-        activeName: "first",
-        tableData: [{
-            "takeOrderNum": "201807031618141262057",
-            "goodsName": "商品1",
-            "takeNum": "100",
-            "unit": "盒",
-            "applicationTime": "2018-07-03 16:18:15",
-            "store": "张三的店",
-            "takePattern": "提货方式1",
-            "warehousingFee": "200.0元",
-            "courierFee": "200.0元",
-            "currentState": "已取消",
-            "action": "操作1",
-          },{
-            "takeOrderNum": "201807031618141262058",
-            "goodsName": "商品2",
-            "takeNum": "200",
-            "unit": "千克",
-            "applicationTime": "2018-07-03 16:28:15",
-            "store": "李四的店",
-            "takePattern": "提货方式2",
-            "warehousingFee": "220.0元",
-            "courierFee": "220.0元",
-            "currentState": "已取消",
-            "action": "操作2",
-          }],
-        takeIt: false,
-        showIt:false,
-        options: [{
-          value: '',
-          label: '全部'
-        }, {
-          value: '1',
-          label: '代付费'
-        }, {
-          value: '2',
-          label: '已付款'
-        }, {
-          value: '3',
-          label: '出库中'
-        }, {
-          value: '4',
-          label: '已到店'
-        }, {
-          value: '5',
-          label: '已发货'
-        }, {
-          value: '6',
-          label: '待取货'
-        }, {
-          value: '7',
-          label: '已完成'
-        }, {
-          value: '8',
-          label: '已取消'
-        }],
-        optionsIn: [{
-            value: "",
-            label: '全部',
-          },
-          {
-            value: "JXSLEVEL001",
-            label: '一级',
-          }, {
-            value: "JXSLEVEL002",
-            label: '二级',
-          },
-          {
-            value: "JXSLEVEL003",
-            label: '三级',
-          }
-        ],
-        optionsEdit: [{
-            value: "1",
-            label: '增加配额',
-          },
-          {
-            value: "2",
-            label: '减少配额',
-          }
-        ],
-        quotasType: '',
-        quotasNumber: '',
-        value: '',
-        gridData: [],
-        distributorLevel: "",
-        rowId: "",
-        comfirmStatus:"",
-        pickerOptions2:'',
-        optionsEditSearch: [{
-            value: "",
-            label: '全部',
-          },
-          {
-            value: "0",
-            label: '待配售',
-          },
-          {
-            value: "1",
-            label: '已配售',
-          },
-          {
-            value: "2",
-            label: '减少配额待确认',
-          },
-          {
-            value: "3",
-            label: '增加配额待确认',
-          },
-          {
-            value: "4",
-            label: '尾款待结',
-          },
-          {
-            value: "5",
-            label: '已确认',
-          },
-          {
-            value: "6",
-            label: '已结束',
-          }
-        ],
+    search() {
+      this.getData();
+    },
+    handleClick() {
+      this.getData();
+    },
+    handleSizeChange(data) {
+      this.showCount = data;
+      this.getData();
+    },
+    handleCurrentChange(data) {
+      this.currentPage = data;
+      this.getData();
+    },
+    getCookie(name) {
+      var arr,
+        reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if ((arr = document.cookie.match(reg))) {
+        return arr[2];
+      } else {
+        return false;
       }
-    },
+    }
+  },
+  mounted() {
+    this.getData();
   }
+};
 </script>
 <style >
-  .el-select {
-    width: 100%;
-  }
+.el-select {
+  width: 100%;
+}
 </style>

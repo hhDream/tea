@@ -75,7 +75,7 @@
         <template slot-scope="scope">
             <a  @click="$router.openPage('/distributorCenter/billDetail')" style="color:#0166bb" v-if="scope.row.takeTeaCount">已补发票</a><br v-if="scope.row.takeTeaCount">
             <a  @click="$router.openPage('/distributorCenter/makeBill')" style="color:#0166bb" v-if="scope.row.orderStatus==2">补开发票</a><br v-if="scope.row.orderStatus==2">
-            <a  @click="$router.openPage('/buyListDetail')" style="color:#0166bb">订单详情</a>
+            <a  @click="$router.openPage('/buyListDetail',{id:scope.row.orderCode})" style="color:#0166bb">订单详情</a>
         </template>
         </el-table-column>
     </el-table>
@@ -88,111 +88,110 @@
 </template>
 
 <script>
-  import qs from 'qs'
-  export default {
-    methods: {
-      getData() {
-        this.axios.post(this.http + "/interface/pc/distributor/pcGoods/myOrder", qs.stringify({
-          loginPhone: this.phone,
-          currentPage: this.currentPage,
-          pageSize: this.showCount,
-          goodsName: this.goodsName,
-          goodsCode: this.goodsCode,
-          priceSort:this.priceSort,
-          state:this.state,
-          orderType:this.orderType,
-          type:this.type
-        })).then(res => {
-          console.log(res);
-          if (res.data.code!=200) {
+import qs from "qs";
+export default {
+  methods: {
+    getData() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/distributor/pcGoods/myOrder",
+          qs.stringify({
+            loginPhone: this.phone,
+            currentPage: this.currentPage,
+            pageSize: this.showCount,
+            goodsName: this.goodsName,
+            goodsCode: this.goodsCode,
+            priceSort: this.priceSort,
+            state: this.state,
+            orderType: this.orderType,
+            type: this.type
+          })
+        )
+        .then(res => {
+          if (res.data.code != 200) {
             this.tableData = [];
-          this.total = 0;
-          this.currentPage = 1;
-          return false;
+            this.total = 0;
+            this.currentPage = 1;
+            return false;
           }
           this.tableData = JSON.parse(res.data.data).orderList;
           this.total = JSON.parse(res.data.data).total;
-          console.log( JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
-        })
-      },
-      handleClick(row) {
-        console.log(row);
-      },
-      handleSizeChange(data) {
-        this.showCount = data;
-        this.getData()
-      },
-      handleCurrentChange(data) {
-        this.currentPage = data;
-        this.getData()
-      },
-      changeTab(val){
-        this.state=val.name;
-        this.getData()
-      },
-       mysort(val){
-        console.log(val);
-        if (val.order=='ascending') {
-          this.priceSort=1
-        this.getData()
-
-        }else{
-          this.priceSort=2
-        this.getData()
-        }
-      },
-      search() {
-        this.getData()
+        });
+    },
+    handleClick(row) {
+    },
+    handleSizeChange(data) {
+      this.showCount = data;
+      this.getData();
+    },
+    handleCurrentChange(data) {
+      this.currentPage = data;
+      this.getData();
+    },
+    changeTab(val) {
+      this.state = val.name;
+      this.getData();
+    },
+    mysort(val) {
+      if (val.order == "ascending") {
+        this.priceSort = 1;
+        this.getData();
+      } else {
+        this.priceSort = 2;
+        this.getData();
       }
     },
-    created() {
-      this.getData()
-    },
-    data() {
-      return {
-        tableData: [],
-        priceSort:'',
-        state:'0',
-        orderType:"",
-        type:'1',
-        http: this.$store.state.dialog.http,
-        phone: this.$getcookie('LOGIN_PHONE'),
-        currentPage: 1,
-        showCount: 10,
-        goodsName: "",
-        goodsCode: "",
-        total:0,
-        activeName:"first",
-        formInline: {
-          user: '',
-          region: ''
-        },
-        fullscreenLoading:false
-      }
-    },
+    search() {
+      this.getData();
+    }
+  },
+  created() {
+    this.getData();
+  },
+  data() {
+    return {
+      tableData: [],
+      priceSort: "",
+      state: "0",
+      orderType: "",
+      type: "1",
+      http: this.$store.state.dialog.http,
+      phone: this.$getcookie("LOGIN_PHONE"),
+      currentPage: 1,
+      showCount: 10,
+      goodsName: "",
+      goodsCode: "",
+      total: 0,
+      activeName: "first",
+      formInline: {
+        user: "",
+        region: ""
+      },
+      fullscreenLoading: false
+    };
   }
+};
 </script>
 
 <style lang='less' scoped>
-
-.sp_info{
+.sp_info {
   display: flex;
 }
-.sp_cover{
+.sp_cover {
   width: 30%;
   height: 80%;
-  >img{
+  > img {
     display: block;
     width: 45px;
     height: 45px;
     margin-top: 4px;
   }
 }
-.sp_content{
+.sp_content {
   width: 70%;
   text-align: left;
-  .sp_code{
+  .sp_code {
     font-size: 12px;
     color: #999;
   }

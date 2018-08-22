@@ -212,7 +212,6 @@ export default {
   },
   created() {
     this.getData();
-    console.log(this.$store.state.dialog);
   },
   methods: {
     makeSure() {
@@ -301,12 +300,10 @@ export default {
         )
         .then(res => {
           this.fullscreenLoading = false;
-          console.log(res.data.data);
           if (res.data.code == 200) {
             this.person = JSON.parse(res.data.data).enterprise;
             this.stock = JSON.parse(res.data.data).stock;
             this.allotment = JSON.parse(res.data.data).allotment;
-            console.log(JSON.parse(res.data.data));
             if (this.allotment.releaseStatus == 1) {
               this.allotment.releaseStatus = "待配售";
             } else if (this.allotment.releaseStatus == 2) {

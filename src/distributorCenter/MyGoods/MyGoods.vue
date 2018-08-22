@@ -71,8 +71,8 @@
       </el-table-column>
       <el-table-column align="center" prop="takeTeaCount" label="操作">
         <template slot-scope="scope">
-          <a v-if="scope.row.state==1 ">下架</a>
-          <a v-else-if="scope.row.state==2 ">上架</a>
+          <a v-if="scope.row.state==1" @click="outShelf(scope.row.id)">下架</a>
+          <!-- <a v-else-if="scope.row.state==2"  @click="onShelf(scope.row.id)">上架</a> -->
         </template>
       </el-table-column>
     </el-table>
@@ -87,6 +87,7 @@
 <script>
   import qs from 'qs'
   export default {
+    inject: ['reload'],
     methods: {
       getData() {
         this.axios.post(this.http + "/interface/pc/distributor/pcGoods/myGoods", qs.stringify({
@@ -98,7 +99,6 @@
           priceSort:this.priceSort,
           state:this.state
         })).then(res => {
-          console.log(res);
           if (res.data.code!=200) {
           this.tableData = [];
           this.total = 0;
@@ -111,10 +111,8 @@
         })
       },
       handleClick(row) {
-        console.log(row);
       },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },
@@ -123,26 +121,44 @@
         this.getData()
       },
       changeTab(val){
-        console.log(val);
         this.state=val.name;
         this.getData()
-
       },
       mysort(val){
-        console.log(val);
         if (val.order=='ascending') {
-          this.priceSort=1
+          this.priceSort=1;
         this.getData()
-
         }else{
-          this.priceSort=2
+          this.priceSort=2;
         this.getData()
 
         }
       },
       search() {
         this.getData()
-      }
+      },
+      outShelf(id){
+        this.axios.post(this.http + "/interface/pc/distributor/pcTeaStore/outTheShelf", qs.stringify({
+          id: id
+        })).then(res => {
+          if (res.data.code==200) {
+            this.reload();
+          }else{
+            this.$message('下架失败');
+          }
+        })
+      },
+      // onShelf(id){
+      //   this.axios.post(this.http + "/interface/pc/distributor/pcTeaStore/onTheShelf", qs.stringify({
+      //     id: id
+      //   })).then(res => {
+      //     if (res.data.code==200) {
+      //       location.reload();
+      //     }else{
+      //       this.$message('上架失败');
+      //     }
+      //   })
+      // }
     },
     created() {
       this.getData()

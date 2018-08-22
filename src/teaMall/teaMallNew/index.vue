@@ -38,7 +38,6 @@ import qs from 'qs'
                 this.axios.post(this.http + '/interface/pc/bulltin/findInformationBulletin', qs.stringify({
                     id: this.id,
                 })).then(res => {
-                    console.log(JSON.parse(res.data.data));
                     this.newdata = JSON.parse(res.data.data)
                 })
             },

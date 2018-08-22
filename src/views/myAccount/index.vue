@@ -295,9 +295,7 @@ export default {
         30,
         28
       ];
-      console.log('定义数据');
       var calc = function(value, array1, array2, b) {
-        console.log('调用calc');
         var count = 0;
         for (var i = 0; i < array2.length; i++) {
           var a = value[i];
@@ -306,9 +304,7 @@ export default {
         return b - count % b;
       };
       var verify = function(str) {
-        console.log('调用verify');
         var value = str.toUpperCase();
-        console.log(value);
         if (value.length != 18) {
           callback(new Error("请输入正确的编码!"));
         }
@@ -513,7 +509,6 @@ export default {
           })
         )
         .then(res => {
-          console.log(res);
           if (res.data.code == 200) {
             callback();
           }
@@ -2730,7 +2725,6 @@ export default {
         if (valid) {
           this.binding();
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -2773,7 +2767,6 @@ export default {
       };
     },
     change(e) {
-      console.log(e.split(","));
       this.ruleForm.bankCode = e.split(",")[1];
       this.ruleForm.branchcardName = e.split(",")[0];
     },

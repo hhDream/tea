@@ -2,7 +2,7 @@
 <div v-loading.fullscreen.lock="fullscreenLoading">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item label="订单编号：">
-        <el-input v-model="formInline.user" placeholder="订单编号"></el-input>
+        <el-input v-model="loginAccount" placeholder="订单编号"></el-input>
     </el-form-item>
     <el-form-item label="提货单号：">
         <el-input v-model="formInline.user" placeholder="提货单号"></el-input>
@@ -90,24 +90,22 @@
   export default {
     methods: {
       getData() {
-        this.axios.post(this.http + "/interface/pc/personal/pcEnterprise/myStore", qs.stringify({
-          releaseEnterpriseId: this.enterpriseCode,
+        this.axios.post(this.http + "/interface/pc/distributor/pcBank/myBill", qs.stringify({
+          loginAccount: this.enterpriseCode,
           currentPage: this.currentPage,
           showCount: this.showCount,
-          goodsName: this.goodsName,
-          goodsCode: this.goodsCode,
+          startTime: this.goodsName,
+          endTime: this.goodsCode,
+          transactionDirection: this.goodsCode,
         })).then(res => {
           this.tableData = JSON.parse(res.data.data).data;
           this.total = JSON.parse(res.data.data).total;
-          console.log( JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
         })
       },
       handleClick(row) {
-        console.log(row);
       },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },

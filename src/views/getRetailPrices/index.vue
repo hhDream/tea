@@ -114,12 +114,10 @@
         })).then(res => {
           this.tableData = JSON.parse(res.data.data).data;
           this.total = JSON.parse(res.data.data).total;
-          console.log( JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
         })
       },
       handleClick(row) {
-        console.log(row);
         this.dialogFormVisible = true
         this.form.goodsName=row.goodsName
         this.form.goodsCode=row.goodsCode
@@ -137,7 +135,6 @@
           benchmarkingUnit3: this.row.benchmarkingUnit3,
           realseCode: this.row.realseCode,
         })).then(res=>{
-          console.log(res)
           if(res.data.code==200){
             this.reload()
           }else{
@@ -161,20 +158,16 @@
           goodsCode: this.row.goodsCode,
           showCount: this.showCount2,
         })).then(res=>{
-          console.log(JSON.parse(res.data.data));
           this.tableData2=JSON.parse(res.data.data).data;
-          console.log(this.tableData2);
           this.total2=JSON.parse(res.data.data).total;
 
         })
       },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },
       handleSizeChange2(data) {
-        console.log(data);
         this.showCount2 = data;
         this.showHis(this.row)
       },

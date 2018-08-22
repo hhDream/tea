@@ -86,15 +86,11 @@
           }else{
             this.tableData=[]
           }
-          console.log(res.data);
-          
         })
       },
       handleClick(row) {
-        console.log(row);
       },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },

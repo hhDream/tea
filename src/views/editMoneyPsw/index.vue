@@ -191,7 +191,6 @@ export default {
           })
         )
         .then(res => {
-          console.log(res);
         });
     },
     // 修改密码
@@ -234,7 +233,6 @@ export default {
         )
         .then(res => {
           if (res.data.code == 200) {
-            console.log(res.data);
             var ok = true;
             callback(ok);
             this.editPassWord();

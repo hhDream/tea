@@ -46,8 +46,8 @@
         </el-table-column>
         <el-table-column prop="takeTeaCount" align="center" label="操作" width="180">
         <template slot-scope="scope">
-            <a @click="$router.openPage('/distributorCenter/deliveryApplication')" style="color:#0166bb">申请提货</a>&nbsp;&nbsp;
-            <a @click="centerDialogVisible=!centerDialogVisible" style="color:#0166bb">我要卖茶</a>
+            <a @click="$router.openPage('/distributorCenter/deliveryApplication',{id:scope.row.id})" style="color:#0166bb">申请提货</a>&nbsp;&nbsp;
+            <a @click="saleTea(scope.row.rushbyid)" style="color:#0166bb">我要卖茶</a>
         </template>
         </el-table-column>
     </el-table>
@@ -63,34 +63,34 @@
       <el-row>
         <el-col :span="7" style="margin-top:20px">温馨提示:</el-col>
         <el-col :span="13">
-          此商品单价为不含税价格！
+          此商品单价为不含税价格！价格区间({{saleData.releasePrice}} - {{saleData.guidancePrice}})
         </el-col>
         <el-col :span="7" style="margin-top:20px">商品名称:</el-col>
         <el-col :span="13">
-          演示商品(勿拍不发货)
+          {{ saleData.goodsName }}
         </el-col>
         <el-col :span="7">单价:</el-col>
         <el-col :span="7" style="margin-top:20px">
-          <el-input></el-input>
+          <el-input v-model="price"></el-input>
         </el-col>
-        <el-col :span="7" offset="1" style="margin-top:20px">
+        <el-col :span="7" :offset="1" style="margin-top:20px">
           <el-select v-model="specifications" placeholder="请选择规格">
-            <el-option label="元/盒" value="1"></el-option>
-            <el-option label="元/粒" value="2"></el-option>
-            <el-option label="元/克" value="3"></el-option>
+            <el-option :label="'元/'+saleData.transactionSpecification1" value="1"></el-option>
+            <el-option :label="'元/'+saleData.transactionSpecification2" value="2"></el-option>
+            <el-option :label="'元/'+saleData.transactionSpecification3" value="3"></el-option>
           </el-select>
         </el-col>
         <el-col :span="7">出售数量:</el-col>
         <el-col :span="7" style="margin-top:20px">
-          <el-input></el-input>
+          <el-input v-model="count"></el-input>
         </el-col>
         <el-col :span="7">
-          (库存数量547片)
+          (库存数量{{ saleData.stockCount }}{{ saleData.transactionSpecification3 }})
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="centerDialogVisible = false">保存</el-button>
+        <el-button type="primary" @click="sureSaleTea()">确定</el-button>
       </span>
     </el-dialog>
 </div>
@@ -99,7 +99,126 @@
 <script>
 import qs from "qs";
 export default {
+  inject: ["reload"],
   methods: {
+    sureSaleTea() {
+      if (this.specifications == 3) {
+        if (
+          +this.price > +this.saleData.guidancePrice ||
+          +this.price < +this.saleData.releasePrice
+        ) {
+          this.$message({
+            type: "error",
+            message: "请选择合适的价格区间"
+          });
+          return;
+        }
+        if (+this.count > +this.saleData.stockCount) {
+          this.$message({
+            type: "error",
+            message: "请输入正确的数量"
+          });
+          return;
+        }
+      } else if (this.specifications == 2) {
+        if (
+          +this.price >
+            this.saleData.guidancePrice *
+              this.saleData.benchmarkingUnitCount2 /
+              this.saleData.benchmarkingUnitCount3 ||
+          +this.price <
+            this.saleData.releasePrice *
+              this.saleData.benchmarkingUnitCount2 /
+              this.saleData.benchmarkingUnitCount3
+        ) {
+          this.$message({
+            type: "error",
+            message: "请选择合适的价格区间"
+          });
+          return;
+        }
+        if (
+          +this.count >
+          Math.ceil(
+            +this.saleData.stockCount /
+              this.saleData.benchmarkingUnitCount2 *
+              this.saleData.benchmarkingUnitCount3
+          )
+        ) {
+          this.$message({
+            type: "error",
+            message: "请输入正确的数量"
+          });
+          return;
+        }
+      } else {
+        if (
+          this.price >
+            this.saleData.guidancePrice *
+              this.saleData.benchmarkingUnitCount1 /
+              this.saleData.benchmarkingUnitCount3 ||
+          this.price <
+            this.saleData.releasePrice *
+              this.saleData.benchmarkingUnitCount1 /
+              this.saleData.benchmarkingUnitCount3
+        ) {
+          this.$message({
+            type: "error",
+            message: "请选择合适的价格区间"
+          });
+          return;
+        }
+        if (
+          +this.count >
+          Math.ceil(
+            +this.saleData.stockCount /
+              this.saleData.benchmarkingUnitCount1 *
+              this.saleData.benchmarkingUnitCount3
+          )
+        ) {
+          this.$message({
+            type: "error",
+            message: "请输入正确的数量"
+          });
+          return;
+        }
+      }
+      this.axios
+        .post(
+          this.http + "/interface/pc/distributor/pcTeaStore/onTheShelf",
+          qs.stringify({
+            id: this.saleData.id,
+            outCount: this.count,
+            param: this.saleData[this.specifications],
+            specification: this.saleData.specification,
+            price: this.price
+          })
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+            this.reload();
+          }
+        });
+    },
+    saleTea(id) {
+      this.centerDialogVisible = !this.centerDialogVisible;
+      this.id = id;
+      this.axios
+        .post(
+          this.http +
+            "/interface/pc/distributor/pcTeaStore/holderStockInformation",
+          qs.stringify({
+            phone: this.$getcookie("LOGIN_PHONE"),
+            rushId: id
+          })
+        )
+        .then(res => {
+          if (res.data.code == 200) {
+            console.log(JSON.parse(res.data.data));
+            this.saleData = JSON.parse(res.data.data);
+          }
+        });
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then(_ => {
@@ -112,7 +231,7 @@ export default {
         .post(
           this.http + "/interface/pc/distributor/pcTeaStore/myHolderStock",
           qs.stringify({
-            loginPhone: this.$getcookie('LOGIN_PHONE'),
+            loginPhone: this.$getcookie("LOGIN_PHONE"),
             currentPage: this.currentPage,
             pageSize: this.showCount,
             goodsName: this.goodsName,
@@ -120,24 +239,19 @@ export default {
           })
         )
         .then(res => {
-          console.log(res);
-          if (res.data.code!=200) {
-          this.tableData = [];
-          this.total = 0;
-          this.currentPage =1;
-          return false;
+          if (res.data.code != 200) {
+            this.tableData = [];
+            this.total = 0;
+            this.currentPage = 1;
+            return false;
           }
           this.tableData = JSON.parse(res.data.data).list;
           this.total = JSON.parse(res.data.data).total;
-          console.log(JSON.parse(res.data.data));
           this.currentPage = JSON.parse(res.data.data).currentPage;
         });
     },
-    handleClick(row) {
-      console.log(row);
-    },
+    handleClick(row) {},
     handleSizeChange(data) {
-      console.log(data);
       this.showCount = data;
       this.getData();
     },
@@ -150,10 +264,13 @@ export default {
     }
   },
   created() {
-    this.getData()
+    this.getData();
   },
   data() {
     return {
+      id: "",
+      count: "",
+      price: "",
       tableData: [],
       http: this.$store.state.dialog.http,
       currentPage: 1,
@@ -162,7 +279,8 @@ export default {
       goodsCode: "",
       total: 0,
       centerDialogVisible: false,
-      specifications: ""
+      specifications: "",
+      saleData: {}
     };
   }
 };

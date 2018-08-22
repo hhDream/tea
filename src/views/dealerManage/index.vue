@@ -140,17 +140,14 @@
           distributorName: this.distributorName,
           distributorCode:this.distributorCode
         })).then(res => {
-          console.log(JSON.parse(res.data.data));
           this.tableData = JSON.parse(res.data.data).data;
           this.total = JSON.parse(res.data.data).total;
           this.currentPage = JSON.parse(res.data.data).currentPage;
         })
       },
       handleClick(row) {
-        console.log(row);
       },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },
@@ -166,24 +163,21 @@
       },
       distributor_getExcel() {
         this.axios.post(this.http + '/interface/pc/personal/pcDistributor/templateDown', qs.stringify({
-          templateName: 'distributor',
+          templateName: 'template-distributorInfo',
         })).then(res => {
-          // console.log(JSON.parse(res.data.data));
           location.href = JSON.parse(res.data.data)
         })
       },
       distributorRelation_getExcel() {
         this.axios.post(this.http + '/interface/pc/personal/pcDistributor/templateDown', qs.stringify({
-          templateName: 'distributorRelation'
+          templateName: 'template-distributorRelationship'
         })).then(res => {
           location.href = JSON.parse(res.data.data)
         })
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
       },
       handlePreview(file) {
-        console.log(file);
       },
       handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
@@ -192,7 +186,6 @@
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
       beforeAvatarUpload(file, fileList){
-        // console.log(file.type);
         const isXLS = file.type === 'application/vnd.ms-excel';
         if (!isXLS) {
           this.$message.error('上传文件只能是 xls 格式!');
@@ -200,7 +193,6 @@
       },
       errorMsg(error, file, fileList){
         // this.$message(error)
-        console.log(error);
       }
     },
     created() {

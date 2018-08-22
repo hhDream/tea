@@ -86,14 +86,11 @@
           this.tableData = JSON.parse(res.data.data).data;
           this.total = JSON.parse(res.data.data).total;
           this.currentPage = JSON.parse(res.data.data).currentPage;
-          console.log(this.tableData);
         })
       },
       handleClick(row) {
-        console.log(row);
       },
       handleSizeChange(data) {
-        console.log(data);
         this.showCount = data;
         this.getData()
       },
