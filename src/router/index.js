@@ -235,13 +235,6 @@ const router = new Router({
             }
         },
         {
-            path: '/pay',
-            name: 'pay',
-            component(resolve) {
-                require(['@/components/pay.vue'], resolve)
-            }
-        },
-        {
             path: '/myUserCenter',
             name: 'myUserCenter',
             component(resolve) {
@@ -259,6 +252,27 @@ const router = new Router({
                     name: 'userInfo',
                     component(resolve) {
                         require(['@/userCenter/userAccount/userInfo.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'MyCoupons',
+                    name: 'MyCoupons',
+                    component(resolve) {
+                        require(['@/userCenter/MyCoupons/MyCoupons.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'myNews_user',
+                    name: 'myNews_user',
+                    component(resolve) {
+                        require(['@/userCenter/myNews/index.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'myNewsDetail_user',
+                    name: 'myNewsDetail_user',
+                    component(resolve) {
+                        require(['@/userCenter/myNewsDetail/index.vue'], resolve)
                     }
                 },
                 {
@@ -359,6 +373,20 @@ const router = new Router({
                     name: 'enterpriseInfo',
                     component(resolve) {
                         require(['@/distributorCenter/EnterpriseInfo/EnterpriseInfo.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'myNewsDetail',
+                    name: 'myNewsDetail',
+                    component(resolve) {
+                        require(['@/distributorCenter/myNewsDetail/index.vue'], resolve)
+                    }
+                },
+                {
+                    path: 'myNews',
+                    name: 'myNews',
+                    component(resolve) {
+                        require(['@/distributorCenter/myNews/index.vue'], resolve)
                     }
                 },
                 {
@@ -638,9 +666,9 @@ router.beforeEach((to, from, next) => {
         store.commit('changePhone', "");
     }
     let isLogin = store.state.dialog.cookie == true ? true : false; // 是否登录
-    const teaMallArr = [ 'teaMallPayMent'];
-    const userCenter = ['myUserCenter', 'takeDetail', 'userStock', 'takeTea','userAddress', 'userInfo', 'userPwd', 'bankCard', 'coupon', 'increaseAptitudes', 'orderSearch', 'userHome', 'userInfo', 'buyListDetail', 'purchaseOrder', 'sellOrder', 'userPwd']
-    const distributorCenter = ['banlance', 'billCheck', 'billDetail', 'buyList', 'buyListDetail', 'deliveryApplication', 'distributorAddress', 'distributorHome', 'enterpriseInfo', 'freightTemplate', 'increaseAptitude', 'invoiceManage', 'invoiceSetting', 'makeBill', 'myBank', 'myCoupon', 'myGoods', 'myRushBuy', 'myStock', 'password', 'rushBuy', 'saleList', 'shippingTemplates', 'takeGoodsDetail', 'vipInfo', 'vipTransaction']
+    const teaMallArr = ['teaMallPayMent'];
+    const userCenter = ['myUserCenter', 'takeDetail', 'userStock', 'takeTea', 'userAddress', 'userInfo', 'userPwd', 'bankCard', 'coupon', 'increaseAptitudes', 'orderSearch', 'userHome', 'userInfo', 'buyListDetail', 'purchaseOrder', 'sellOrder', 'userPwd', 'myNews_user', 'myNewsDetail_user']
+    const distributorCenter = ['banlance', 'billCheck', 'billDetail', 'buyList', 'buyListDetail', 'deliveryApplication', 'distributorAddress', 'distributorHome', 'enterpriseInfo', 'freightTemplate', 'increaseAptitude', 'invoiceManage', 'invoiceSetting', 'makeBill', 'myBank', 'myCoupon', 'myGoods', 'myRushBuy', 'myStock', 'password', 'rushBuy', 'saleList', 'shippingTemplates', 'takeGoodsDetail', 'vipInfo', 'vipTransaction', 'myNews', 'myNewsDetail']
     if (to.name == 'login' || nextRoute.indexOf(to.name) >= 0 || teaMallArr.indexOf(to.name) >= 0 || distributorCenter.indexOf(to.name) >= 0 || userCenter.indexOf(to.name) >= 0) { //限定隐藏顶部搜索 
         store.commit('changeToLogin', false);
     } else {
@@ -649,10 +677,10 @@ router.beforeEach((to, from, next) => {
     if (to.name == 'teaMallIndex') {
         store.commit('changeIsShow', 0)
     }
-    if (to.name == 'teaMallRush') {
+    if (to.name == 'teaMallRush' || to.name == 'teaMallProduct') {
         store.commit('changeIsShow', 1)
     }
-    if (to.name == 'teaMallShop') {
+    if (to.name == 'teaMallShop' || to.name == 'teaMallShopProduct') {
         store.commit('changeIsShow', 2)
     }
     // 未登录状态；当路由到nextRoute指定页时，跳转至login
@@ -665,7 +693,6 @@ router.beforeEach((to, from, next) => {
     }
     // 已登录状态；当路由到login时，跳转至home 
     if (to.name === 'login') {
-        store.commit('changeIsLogin', false);
         if (isLogin) {
             var c = getCookie('STATUS')
             if (c == 1) {
@@ -684,7 +711,6 @@ router.beforeEach((to, from, next) => {
 
         }
     } else {
-        store.commit('changeIsLogin', true);
 
     }
     next();

@@ -3,7 +3,7 @@ export default {
         noticeId: '',
         loading: false,
         newId: '',
-        isShow: 0
+        isShow: sessionStorage.getItem('changeIsShow')
     },
     mutations: {
         changeLoading(state, loading) {

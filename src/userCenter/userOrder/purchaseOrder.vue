@@ -1,5 +1,5 @@
 <template>
-  <div v-loading.fullscreen.lock="fullscreenLoading">
+  <div>
     <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/myUserCenter/userHome' }">个人中心</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/myUserCenter/purchaseOrder' }">订单管理</el-breadcrumb-item>
@@ -106,7 +106,6 @@ export default {
   data() {
     return {
       orderType:'',
-      fullscreenLoading: false,
       orderCode: "",
       goodsName: "",
       state: "0",
@@ -137,7 +136,6 @@ export default {
   },
   methods: {
     getData() {
-      this.fullscreenLoading = true;
       this.axios
         .post(
           this.http + "/interface/pc/customer/pcOrder/myOrder",
@@ -154,7 +152,6 @@ export default {
           })
         )
         .then(res => {
-          this.fullscreenLoading = false;
           if (res.data.code == 200) {
             this.total = JSON.parse(res.data.data).total;
             this.currentPage = JSON.parse(res.data.data).currentPage;

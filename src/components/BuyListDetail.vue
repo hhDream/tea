@@ -99,6 +99,11 @@ export default {
           if(res.data.code == 200){
               console.log(JSON.parse(res.data.data))
               this.tempData = JSON.parse(res.data.data);
+          }else{
+              this.$message({
+              type: "error",
+              message: res.data.message
+            });
           }
         });
     }

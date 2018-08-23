@@ -1,5 +1,5 @@
 <template>
-<div v-loading.fullscreen.lock="fullscreenLoading">
+<div >
   <el-row class="myCenter" :gutter="20" v-if="!withDraw">
     <el-col :span="8" style="padding-right: 10px;padding-left:0">
       <div class="grid-content bg-purple">
@@ -206,8 +206,7 @@ export default {
       http: this.$store.state.dialog.http,
       person: {},
       allotment: [],
-      stock: [],
-      fullscreenLoading: false
+      stock: []
     };
   },
   created() {
@@ -290,7 +289,6 @@ export default {
               : row.releaseStatus == 7 ? "已结束" : "";
     },
     getData() {
-      this.fullscreenLoading = true;
       this.axios
         .post(
           this.http + "/interface/pc/personal/pcEnterprise/enterpriseInfo",
@@ -299,7 +297,6 @@ export default {
           })
         )
         .then(res => {
-          this.fullscreenLoading = false;
           if (res.data.code == 200) {
             this.person = JSON.parse(res.data.data).enterprise;
             this.stock = JSON.parse(res.data.data).stock;
@@ -320,7 +317,6 @@ export default {
           }
         })
         .catch(err => {
-          this.fullscreenLoading = false;
           this.open(err);
         });
     },

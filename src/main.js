@@ -27,6 +27,16 @@ vue.prototype.$getcookie = function getCookie(cname) {
         }
         return "";
     }
+    //设置cookie   name为cookie的名字，value是值，expiredays为过期时间（天数）
+vue.prototype.$setcookie = function setCookie(name, value, expiredays) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + expiredays);
+        document.cookie =
+            name +
+            "=" +
+            escape(value) +
+            (expiredays == null ? "" : ";expires=" + exdate.toGMTString());
+    }
     // 添加请求拦截器
 axios.interceptors.request.use(function(config) {
     // 在发送请求之前做些什么
@@ -35,8 +45,18 @@ axios.interceptors.request.use(function(config) {
     return config;
 }, function(error) {
     // 对请求错误做些什么
-    store.commit('changeLoading', true); //加载loading
-
+    store.commit('changeLoading', false); //加载loading
+    this.$alert("网络错误请求失败!", "错误", {
+        confirmButtonText: "确定",
+        callback: action => {
+            this.delCookie("JSESSIONID");
+            this.$router.openPage("/login");
+            this.$message({
+                type: "info",
+                message: `错误原因: ${err}`
+            });
+        }
+    });
     return Promise.reject(error);
 });
 
@@ -49,7 +69,17 @@ axios.interceptors.response.use(function(response) {
 }, function(error) {
     // 对响应错误做点什么
     store.commit('changeLoading', false); //加载loading
-
+    this.$alert("网络错误请求失败!", "错误", {
+        confirmButtonText: "确定",
+        callback: action => {
+            this.delCookie("JSESSIONID");
+            this.$router.openPage("/login");
+            this.$message({
+                type: "info",
+                message: `错误原因: ${err}`
+            });
+        }
+    });
     return Promise.reject(error);
 });
 /* eslint-disable no-new */

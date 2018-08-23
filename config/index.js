@@ -13,8 +13,8 @@ module.exports = {
         proxyTable: {
             '/apis': {
                 // 测试环境
-                target: 'http://192.168.0.105:8080/tea',
-                // target: 'https://ent.teaexs.com/platform',
+                // target: 'http://192.168.0.105:8080/tea',
+                target: 'https://ent.teaexs.com/platform',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/apis': ''

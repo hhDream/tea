@@ -93,7 +93,7 @@
                                                 <div class="fs12px">成交量</div>
                                             </span>
                                             <span>
-                                                <div>{{Sp.param2}}{{Sp.benchmarkingUnit3}}</div>
+                                                <div>{{+Sp.param2 - +Sp.param3}}{{Sp.benchmarkingUnit3}}</div>
                                                 <div class="fs12px">可买量</div>
                                             </span>
                                             <span class="br-none">

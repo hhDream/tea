@@ -47,7 +47,7 @@
         <el-table-column prop="takeTeaCount" align="center" label="操作" width="180">
         <template slot-scope="scope">
             <a @click="$router.openPage('/distributorCenter/deliveryApplication',{id:scope.row.id})" style="color:#0166bb">申请提货</a>&nbsp;&nbsp;
-            <a @click="saleTea(scope.row.rushbyid)" style="color:#0166bb">我要卖茶</a>
+            <a v-if="scope.row.param1 == 2" @click="saleTea(scope.row.rushbyid)" style="color:#0166bb">我要卖茶</a>
         </template>
         </el-table-column>
     </el-table>
@@ -63,7 +63,7 @@
       <el-row>
         <el-col :span="7" style="margin-top:20px">温馨提示:</el-col>
         <el-col :span="13">
-          此商品单价为不含税价格！价格区间({{saleData.releasePrice}} - {{saleData.guidancePrice}})
+          此商品单价为不含税价格！价格区间({{saleData.releasePrice }} - {{saleData.guidancePrice }})
         </el-col>
         <el-col :span="7" style="margin-top:20px">商品名称:</el-col>
         <el-col :span="13">
@@ -139,7 +139,7 @@ export default {
         }
         if (
           +this.count >
-          Math.ceil(
+          Math.floor(
             +this.saleData.stockCount /
               this.saleData.benchmarkingUnitCount2 *
               this.saleData.benchmarkingUnitCount3
@@ -170,7 +170,7 @@ export default {
         }
         if (
           +this.count >
-          Math.ceil(
+          Math.floor(
             +this.saleData.stockCount /
               this.saleData.benchmarkingUnitCount1 *
               this.saleData.benchmarkingUnitCount3
@@ -189,7 +189,7 @@ export default {
           qs.stringify({
             id: this.saleData.id,
             outCount: this.count,
-            param: this.saleData[this.specifications],
+            param: this.specifications,
             specification: this.saleData.specification,
             price: this.price
           })
@@ -245,6 +245,7 @@ export default {
             this.currentPage = 1;
             return false;
           }
+          console.log(JSON.parse(res.data.data).list)
           this.tableData = JSON.parse(res.data.data).list;
           this.total = JSON.parse(res.data.data).total;
           this.currentPage = JSON.parse(res.data.data).currentPage;

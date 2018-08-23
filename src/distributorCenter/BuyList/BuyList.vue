@@ -168,7 +168,6 @@ export default {
         user: "",
         region: ""
       },
-      fullscreenLoading: false
     };
   }
 };

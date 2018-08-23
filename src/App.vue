@@ -36,7 +36,7 @@
         <div class="top-side">
           <div class="clearfix top-side-box">
             <div class="fl logo">
-              <a class="img" @click="$router.openPage('/')"></a>
+              <a class="img" @click="$router.openPage('/');addClass(0)"></a>
             </div>
             <div v-if="this.$store.state.dialog.toLogin==true" class="fl search-box">
               <div class="dropdown">
@@ -58,10 +58,10 @@
                 <li :class="{active:this.$store.state.index.isShow==0}" ><a @click="$router.openPage('/');addClass(0)">首页</a></li>
                 <li :class="{active:this.$store.state.index.isShow==1}"><a @click="$router.openPage('/teaMallRush');addClass(1)">新茶抢购</a></li>
                 <li :class="{active:this.$store.state.index.isShow==2}"><a @click="$router.openPage('/teaMallShop');addClass(2)">自由集市</a></li>
-                <!-- <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">品牌商城</a></li> -->
+                <!-- <li :class="{active:isShow||this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">品牌商城</a></li> -->
                 <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/joinUs');addClass(4)">招商加盟</a></li>
-                <!-- <li :class="{active:this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li> -->
-                <!-- <li :class="{active:this.$store.state.index.isShow==4}"><a @click="$router.openPage('/teaMallTeaExperts');addClass(4)">茶评专家</a></li> -->
+                <!-- <li :class="{active:isShow||this.$store.state.index.isShow==3}"><a @click="$router.openPage('/');addClass(3)">服务保障</a></li> -->
+                <!-- <li :class="{active:isShow||this.$store.state.index.isShow==4}"><a @click="$router.openPage('/teaMallTeaExperts');addClass(4)">茶评专家</a></li> -->
               </ul>
             </div>
           </div>
@@ -115,9 +115,9 @@
         </div>
       </el-col>
     </el-row>
-<div class="coupon">
+<!-- <div class="coupons">
   <div class="textIn">领券购物</div> 
-</div>
+</div> -->
   </div>
 </template>
 
@@ -144,7 +144,6 @@ export default {
       isCollapse: false,
       phone: this.$store.state.dialog.phone,
       isRouterAlive: true,
-      isShow: 0,
       url: this.$getcookie("changeUrl"),
       messageUrl: this.$getcookie("messageUrl")
     };
@@ -164,6 +163,7 @@ export default {
     },
     addClass(i) {
       this.$store.commit("changeIsShow", i);
+      this.isShow=sessionStorage.getItem('changeIsShow');
     },
     //删除cookie
     delCookie(name) {
@@ -175,17 +175,6 @@ export default {
       this.$router.openPage("/login");
       location.reload();
     },
-    //读取cookie，需要注意的是cookie是不能存中文的，如果需要存中文，解决方法是后端先进行编码encode()，前端取出来之后用decodeURI('string')解码。（安卓可以取中文cookie，IOS不行）
-    getCookie(cname) {
-      var name = cname + "=";
-      var ca = document.cookie.split(";");
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") c = c.substring(1);
-        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
-      }
-      return "";
-    },
     reload() {
       this.isRouterAlive = false;
       this.$nextTick(function() {
@@ -194,7 +183,6 @@ export default {
     }
   },
   mounted() {},
-  created() {}
 };
 </script>
 
@@ -208,7 +196,7 @@ export default {
 #app {
   transition: all 1s linear;
 }
-.coupon {
+.coupons {
     position: fixed;
     display: block;
     bottom: 50px;

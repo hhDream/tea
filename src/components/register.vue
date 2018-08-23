@@ -258,6 +258,11 @@ export default {
               .then(res => {
                   if(res.data.code == 200){
                       this.$router.openPage('/login');
+                  }else{
+                    this.$message({
+                      type: "error",
+                      message: res.data.message
+                    });
                   }
               });
         } else {
@@ -289,6 +294,11 @@ export default {
         .then(res => {
           if (res.data.code == 200) {
             this.sendMsg();
+          }else{
+            this.$message({
+              type: "error",
+              message: res.data.message
+            });
           }
         });
     },

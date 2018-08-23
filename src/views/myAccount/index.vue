@@ -123,7 +123,7 @@
         </div>
       </el-col>
     </el-row>
-    <form action="http://mertest.chinapnr.com/npay/merchantRequest" method="post"  id='sss' enctype="application/x-www-form-urlencoded">
+    <form :action="url" method="post"  id='sss' enctype="application/x-www-form-urlencoded">
       <input type="hidden" name="cmd_id" v-model="aa">
       <input type="hidden" name="mer_cust_id" v-model="bb">
       <input type="hidden" name="check_value" v-model="cc">
@@ -176,7 +176,8 @@ export default {
     aa() {},
     bb() {},
     cc() {},
-    dd() {}
+    dd() {},
+    url(){}
   },
   data() {
     var validatePhone = (rule, value, callback) => {
@@ -519,6 +520,7 @@ export default {
       bb: "",
       cc: "",
       dd: "",
+      url:'',
       type: 1,
       bankImg: "",
       bankCount: "",
@@ -2824,6 +2826,7 @@ export default {
             this.bb = r.merCustId;
             this.cc = r.sign;
             this.dd = r.version;
+            this.url = r.url;
             var ss = document.getElementById("sss");
             setTimeout(function() {
               ss.submit();

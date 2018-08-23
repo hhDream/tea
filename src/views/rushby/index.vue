@@ -51,9 +51,9 @@
           <span>{{ scope.row.warehousingCount?scope.row.warehousingCount:0}} {{scope.row.benchmarkingUnit33}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="releaseCount" label="配订货总量">
+      <el-table-column prop="rationCount" label="配订货总量">
         <template slot-scope="scope">
-          <span>{{ scope.row.releaseCount?scope.row.releaseCount:0}} {{scope.row.benchmarkingUnit3}}</span>
+          <span>{{ scope.row.rationCount?scope.row.rationCount:0}} {{scope.row.benchmarkingUnit3}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="shlfRetentionCount" label="自留总量">

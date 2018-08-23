@@ -1,5 +1,5 @@
 <template>
-  <div v-loading.fullscreen.lock="fullscreenLoading">
+  <div>
     <el-breadcrumb style='padding:24px;padding-left:0' separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/myUserCenter/userHome' }">个人中心</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ path: '/myUserCenter/userStock' }">提货管理</el-breadcrumb-item>
@@ -78,7 +78,6 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      fullscreenLoading: false,
       goodsCode: "",
       goodsName: "",
       value: "0",
@@ -93,7 +92,6 @@ export default {
   },
   methods: {
     getData() {
-      this.fullscreenLoading = true;
       this.axios
         .post(
           this.http + "/interface/pc/customer/pcTeaStore/myHolderStock",
@@ -106,7 +104,6 @@ export default {
           })
         )
         .then(res => {
-          this.fullscreenLoading = false;
           if (res.data.code == 200) {
             console.log(JSON.parse(res.data.data).list)
             this.tableData = JSON.parse(res.data.data).list;

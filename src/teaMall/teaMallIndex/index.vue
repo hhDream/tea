@@ -28,7 +28,7 @@
                 <div style="text-align:center;margin-bottom:50px;"><img src="../../assets/images/tea-title.png" alt=""></div>
                 <el-carousel trigger="click" :autoplay="false" arrow='always'>
                     <el-carousel-item v-for="(item,index) in SPbannerList" :key="index">
-                        <a href="#" @click="$router.openPage('/teaMallRush');">
+                        <a href="#" @click="change()">
                             <img style="width:100%" :src="item.url" alt="">
                         </a>
                     </el-carousel-item>
@@ -462,22 +462,7 @@ export default {
           src: require("../../assets/images/brand-head1-img03.jpg")
         }
       ],
-      prizeList: [
-        {
-          name: "【新品上市】一念间·小粒茶和红柑丸"
-        },
-        {
-          name: "一念间·小粒茶"
-        },
-        {
-          name: "【新品上市】一念间·小粒茶和红柑丸"
-        },
-        {
-          name: "一念间·小粒茶"
-        },
-        {
-          name: "【新品上市】一念间·小粒茶和红柑丸"
-        }
+      prizeList: [{}
       ],
       activeIndex: 0,
       http: this.$store.state.dialog.http
@@ -498,6 +483,7 @@ export default {
   },
   methods: {
     getPicture() {
+      
       this.axios
         .post(
           this.http + "/interface/pc/startpage/getStartPagePictures",
@@ -906,6 +892,12 @@ export default {
           $active_m.children(".txts").fadeIn("slow");
         }
       });
+    },
+    change(){
+      this.$store.commit("changeIsShow", 1);
+      this.$router.openPage('/teaMallRush');
+
+      
     },
     stopInterval() {
       clearInterval(this.interval);

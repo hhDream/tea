@@ -1,5 +1,5 @@
 <template>
-<div v-loading.fullscreen.lock="fullscreenLoading">
+<div >
     <el-form :inline="true" class="demo-form-inline">
     <el-form-item label="会员账号：">
         <el-input v-model="customerAccount" placeholder="会员账号"></el-input>
@@ -70,8 +70,7 @@
         customerName:"",
         customerRegisterPhone: "",
         customerAccount: "",
-        total:0,
-        fullscreenLoading:false
+        total:0
       }
     },
     methods: {

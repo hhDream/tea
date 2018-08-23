@@ -1,5 +1,5 @@
 <template>
-<div v-loading.fullscreen.lock="fullscreenLoading">
+<div >
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item label="订单编号：">
         <el-input v-model="takeTeaOrderCode" placeholder="订单编号"></el-input>
@@ -186,7 +186,6 @@ export default {
         "京东速递",
         "苏宁快递"
       ],
-      fullscreenLoading: false
     };
   },
   methods: {

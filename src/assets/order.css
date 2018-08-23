@@ -235,6 +235,15 @@
     width: 100%;
 }
 
+.order-payment-cont .title .cover{
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+}
+.order-payment-cont .title .cover img{
+    width: 100%;
+    height: 100%;
+}
 .order-payment-cont .title .fl p:first-child {
     margin-bottom: 15px;
 }
@@ -292,7 +301,11 @@
     background: #db4b29;
 }
 
-.order-payment .pay-box .clearfix.balance.active {
+.order-payment .pay-box .notactive {
+    border: 3px solid white;
+}
+
+.order-payment .pay-box .active {
     border: 3px solid #db4b29;
 }
 
@@ -362,9 +375,8 @@
 }
 
 .order-payment .pay-box .choose-box {
-    display: none;
+    display: block;
     padding: 0;
-    border-bottom: 1px solid #e1e1e1;
 }
 
 .order-payment .pay-box .add-card {
@@ -679,10 +691,6 @@
 
 .bank-wrap .btn {
     font-size: 12px;
-}
-
-.hide-wrap {
-    display: none;
 }
 
 .dialog-wrap {

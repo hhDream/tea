@@ -19,7 +19,7 @@
                     <el-menu-item index="1-1" @click="$router.openPage('/distributorCenter/enterpriseInfo')">企业信息</el-menu-item>
                     <el-menu-item index="1-2" @click="$router.openPage('/distributorCenter/password')">资金密码管理</el-menu-item>
                     <el-menu-item index="1-3" @click="$router.openPage('/distributorCenter/distributorAddress')">我的地址</el-menu-item>
-                    <el-menu-item index="1-4" @click="$router.openPage('/distributorCenter/enterpriseInfo')">我的消息</el-menu-item>
+                    <el-menu-item index="1-4" @click="$router.openPage('/distributorCenter/myNews')">我的消息</el-menu-item>
                 </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="2">

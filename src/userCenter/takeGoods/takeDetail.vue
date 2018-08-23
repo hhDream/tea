@@ -98,7 +98,6 @@ export default {
   inject: ["reload"],
   data() {
     return {
-      fullscreenLoading: false,
       state: "",
       times: [],
       takeTeaOrderCode: "",
@@ -187,7 +186,6 @@ export default {
   },
   methods: {
     getData() {
-      this.fullscreenLoading = true;
       this.axios
         .post(
           this.http + "/interface/pc/customer/pcTeaStore/myTeaOrder",
@@ -206,7 +204,6 @@ export default {
           })
         )
         .then(res => {
-          this.fullscreenLoading = false;
           if (res.data.code == 200) {
             this.tableData = JSON.parse(res.data.data).list;
             this.currentPage = JSON.parse(res.data.data).currentPage;

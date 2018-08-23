@@ -213,10 +213,10 @@ export default {
             if (JSON.parse(res.data.data).role==1) {
               this.setCookie('changeUrl','/myUserCenter/userHome',1);
               this.$router.openPage('/myUserCenter/userHome',1);
-              this.setCookie('messageUrl','/myUserCenter/message');
+              this.setCookie('messageUrl','/myUserCenter/MyNews_user');
               // this.$router.openPage('/');
             }else if (JSON.parse(res.data.data).role==2) {
-              this.setCookie('messageUrl','/distributorCenter/message',1);
+              this.setCookie('messageUrl','/distributorCenter/MyNews',1);
               this.setCookie('changeUrl','/distributorCenter/banlance',1);
               this.$router.openPage('/distributorCenter/banlance');
               // this.$router.openPage('/');

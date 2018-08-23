@@ -1,8 +1,8 @@
 <template>
     <div>
     <el-breadcrumb style='padding:24px 0' separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/distributorCenter/banlance' }">企业中心</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/distributorCenter/myBank' }">财务管理</el-breadcrumb-item>
+        <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+        <el-breadcrumb-item>财务管理</el-breadcrumb-item>
         <el-breadcrumb-item>我的优惠券</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="title">我的优惠券</div>
@@ -50,7 +50,6 @@ import qs from 'qs'
 export default {
   data() {
     return {
-      input: "1101**********007X",
       couponList:[],
         phone:this.$getcookie('LOGIN_PHONE'),
       http:this.$store.state.dialog.http,
@@ -69,10 +68,12 @@ export default {
         pageSize:this.pageSize,
         currentPage:this.currentPage
       })).then(res=>{
-        console.log(JSON.parse(res.data.data));
+        if(res.data.code==200){
         this.total=JSON.parse(res.data.data).total;
         this.pageSize=JSON.parse(res.data.data).showCount;
         this.couponList=JSON.parse(res.data.data).list;
+        }
+
 
       })
     },

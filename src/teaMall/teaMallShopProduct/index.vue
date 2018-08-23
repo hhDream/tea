@@ -24,9 +24,9 @@
                   <div class="mt20px small">
                     <a class="picture-arrow-left go_t" @click="id>0?id--:id=product.goods.pcLargePicture.split(',').length-1;setActiveItem(id)">&lt;</a>
                     <div class="product-picture-small">
-                      <ul id="small" style="width: 245px;">
-                        <li v-for="(item,index) in product.goods.pcLargePicture.split(',')" :class="{active:id==index}" :key="index">
-                          <img @click="id=index;setActiveItem(index)" :src="item" alt="">
+                      <ul id="small" :style="styleObject">
+                        <li v-for="(item,index) in product.goods.pcLargePicture.split(',')" :class="{active:id==index}" @click="id=index;setActiveItem(index)" :key="index">
+                          <img  :src="item" alt="">
                         </li>
                       </ul>
                     </div>
@@ -76,8 +76,9 @@
                   <el-col :span="7">
                     按规格显示
                     <el-select style="width:193px" v-model="value" size="mini" clearable placeholder="请选择">
-                      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                      </el-option>
+                      <el-option  :label="options.transactionSpecification1" :value="1"></el-option>
+                      <el-option  :label="options.transactionSpecification2" :value="2"></el-option>
+                      <el-option  :label="options.transactionSpecification3" :value="3"></el-option>
                     </el-select>
                   </el-col>
                   <el-col :span="17">
@@ -97,7 +98,8 @@
                   </el-table-column>
                   <el-table-column label="操作">
                     <template slot-scope="scope">
-                          <el-button @click="handleClick(scope.row)" type="text">立即购买</el-button>
+                          <el-button v-if="phone" @click="handleClick(scope.row)" type="text">立即购买</el-button>
+                          <el-button v-if="!phone" @click="$route.openPage('/login')" type="text">立即登录</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -109,7 +111,7 @@
                       :page-sizes="[5, 10, 15, 20]"
                       :page-size="pageSize"
                       layout="total, sizes, prev, pager, next, jumper"
-                      :total="3">
+                      :total="total">
                     </el-pagination>
               </el-tab-pane>
               <el-tab-pane label="商品详情" name="second">
@@ -210,262 +212,409 @@
     </el-row>
     <!-- 购买模态框 -->
       <el-dialog title="购买" :visible.sync="dialogVisible" width="30%">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form label-width="100px" class="demo-ruleForm">
           <el-form-item label="商品名称" prop="name">
-            下关标准沱茶(礼盒装)
+            {{ row.goodsName }}
           </el-form-item>
           <el-form-item label="单价" prop="name">
-            {{row.univalence}}元/{{row.specification}}
+            {{row.goodsPrice}}元/{{row.param3}}
+          </el-form-item>
+          <el-form-item label="总数量" prop="name">
+            {{row.goodsCount}}{{ row.param3 }}
           </el-form-item>
           <el-form-item label="购买数量" prop="name">
-            <el-input style="width:150px" v-model="ruleForm.number"></el-input>
+            <el-input style="width:150px" v-model="number"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false;$router.openPage('/teaMallPayMent')">确 定</el-button>
+          <el-button @click="dialogVisible = false;row={}">取 消</el-button>
+          <el-button type="primary" @click="buyNow()">确 定</el-button>
         </span>
       </el-dialog>
   </div>
 </template>
 
 <script>
-  import qs from 'qs';
-  export default ({
-    data() {
-      return {
-        dialogVisible: false,
-        activeName2: 'first',
-        have:false,
-        num: 0,
-        id: 1,
-        start: "", //价格区间
-        end: "",
-        row: '',
-        value: '', //规格容器
-        ruleForm: {
-          number: ''
-        },
-        product:{
-        },
-        rules: {
-          number: [{
-            required: true,
-            message: '请输入购买数量',
-            type: 'number',
-            trigger: 'blur'
-          }],
-        },
-        options: [{
-            value: '3',
-            label: '片'
-          },
-          {
-            value: '2',
-            label: '粒'
-          },
-          {
-            value: '1',
-            label: '盒'
-          },
+import qs from "qs";
+export default {
+  data() {
+    return {
+      styleObject:{},
+      phone: this.getCookie("LOGIN_PHONE"),
+      dialogVisible: false,
+      activeName2: "first",
+      have: false,
+      num: 0,
+      id: 0,
+      start: "", //价格区间
+      end: "",
+      row: {},
+      value: "", //规格容器
+      number: "",
+      product: {},
+      options: {},
+      tableData: [],
+      currentPage: 1,
+      pageSize: 5,
+      http: this.$store.state.dialog.http,
+      data: {
+        title: null,
+        xAxisTitle: "",
+        yAxisTitle: "价格(元/盒)",
+        xAxis: [
+          "6.12",
+          "6.13",
+          "6.14",
+          "6.15",
+          "6.16",
+          "6.17",
+          "6.18",
+          "6.19",
+          "6.20",
+          "6.21",
+          "6.22",
+          "6.23",
+          "6.24",
+          "6.25",
+          "6.26",
+          "6.27",
+          "6.28",
+          "6.29",
+          "6.30",
+          "7.1",
+          "7.2",
+          "7.3",
+          "7.4",
+          "7.5",
+          "7.6",
+          "7.7",
+          "7.8",
+          "7.9",
+          "7.10"
         ],
-        tableData: [{
-          date: '2016-05-02',
-          number: '110',
-          specification: '片',
-          univalence: '120',
-        }],
-        currentPage: 1,
-        pageSize: 5,
-        http: this.$store.state.dialog.http,
-        data: {
-          title: null,
-          xAxisTitle: "",
-          yAxisTitle: "价格(元/盒)",
-          xAxis: ["6.12", "6.13", "6.14", "6.15", "6.16", "6.17", "6.18", "6.19", "6.20", "6.21", "6.22", "6.23", "6.24", "6.25", "6.26", "6.27", "6.28", "6.29", "6.30", "7.1", "7.2", "7.3", "7.4", "7.5", "7.6", "7.7", "7.8", "7.9", "7.10"],
-          items: [{
-            "name": "历史成交均价",
-            "data": ["238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238", "238"],
-            "type": "line"
-          }, {
-            "name": "零售指导价",
-            "data": ["288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288", "288"],
-            "type": "line"
-          }],
-        },
-        sort:1,
-        topPrice:'',
-        lowPrice:'',
-
+        items: [
+          {
+            name: "历史成交均价",
+            data: [
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238",
+              "238"
+            ],
+            type: "line"
+          },
+          {
+            name: "零售指导价",
+            data: [
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288",
+              "288"
+            ],
+            type: "line"
+          }
+        ]
+      },
+      sort: 1,
+      topPrice: "",
+      lowPrice: "",
+      total: 0
+    };
+  },
+  methods: {
+    buyNow() {
+      if (
+        !+this.number ||
+        +this.number > +this.row.goodsCount ||
+        +this.number < 0
+      ) {
+        this.$message({
+          type: "error",
+          message: "请输入正确的数量"
+        });
+        return;
       }
+      this.axios
+        .post(
+          this.http + "/interface/pc/order/shoppingMallOrder",
+          qs.stringify({
+            phone: this.phone,
+            id: this.row.id, //主键id
+            count: this.number, //购买总量
+            channel: 3, //3为pc2为app
+            state: this.getCookie("STATUS") //2经销商1客户
+          })
+        )
+        .then(res => {
+          this.dialogVisible = false;
+          if (res.data.code == 200) {
+            // 跳转页面
+            this.$router.openPage("/teaMallPayMent", {
+              orderCode: JSON.parse(res.data.data).orderCode,
+              type: 2
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message
+            });
+          }
+        });
     },
-    methods: {
-      message() {
-        this.$confirm('您还未登录, 是否登陆?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$router.openPage('/login')
-        }).catch(() => {
+    message() {
+      this.$confirm("您还未登录, 是否登陆?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$router.openPage("/login");
+        })
+        .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消'
+            type: "info",
+            message: "已取消"
           });
         });
-      },
-      handleCurrentChange(val) {
-        this.currentPage = val;
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getTable();
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getTable();
+    },
+    sortChange(val) {
+      if (val.prop == "param4") {
+        this.sort = val.order == "descending" ? 2 : 1;
+        this.getTable2();
+      } else {
+        this.sort = val.order == "descending" ? 2 : 1;
         this.getTable();
-
-      },
-      handleSizeChange(val) {
-        this.pageSize = val;
-        this.getTable();
-      },
-      sortChange(val){
-        if (val.prop=='param4') {
-          this.sort=val.order=="descending"?2:1;
-          this.getTable2()
-        }else{
-          this.sort=val.order=="descending"?2:1;
-          this.getTable()
-        }
-        
-      },
-      handleClick(row) {
-        if (this.$store.state.dialog.cookie != true) {
-          this.message();
-          return false;
-        }
-        this.row = row;
-        this.dialogVisible = true;
-      },
-      getProduct() {
-        this.axios.post(this.http + '/interface/pc/allotment/soldInformationTop', qs.stringify({
-          goodsCode: this.$route.query.id,//商品编码
-          releaseCode:this.$route.query.releaseCode,
-          phone:this.$store.state.dialog.phone,
-          
-        })).then(res => {
-          this.product = JSON.parse(res.data.data);
-          if(this.product.goods.pcDetailPicture==null){
-            this.product.goods.pcDetailPicture= "../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png"
-          }
-          if (this.product.goods.pcLargePicture==null) {
-            this.product.goods.pcLargePicture="../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png"            
-          }
-          if (this.product.goods.pcSmallPicture==null) {
-            this.product.goods.pcSmallPicture="../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png"           
-          }
-          this.have=true;
-
-        }).then(()=>{
-          this.drawLine()
-        }).then(()=>{
-          this.getTable()
-        })
-      },
-      getTable(){
-        this.axios.post(this.http + '/interface/pc/allotment/soldInformation', qs.stringify({
-          goodsCode: this.$route.query.id,//商品编码
-          priceSort:this.sort,//1升2降
-          releaseCode:this.$route.query.releaseCode,
-          // countSort:1,
-          specificationSonId:this.value,
-          currentPage:this.currentPage,
-          lowPrice:this.lowPrice,
-          topPrice:this.topPrice,
-          pageSize:this.pageSize,
-          phone:this.$store.state.dialog.phone
-        })).then(res => {
-          this.tableData = JSON.parse(res.data.data).onTheShelves
-          this.total=JSON.parse(res.data.data).totalPage;
-          this.currentPage=JSON.parse(res.data.data).currentPage;
-        })
-      },
-      getTable2(){
-        this.axios.post(this.http + '/interface/pc/allotment/soldInformation', qs.stringify({
-          goodsCode: this.$route.query.id,//商品编码
-          // priceSort:this.sort,//1升2降
-          releaseCode:this.$route.query.releaseCode,
-          countSort:this.sort,
-          specificationSonId:this.value,
-          currentPage:this.currentPage,
-          lowPrice:this.lowPrice,
-          topPrice:this.topPrice,
-          pageSize:this.pageSize,
-          phone:this.$store.state.dialog.phone
-        })).then(res => {
-          this.tableData = JSON.parse(res.data.data).onTheShelves
-          this.total=JSON.parse(res.data.data).totalPage;
-          this.currentPage=JSON.parse(res.data.data).currentPage;
-        })
-      },
-      setActiveItem(i) {
-        this.$refs.carousel.setActiveItem(i)
-      },
-      drawLine() {
-        // 基于准备好的dom，初始化echarts实例
-        let myChart = this.$echarts.init(document.getElementById('myChart'))
-        // 绘制图表
-        myChart.setOption({
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-              type: 'line',
-              animation: false,
-              label: {
-                formatter: '日期{value}',
-                backgroundColor: '#505765'
-              }
-            }
-          },
-          xAxis: {
-            type: 'category',
-            axisTick: {
-              alignWithLabel: true
-            },
-            data: []
-          },
-          yAxis: {
-            boundaryGap: ['20%', '20%'],
-            min: 'dataMin'
-          },
-          series: []
-        });
-        let data = this.data
-        var legendData = new Array(data.items.length);
-        for (var i = 0; i < data.items.length; i++) {
-          legendData.push(data.items[i].name);
-        }
-        myChart.setOption({
-          title: {
-            text: data.title,
-            x: 'left'
-          },
-          xAxis: {
-            data: data.xAxis
-          },
-          yAxis: {
-            name: data.yAxisTitle
-          },
-          legend: {
-            data: legendData,
-            x: 'right'
-          },
-          series: data.items
-        });
       }
     },
-    mounted() {
-      this.getProduct()
+    handleClick(row) {
+      if (this.$store.state.dialog.cookie != true) {
+        this.message();
+        return false;
+      }
+      console.log(row);
+      this.row = row;
+      this.dialogVisible = true;
     },
-  })
+    getProduct() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/allotment/soldInformationTop",
+          qs.stringify({
+            goodsCode: this.$route.query.id, //商品编码
+            releaseCode: this.$route.query.releaseCode,
+            phone: this.$store.state.dialog.phone
+          })
+        )
+        .then(res => {
+          console.log(JSON.parse(res.data.data))
+          this.options = JSON.parse(res.data.data).specifications;
+          this.product = JSON.parse(res.data.data);
+          if (this.product.goods.pcDetailPicture == null) {
+            this.product.goods.pcDetailPicture =
+              "../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png";
+          }
+          if (this.product.goods.pcLargePicture == null) {
+            this.product.goods.pcLargePicture =
+              "../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png";
+          }
+          if (this.product.goods.pcSmallPicture == null) {
+            this.product.goods.pcSmallPicture =
+              "../../assets/images/912258a1-5443-49f7-af77-cb0e05c5612d.png";
+          }
+          this.have = true;
+        })
+        .then(() => {
+          this.drawLine();
+        })
+        .then(() => {
+          this.getTable();
+        });
+    },
+    getTable() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/allotment/soldInformation",
+          qs.stringify({
+            goodsCode: this.$route.query.id, //商品编码
+            priceSort: this.sort, //1升2降
+            releaseCode: this.$route.query.releaseCode,
+            // countSort:1,
+            specificationSonId: this.value,
+            currentPage: this.currentPage,
+            lowPrice: this.lowPrice,
+            topPrice: this.topPrice,
+            pageSize: this.pageSize,
+            phone: this.$store.state.dialog.phone
+          })
+        )
+        .then(res => {
+          console.log(JSON.parse(res.data.data));
+          this.tableData = JSON.parse(res.data.data).onTheShelves;
+          this.total = JSON.parse(res.data.data).total;
+          this.currentPage = JSON.parse(res.data.data).currentPage;
+        });
+    },
+    getTable2() {
+      this.axios
+        .post(
+          this.http + "/interface/pc/allotment/soldInformation",
+          qs.stringify({
+            goodsCode: this.$route.query.id, //商品编码
+            // priceSort:this.sort,//1升2降
+            releaseCode: this.$route.query.releaseCode,
+            countSort: this.sort,
+            specificationSonId: this.value,
+            currentPage: this.currentPage,
+            lowPrice: this.lowPrice,
+            topPrice: this.topPrice,
+            pageSize: this.pageSize,
+            phone: this.$store.state.dialog.phone
+          })
+        )
+        .then(res => {
+          this.tableData = JSON.parse(res.data.data).onTheShelves;
+          this.total = JSON.parse(res.data.data).total;
+          this.currentPage = JSON.parse(res.data.data).currentPage;
+        });
+    },
+    setActiveItem(i) {
+      this.$refs.carousel.setActiveItem(i);
+      console.log(this.id);
+      console.log(this.id>4?(this.id-4)*49:0);
+      let tX=this.id>=4?(this.id-4)*49:0;
+      this.styleObject={width: 49*this.product.goods.pcLargePicture.split(',').length+'px',transform:'translateX('+-tX+'px)'}
+    },
+    drawLine() {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("myChart"));
+      // 绘制图表
+      myChart.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "line",
+            animation: false,
+            label: {
+              formatter: "日期{value}",
+              backgroundColor: "#505765"
+            }
+          }
+        },
+        xAxis: {
+          type: "category",
+          axisTick: {
+            alignWithLabel: true
+          },
+          data: []
+        },
+        yAxis: {
+          boundaryGap: ["20%", "20%"],
+          min: "dataMin"
+        },
+        series: []
+      });
+      let data = this.data;
+      var legendData = new Array(data.items.length);
+      for (var i = 0; i < data.items.length; i++) {
+        legendData.push(data.items[i].name);
+      }
+      myChart.setOption({
+        title: {
+          text: data.title,
+          x: "left"
+        },
+        xAxis: {
+          data: data.xAxis
+        },
+        yAxis: {
+          name: data.yAxisTitle
+        },
+        legend: {
+          data: legendData,
+          x: "right"
+        },
+        series: data.items
+      });
+    },
+    getCookie(name) {
+      var arr,
+        reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if ((arr = document.cookie.match(reg))) {
+        return arr[2];
+      } else {
+        return false;
+      }
+    }
+  },
+  mounted() {
+    this.getProduct();
+  }
+};
 </script>
 <style lang = 'less' scoped>
-  @import '../../assets/shopProduct.css';
-  .el-tabs__header {
-    margin: 0!important;
-  }
+@import "../../assets/shopProduct.css";
+.el-tabs__header {
+  margin: 0 !important;
+}
+#small{
+  transition: all 0.25s ease;
+}
 </style>

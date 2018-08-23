@@ -1,5 +1,5 @@
 <template>
-<div v-loading.fullscreen.lock="fullscreenLoading">
+<div >
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
     <el-form-item label="会员账号：">
         <el-input v-model="customerAccount" placeholder="会员账号"></el-input>
@@ -99,7 +99,6 @@
           region: ''
         },
         value13:"",
-        fullscreenLoading:""
       }
     },
     methods: {

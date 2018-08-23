@@ -1,5 +1,5 @@
 <template>
-<div v-loading.fullscreen.lock="fullscreenLoading">
+<div >
   <el-row class="myCenter" :gutter="20">
     <el-col :span="8" style="padding-right: 10px;padding-left:0">
       <div class="grid-content bg-purple">
@@ -132,7 +132,6 @@
         allotment: [],
         stock: [],
         bill: [],
-        fullscreenLoading:false
       }
     },
     created() {
@@ -140,12 +139,10 @@
     },
     methods: {
       getData() {
-        this.fullscreenLoading=true;
         this.axios.post(this.http + "/interface/pc/customer/pcCustomer/customerPersonlInfo", qs.stringify({
           loginPhone: this.getCookie('LOGIN_PHONE'),
           pageSize:2
         })).then(res => {
-          this.fullscreenLoading=false;
           if(res.data.code == 200){
             console.log(JSON.parse(res.data.data).buyOrder)
             this.person.name = JSON.parse(res.data.data).customerName;

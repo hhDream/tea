@@ -23,9 +23,6 @@ export default {
         changeCookie(state, cookie) {
             state.cookie = cookie
         },
-        changeIsLogin(state, isLogin) {
-            state.isLogin = isLogin
-        },
         changeToLogin(state, toLogin) {
             state.toLogin = toLogin
         },

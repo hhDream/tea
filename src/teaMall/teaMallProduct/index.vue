@@ -11,14 +11,14 @@
                         </el-breadcrumb>
                         <div class="clearfix detail-slide issue">
                             <div class="small">
-                                <ul v-if="product.pd.pcLargePicture">
-                                    <li v-for="(item,index) in product.pd.pcLargePicture.split(',')" :class="{active:id==index}" :key="index">
-                                        <img @click="id=index;setActiveItem(index)" :src="item" alt="">
+                                <ul v-if="product.pd.pcLargePicture"  :style="styleObject" >
+                                    <li v-for="(item,index) in product.pd.pcLargePicture.split(',')" :class="{active:id==index}"  @click="id=index;setActiveItem(index)" :key="index">
+                                        <img :src="item" alt="">
                                     </li>
                                 </ul>
                                 <ul v-else>
-                                    <li v-for="(item,index) in productList" :class="{active:id==index}" :key="index">
-                                        <img @click="id=index;setActiveItem(index)" :src="item.src" alt="">
+                                    <li v-for="(item,index) in productList" :class="{active:id==index}" @click="id=index;setActiveItem(index)" :key="index">
+                                        <img :src="item.src" alt="">
                                     </li>
                                 </ul>
                             </div>
@@ -52,6 +52,11 @@
                                     <label>数量</label>
                                     <div class="fl number">
                                         <el-input-number size="small" v-model="num"></el-input-number>
+                                        <span style="margin-left:20px" v-if="product.pd.purchaseLimite != 1">限购：<b style="color:#dc2b01">{{ product.pd.limiteCount?product.pd.limiteCount:0 }}{{ product.pd.transactionSpecification3 }}</b> </span><br><br>
+                                        <el-select v-model="couponId"  placeholder="请选择优惠券">
+                                            <el-option label="请选择优惠券" value="" ></el-option>
+                                            <el-option :label="v.couponName" :value="v.id" v-for="(v,i) of product.couponUser" :key='i'></el-option>
+                                        </el-select>
                                     </div>
                                     <input type="hidden" id="quantity" value="89">
                                 </div>
@@ -61,7 +66,7 @@
                                 <div class="clearfix buttons">
                                     <div class="fl" id="btn">
                                         <button v-if="!phone"  type="button" class="btn btn-primary" style="background-color:#aaaaaa;border-color:#aaaaaa;">您尚未登录</button>
-                                        <button v-else-if="!distributorCode && status == 1"  type="button" class="btn btn-primary" style="background-color:#aaaaaa;border-color:#aaaaaa;">您尚未绑定经销商</button>
+                                        <!-- <button v-else-if="!distributorCode && status == 1"  type="button" class="btn btn-primary" style="background-color:#aaaaaa;border-color:#aaaaaa;">您尚未绑定经销商</button> -->
                                         <button v-else-if='product.right==2'  type="button" class="btn btn-primary" style="background-color:#aaaaaa;border-color:#aaaaaa;">暂无资格</button>
                                         <button v-else-if='product.pd.effective==4||product.pd.releaseStatus==6||product.pd.releaseStatus==7'  type="button" class="btn btn-primary" style="background-color:#aaaaaa;border-color:#aaaaaa;">抢购已结束</button>
                                         <button v-else-if='product.pd.releaseStatus==5&&product.pd.effective==2'  type="button" class="btn btn-primary" style="background-color:#aaaaaa;border-color:#aaaaaa;">抢购即将开始</button> 
@@ -143,10 +148,11 @@ import qs from "qs";
 export default {
   data() {
     return {
+        styleObject:{},
       phone: this.getCookie("LOGIN_PHONE"),
       distributorCode: this.getCookie("DISTRIBUTOR_CODE"),
       num: 1,
-      id: 1,
+      id: 0,
       productList: [],
       product: {
         pd: {
@@ -156,7 +162,7 @@ export default {
           releaseCount: 0
         },
         couponList: [],
-        couponUser: null,
+        couponUser: [],
         goods: {},
         right: 2,
         specifications: {}
@@ -172,12 +178,16 @@ export default {
       hrStr: "00",
       minStr: "00",
       secStr: "00",
-      status: this.getCookie("STATUS")
+      status: this.getCookie("STATUS"),
     };
   },
   methods: {
     setActiveItem(i) {
       this.$refs.carousel.setActiveItem(i);
+      console.log(i>4?(i-4)*71:0);
+      let tX=i>=4?(i-3)*71:0;
+      console.log(i);
+      this.styleObject={height: 71*this.product.pd.pcLargePicture.split(',').length+'px',transform:'translateY('+-tX+'px)'}
     },
     getProduct() {
       this.axios
@@ -191,6 +201,7 @@ export default {
         )
         .then(res => {
           if (res.data.code == 200) {
+              console.log(JSON.parse(res.data.data))
             this.product = JSON.parse(res.data.data);
             // 防止split报错
             if (!this.product.pd.pcLargePicture) {
@@ -265,6 +276,13 @@ export default {
         });
         return;
       }
+      if(+this.num>+this.product.pd.limiteCount && this.product.pd.purchaseLimite != 1){
+          this.$message({
+          type: "error",
+          message: "限购"+this.product.pd.limiteCount+this.product.pd.transactionSpecification3
+        });
+        return;
+      }
       this.axios
         .post(
           this.http + "/interface/pc/order/submitOrder",
@@ -272,7 +290,7 @@ export default {
             phone: this.phone,
             id: this.product.pd.id, //主键id
             count: this.num, //购买总量
-            // couponId:this.couponId,//优惠券
+            couponId:this.couponId,//优惠券
             channel: 3, //3为pc2为app
             state: this.status //2经销商1客户
           })
@@ -280,11 +298,11 @@ export default {
         .then(res => {
           if (res.data.code == 200) {
             // 跳转页面
-            console.log(res);
+            this.$router.openPage('/teaMallPayMent',{orderCode:JSON.parse(res.data.data).orderCode,type:1})
           } else {
             this.$message({
               type: "error",
-              message: res.message
+              message: res.data.message
             });
           }
         });

@@ -167,7 +167,6 @@
           user: '',
           region: ''
         },
-        fullscreenLoading: false
       }
     },
   }

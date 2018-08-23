@@ -137,7 +137,7 @@ export default {
           } else {
             this.$message({
               type: "warning",
-              message: res.message
+              message: res.data.message
             });
           }
         })

@@ -17,7 +17,7 @@
             <el-col :span="2">提货方式</el-col>
             <el-col :span="22">
                 <el-radio v-model="radio" label="1">快递物流</el-radio>
-                <el-radio v-model="radio" label="2" v-if="withInSystem!=1">自提</el-radio>
+                <el-radio v-model="radio" label="2">自提</el-radio>
                 <div style="margin-top:20px">
                     收货地址<span v-if="radio==1">( <span style="color:#409EFF;cursor:pointer;" @click="$router.openPage('/myUserCenter/userAddress')">+添加收货地址</span>  )</span>
                 </div>
@@ -30,8 +30,8 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#409EFF" @click="changeState()">仓储收费标准</a>
                 <br><span style="font-size:12px;color:#8c8c8c;position:relative;top:10px" v-if="show">免费仓储周期：{{ cost.freeETime }} 至 {{ cost.freeSTime }}</span>
             </el-col>
-            <el-col :span="2">快递费</el-col>
-            <el-col :span="22">
+            <el-col :span="2"  v-if="radio==1">快递费</el-col>
+            <el-col :span="22"  v-if="radio==1">
                 {{ cost.expressFee?cost.expressFee:0 }}元
                 &nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#409EFF" @click="changeState2()">快递收费标准</a>
                 <div style="margin-top:20px" v-if="show2">提货门店运费收费标准</div>                
@@ -132,7 +132,9 @@ export default {
           )
           .then(res => {
             if (res.data.code == 200) {
-              console.log(res)
+              console.log(JSON.parse(res.data.data))
+            }else{
+
             }
           });
     },
